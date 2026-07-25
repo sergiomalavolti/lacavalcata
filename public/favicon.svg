@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#0a0a0b"/>
+  <rect x="4" y="4" width="24" height="24" fill="#f2c511"/>
+  <text x="16" y="17" fill="#0a0a0b" font-family="Arial Narrow, Helvetica, sans-serif"
+        font-size="20" font-weight="700" text-anchor="middle"
+        dominant-baseline="central">8</text>
+</svg>

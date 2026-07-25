@@ -1,0 +1,219 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { season, num, longDate } from '../lib/season.js';
+
+const { roster, playerStats, final } = season;
+
+const statsFor = (id) => playerStats.find((s) => s.player === id);
+
+// Order the squad the way a coach reads it: by minutes on the floor, which we
+// approximate with games entered, then by scoring.
+const squad = roster
+  .map((p) => ({ ...p, stats: statsFor(p.id) }))
+  .sort((a, b) => b.stats.points - a.stats.points || b.stats.played - a.stats.played);
+
+const roles = [...new Set(roster.map((p) => p.role))];
+const heights = roster.filter((p) => p.height).map((p) => p.height);
+const born = roster.filter((p) => p.birthdate).map((p) => Number(p.birthdate.slice(0, 4)));
+
+/** Age on the day of the final, 9 June 2012. */
+const age = (iso) => {
+  const [y, m, d] = iso.split('-').map(Number);
+  let a = 2012 - y;
+  if (m > 6 || (m === 6 && d > 9)) a -= 1;
+  return a;
+};
+
+const byAge = [...roster].filter((p) => p.birthdate).sort((a, b) => age(a.birthdate) - age(b.birthdate));
+const youngest = byAge[0];
+const oldest = byAge[byAge.length - 1];
+const finalSquad = season.final.game.boxscore.length;
+---
+
+<Base
+  title="La squadra · Caffè Matic – Trottola Sport 2011-2012"
+  description="I diciannove giocatori che hanno vinto la Super-League Promozione CSI 2011-2012."
+  current="squadra"
+>
+  <PageHead
+    title="Diciannove"
+    facts={[
+      `${roster.length} giocatori`,
+      `${roles.length} ruoli`,
+      `${Math.min(...heights)}–${Math.max(...heights)} cm`,
+      `nati ${Math.min(...born)}–${Math.max(...born)}`,
+    ]}
+  >
+    <p>
+      Diciannove nomi passati per il referto in una stagione: il giorno della
+      finale il più giovane, <strong>{youngest.surname} {youngest.name}</strong>,
+      aveva {age(youngest.birthdate)} anni; il più vecchio,{' '}
+      <strong>{oldest.surname} {oldest.name}</strong>, ne aveva{' '}
+      {age(oldest.birthdate)}. In distinta per la finale ne andarono{' '}
+      <strong>{finalSquad}</strong>. Un solo numero di maglia è documentato in
+      tutte le fonti: il <strong>16 di Paride Greco</strong>, perché il tabellone
+      della Super-League lo indica come miglior giocatore della finale.
+    </p>
+  </PageHead>
+
+  <section class="section">
+    <div class="wrap">
+      <ol class="squad">
+        {squad.map((p) => (
+          <li class="player">
+            <div class="player-id">
+              <h2 class="player-name">
+                <span class="surname">{p.surname}</span>
+                <span class="given">{p.name}</span>
+              </h2>
+              {p.id === final.mvp.player && (
+                <p class="mvp mono">n.{final.mvp.number} · MVP della finale</p>
+              )}
+              <p class="player-bio mono dim">
+                {p.role} · {p.height} cm · {longDate(p.birthdate)} ({age(p.birthdate)} anni)
+              </p>
+            </div>
+
+            <dl class="player-stats">
+              <div class="points">
+                <dt>Punti</dt>
+                <dd class="big">{p.stats.points}</dd>
+                <span
+                  class="points-bar"
+                  aria-hidden="true"
+                  style={`--w:${(p.stats.points / squad[0].stats.points) * 100}%`}
+                ></span>
+              </div>
+              <div>
+                <dt>Media</dt>
+                <dd>{num(p.stats.average, 1)}</dd>
+              </div>
+              <div>
+                <dt>Gare</dt>
+                <dd>{p.stats.played}</dd>
+              </div>
+              <div>
+                <dt>Quintetti</dt>
+                <dd>{p.stats.starts}</dd>
+              </div>
+              <div>
+                <dt>Massimo</dt>
+                <dd>{p.stats.high}</dd>
+              </div>
+            </dl>
+
+          </li>
+        ))}
+      </ol>
+
+      <p class="note mono dim">
+        «Gare» conta le partite effettivamente giocate: chi era in distinta ma
+        non è entrato risulta <span class="giallo">NE</span> sul referto e non
+        viene contato qui. La differenza è raccontata nelle{' '}
+        <a class="link" href="/statistiche/">statistiche</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .squad {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border-block: 1px solid var(--ink-line);
+  }
+
+  .player {
+    background: var(--ink);
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
+    gap: 1rem 2rem;
+    align-items: center;
+    padding: 1.1rem 0.2rem;
+    position: relative;
+    transition: background 0.15s ease;
+  }
+  .player:hover { background: var(--ink-raised); }
+
+  .player-name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.5rem;
+    font-size: var(--step-2);
+  }
+  .surname { color: var(--chalk); }
+  .given { color: var(--chalk-dim); }
+
+  .mvp {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--giallo);
+    display: inline-block;
+    padding: 0.18rem 0.5rem;
+    margin: 0.45rem 0 0;
+  }
+
+  .player-bio {
+    font-size: var(--step--2);
+    letter-spacing: 0.05em;
+    margin: 0.4rem 0 0;
+  }
+
+  .player-stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.5rem 1rem;
+    margin: 0;
+  }
+  .player-stats div { margin: 0; }
+  .player-stats dt {
+    font-family: var(--font-mono);
+    font-size: 0.57rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+  }
+  .player-stats dd {
+    margin: 0.15rem 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--step-0);
+    font-variant-numeric: tabular-nums;
+  }
+  .player-stats .big { color: var(--giallo); font-weight: 700; }
+
+  /* The bar sits under the points figure it measures: each player against the
+     282 of the season's top scorer. */
+  .points { position: relative; padding-bottom: 0.55rem; }
+  .points-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: var(--w);
+    min-width: 2px;
+    background: var(--giallo-deep);
+  }
+
+  .note {
+    font-size: var(--step--2);
+    letter-spacing: 0.04em;
+    max-width: 62ch;
+    margin-top: 1.6rem;
+  }
+
+  @media (max-width: 760px) {
+    .player { grid-template-columns: 1fr; gap: 0.8rem; }
+    .player-stats { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  }
+  @media (max-width: 460px) {
+    .player-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+</style>

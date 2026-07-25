@@ -1,0 +1,403 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Seed from '../components/Seed.astro';
+import { season, teamName, US, longDate, playoffGames } from '../lib/season.js';
+
+import heroImage from '../assets/final_game-2.jpg';
+
+const { advanced, playoff, group, final } = season;
+const record = advanced.record;
+const ourSeed = playoff.seeds.find((s) => s.team === US).seed;
+const seedOf = (t) => playoff.seeds.find((s) => s.team === t)?.seed;
+
+const ourRow = group.table.find((r) => r.team === US);
+
+// The season as a sequence of stages. These are numbered because the
+// competition really was a ladder — each rung had to be climbed in order.
+const steps = [
+  {
+    id: 'girone',
+    kicker: 'Prima fase',
+    title: 'Secondi nel Girone A',
+    href: '/girone/',
+    body: `Undici vittorie e tre sconfitte in quattordici giornate. Il secondo posto arriva soltanto all'ultima giornata, davanti al Ghironda a parità di punti.`,
+    figure: `${ourRow.v}–${ourRow.p}`,
+    figureLabel: `${ourRow.pts} punti`,
+  },
+  {
+    id: 'seed',
+    kicker: 'Teste di serie',
+    title: 'Ottava di sedici',
+    href: '/playoff/',
+    body: `Ventidue squadre per sedici posti, ordinate da un coefficiente. Il Caffè Matic entra ottavo: la 9 al primo turno e, subito dopo, la prima della classe.`,
+    seed: ourSeed,
+    seedIsUs: true,
+  },
+  ...playoff.bracket.map((round) => {
+    const series = round.series.find((s) => s.involvesUs);
+    const opponent = series.teamA === US ? series.teamB : series.teamA;
+    const games = playoffGames.filter((g) => g.phase === round.id);
+    const wins = games.filter((g) => g.won).length;
+    const body = {
+      ottavi: `Due partite, due vittorie, la serie chiusa senza bella.`,
+      quarti: `La prima testa di serie: tredici vittorie su quattordici nel girone. Serie decisa in casa loro, di un punto.`,
+      semifinale: `Ottantasette punti in gara 1, una sconfitta netta in gara 2, poi la bella davanti al proprio pubblico.`,
+      finale: `La squadra che nel girone aveva vinto entrambe le partite. Gara secca, campo neutro, palla a due alle 12:30 di sabato.`,
+    }[round.id];
+    return {
+      id: round.id,
+      kicker: round.label,
+      title: teamName(opponent),
+      href: round.id === 'finale' ? '/finale/' : '/playoff/',
+      seed: seedOf(opponent),
+      figure: `${wins}–${games.length - wins}`,
+      figureLabel: games.map((g) => `${g.ourScore}–${g.theirScore}`).join(' · '),
+      body,
+    };
+  }),
+];
+---
+
+<Base
+  title="La Cavalcata · Caffè Matic – Trottola Sport, CSI Promozione 2011-2012"
+  description="La stagione 2011-2012 del Caffè Matic – Trottola Sport: dall'ottava testa di serie alla vittoria della Super-League Promozione CSI."
+  current="home"
+>
+  <section class="hero">
+    <Image
+      src={heroImage}
+      alt="La squadra del Caffè Matic in maglia gialla, schierata sul parquet del Palasport di Loiano"
+      widths={[720, 1200, 1800, 2400]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="hero-img"
+    />
+    <div class="hero-shade"></div>
+
+    <div class="hero-body wrap">
+      <p class="eyebrow">
+        <span>CSI Promozione</span>
+        <span>Bologna</span>
+        <span>2011-2012</span>
+      </p>
+
+      <h1>
+        <span>Testa di serie</span>
+        <span class="h-seed">numero otto</span>
+      </h1>
+
+      <p class="hero-lead">
+        Quarantotto squadre, sei gironi, sedici ai playoff. Il Caffè Matic –
+        Trottola Sport di Porretta Terme entra dall'ottava piazza e non perde
+        più una serie. Il 9 giugno 2012, a Loiano, batte 66–55 la squadra che
+        l'aveva già battuto due volte su due.
+      </p>
+
+      <p class="hero-actions">
+        <a class="jump" href="#cavalcata">La cavalcata</a>
+        <a class="jump ghost" href="/finale/">La finale</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <ul class="numbers">
+        <li>
+          <span class="n-v">{record.wins}–{record.losses}</span>
+          <span class="n-k mono">bilancio su {record.games} partite di stagione</span>
+        </li>
+        <li>
+          <span class="n-v">4</span>
+          <span class="n-k mono">serie di playoff, nessuna persa</span>
+        </li>
+        <li>
+          <span class="n-v">+{record.diff}</span>
+          <span class="n-k mono">differenza punti nella stagione</span>
+        </li>
+        <li>
+          <span class="n-v">{advanced.clutch.wins}–{advanced.clutch.losses}</span>
+          <span class="n-k mono">nelle nove partite decise entro 5 punti</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="cavalcata">
+    <div class="wrap">
+      <h2 class="section-title lg">Sei passaggi</h2>
+      <p class="section-note dim">
+        Dal 12 novembre 2011 al 9 giugno 2012. Ogni tappa porta alla pagina che
+        la racconta per intero.
+      </p>
+
+      <ol class="steps">
+        {steps.map((step, i) => (
+          <li class="step" data-reveal>
+            <div class="step-mark">
+              <span class="step-n mono">{String(i + 1).padStart(2, '0')}</span>
+              {step.seed !== undefined && (
+                <Seed n={step.seed} us={Boolean(step.seedIsUs)} size="md" />
+              )}
+            </div>
+
+            <div class="step-body">
+              <p class="eyebrow"><span>{step.kicker}</span></p>
+              <h3><a href={step.href}>{step.title}</a></h3>
+              <p class="step-text dim">{step.body}</p>
+            </div>
+
+            <div class="step-figure">
+              {step.figure && <p class="sf-v mono">{step.figure}</p>}
+              {step.figureLabel && <p class="sf-k mono faint">{step.figureLabel}</p>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="closing panel">
+        <p class="closing-score mono">
+          {final.game.theirScore}<span class="sep">–</span><span
+            class="ours">{final.game.ourScore}</span>
+        </p>
+        <div>
+          <h2>{longDate(final.game.date)}</h2>
+          <p class="dim">
+            {final.venueName}, {final.address}. Maglia gialla contro maglia
+            nera. Miglior giocatore della finale:
+            {' '}<strong>{final.mvp.fullName}</strong>, numero {final.mvp.number}.
+          </p>
+          <p><a class="jump" href="/finale/">Come è andata</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <nav class="index" aria-label="Tutte le sezioni">
+        {[
+          ['/squadra/', 'La squadra', `${season.roster.length} giocatori, ruoli e statistiche`],
+          ['/girone/', 'Girone A', `classifica e ${group.fixtures.length} partite`],
+          ['/playoff/', 'Playoff', 'le 16 teste di serie e il tabellone'],
+          ['/finale/', 'La finale', 'Loiano, con le fotografie'],
+          ['/statistiche/', 'Statistiche', `tutti i ${season.games.length} tabellini`],
+          ['/avanzate/', 'Avanzate', 'quarti, panchina, equilibrio'],
+          ['/avversari/', 'Avversari', 'palestre, colori e confronti diretti'],
+        ].map(([href, label, note]) => (
+          <a href={href}>
+            <span class="ix-label">{label}</span>
+            <span class="ix-note mono dim">{note}</span>
+          </a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <script>
+    // One orchestrated moment on the whole site: the ladder arrives in order,
+    // the way the season did.
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const items = document.querySelectorAll('[data-reveal]');
+    if (reduce || !('IntersectionObserver' in window)) {
+      // Leave everything visible; never opt into the hidden starting state.
+    } else {
+      document.documentElement.classList.add('js');
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry, i) => {
+            if (!entry.isIntersecting) return;
+            setTimeout(() => entry.target.classList.add('shown'), i * 70);
+            io.unobserve(entry.target);
+          });
+        },
+        { rootMargin: '0px 0px -12% 0px' },
+      );
+      items.forEach((el) => io.observe(el));
+    }
+  </script>
+</Base>
+
+<style>
+  /* --- hero -------------------------------------------------------------- */
+  .hero {
+    position: relative;
+    min-height: min(92vh, 860px);
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+  }
+  .hero :global(.hero-img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 38%;
+    filter: saturate(0.62) contrast(1.04) brightness(0.9);
+  }
+  .hero-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, var(--ink) 2%, rgba(10, 10, 11, 0.87) 36%, rgba(10, 10, 11, 0.3) 100%),
+      linear-gradient(to right, rgba(10, 10, 11, 0.8), rgba(10, 10, 11, 0.08) 72%);
+  }
+
+  .hero-body {
+    position: relative;
+    padding-block: 3rem clamp(3rem, 8vw, 5.5rem);
+  }
+  .hero-body h1 { font-size: var(--step-5); }
+  .hero-body h1 span { display: block; }
+  .h-seed { color: var(--giallo); }
+
+  .hero-lead {
+    max-width: 46ch;
+    margin-top: 1.4rem;
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--chalk);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 2rem;
+  }
+  .hero-actions .ghost { color: var(--chalk-dim); }
+  .hero-actions .ghost:hover { color: var(--chalk); }
+
+  /* --- numbers ----------------------------------------------------------- */
+  .numbers {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .numbers li {
+    background: var(--ink-raised);
+    padding: 1.3rem 1.1rem;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .n-v {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    line-height: 1;
+    color: var(--giallo);
+  }
+  .n-k {
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+  }
+
+  /* --- steps ------------------------------------------------------------- */
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+
+  .step {
+    background: var(--ink-raised);
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr) 11rem;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1.5rem 1.2rem;
+  }
+  /* Steps only start hidden once the script that reveals them is running, so
+     the page is fully readable if the script never does. */
+  :global(html.js) .step {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  :global(html.js) .step.shown { opacity: 1; transform: none; }
+
+  .step-mark { display: grid; gap: 0.7rem; justify-items: start; }
+  .step-n {
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    color: var(--chalk-faint);
+  }
+
+  .step-body h3 { font-size: var(--step-2); margin-bottom: 0.6rem; }
+  .step-body h3 a { text-decoration: none; }
+  .step-body h3 a:hover { color: var(--giallo); }
+  .step-body .eyebrow { margin-bottom: 0.4rem; }
+  .step-text { font-size: var(--step--1); max-width: 54ch; margin: 0; }
+
+  .step-figure { text-align: right; }
+  .sf-v { font-size: var(--step-2); color: var(--chalk); margin: 0; }
+  .sf-k { font-size: 0.62rem; letter-spacing: 0.08em; margin: 0.35rem 0 0; }
+
+  /* --- closing ----------------------------------------------------------- */
+  .closing {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 2rem;
+    align-items: center;
+  }
+  .closing-score {
+    font-size: var(--step-4);
+    line-height: 1;
+    color: var(--chalk-dim);
+  }
+  .closing-score .sep { color: var(--chalk-faint); }
+  .closing-score .ours { color: var(--giallo); font-weight: 700; }
+  .closing h2 { font-size: var(--step-2); margin-bottom: 0.6rem; }
+  .closing p { font-size: var(--step--1); max-width: 52ch; }
+  .closing strong { color: var(--chalk); }
+
+  /* --- index ------------------------------------------------------------- */
+  .index {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .index a {
+    background: var(--ink-raised);
+    padding: 1.1rem 1.1rem 1.2rem;
+    text-decoration: none;
+    display: grid;
+    gap: 0.4rem;
+    transition: background 0.15s ease;
+  }
+  .index a:hover { background: var(--ink-panel); }
+  .ix-label {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: var(--step-1);
+    line-height: 1;
+  }
+  .index a:hover .ix-label { color: var(--giallo); }
+  .ix-note { font-size: 0.62rem; letter-spacing: 0.08em; }
+
+  @media (max-width: 820px) {
+    .step { grid-template-columns: 4rem minmax(0, 1fr); row-gap: 0.8rem; }
+    .step-figure { grid-column: 2; text-align: left; }
+    .closing { grid-template-columns: 1fr; gap: 1.2rem; }
+  }
+</style>

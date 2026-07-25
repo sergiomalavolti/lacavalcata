@@ -1,0 +1,340 @@
+---
+import { season, playerName, teamName, longDate, PHASES } from '../lib/season.js';
+
+/**
+ * One dialog, shared by every page that lists results.
+ *
+ * Any element carrying `data-game="<seq>"` becomes a trigger: clicking it opens
+ * the boxscore for that game without leaving the page. Only our own 23 games
+ * have boxscores, so only those get triggers.
+ *
+ * The payload is emitted as JSON rather than inlined into a script so the page
+ * stays free of generated JavaScript, and the dialog is a native <dialog>,
+ * which brings focus trapping and Escape-to-close with it.
+ */
+const payload = season.games.map((g) => ({
+  seq: g.seq,
+  date: longDate(g.date),
+  phase: PHASES[g.phase],
+  opponent: teamName(g.opponent),
+  ourScore: g.ourScore,
+  theirScore: g.theirScore,
+  won: g.won,
+  forfeit: g.forfeit,
+  where: g.neutral ? 'campo neutro' : g.ourSide === 'home' ? 'in casa' : 'in trasferta',
+  // On neutral ground neither club hosted, but the referto still names one of
+  // them first — for the final that is Birreria Amadeus. Where the record puts
+  // the opponent first the score follows it, so the modal reads the same way
+  // as the bracket card. Our 22 other games were played somewhere, so this is
+  // false for all of them and their score stays ours-first.
+  opponentFirst: g.neutral && g.home === g.opponent,
+  quarters: g.quarters && g.quarters.usable
+    ? { us: g.quarters.us, them: g.quarters.them }
+    : null,
+  lines: g.boxscore.map((l) => ({
+    name: playerName(l.player),
+    starter: l.starter,
+    played: l.played,
+    points: l.points,
+  })),
+}));
+---
+
+<script type="application/json" id="boxscore-data" set:html={JSON.stringify(payload)} />
+
+<dialog id="boxscore" class="bx" aria-labelledby="bx-opponent">
+  <div class="bx-inner">
+    <button type="button" class="bx-close" data-bx-close aria-label="Chiudi il tabellino">
+      <span aria-hidden="true">×</span>
+    </button>
+    <div class="bx-body"></div>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('boxscore');
+  const dataEl = document.getElementById('boxscore-data');
+
+  if (dialog && dataEl) {
+    const games = new Map(
+      JSON.parse(dataEl.textContent).map((g) => [String(g.seq), g]),
+    );
+    const body = dialog.querySelector('.bx-body');
+    let lastTrigger = null;
+
+    const el = (tag, className, text) => {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    };
+
+    function quarterStrip(quarters, opponentFirst) {
+      const wrap = el('div', 'bx-q');
+      const head = ['', ['Q1', 'Q2', 'Q3', 'Q4'], 'bx-q-head'];
+      const us = ['us', quarters.us, 'bx-q-us'];
+      const them = ['them', quarters.them, 'bx-q-them'];
+      // The strip follows the score above it, so one modal never reads two
+      // ways round. Our row keeps its own styling wherever it sits.
+      const rows = opponentFirst ? [head, them, us] : [head, us, them];
+      for (const [kind, values, cls] of rows) {
+        const row = el('div', `bx-q-row ${cls}`);
+        values.forEach((v, i) => {
+          const cell = el('span', undefined, String(v));
+          if (kind === 'us' && quarters.us[i] > quarters.them[i]) cell.classList.add('up');
+          row.appendChild(cell);
+        });
+        wrap.appendChild(row);
+      }
+      return wrap;
+    }
+
+    function render(game) {
+      body.textContent = '';
+
+      const head = el('header', 'bx-head');
+      const meta = el('p', 'bx-meta mono');
+      for (const bit of [String(game.seq).padStart(2, '0'), game.phase, game.date, game.where]) {
+        meta.appendChild(el('span', undefined, bit));
+      }
+      head.appendChild(meta);
+
+      const title = el('h2', 'bx-opponent', game.opponent);
+      title.id = 'bx-opponent';
+      head.appendChild(title);
+
+      const score = el('p', `bx-score ${game.won ? 'won' : 'lost'}`);
+      // Our number keeps its weight and colour whichever side it sits on, so
+      // it stays the one the eye lands on.
+      const ours = el('span', 'ours', String(game.ourScore));
+      const theirs = el('span', 'theirs', String(game.theirScore));
+      const [first, second] = game.opponentFirst ? [theirs, ours] : [ours, theirs];
+      score.appendChild(first);
+      score.appendChild(el('span', 'sep', '–'));
+      score.appendChild(second);
+      score.appendChild(el('span', 'verdict', game.won ? 'vittoria' : 'sconfitta'));
+      head.appendChild(score);
+      body.appendChild(head);
+
+      if (game.forfeit) {
+        body.appendChild(el('p', 'bx-tavolino mono', 'Vinta a tavolino. Nessun tabellino.'));
+        return;
+      }
+
+      if (game.quarters) body.appendChild(quarterStrip(game.quarters, game.opponentFirst));
+
+      const table = el('table', 'bx-table');
+      const thead = el('thead');
+      const hrow = el('tr');
+      for (const [label, cls] of [['Giocatore', ''], ['Quintetto', 'mid'], ['Punti', 'num']]) {
+        const th = el('th', cls, label);
+        th.scope = 'col';
+        hrow.appendChild(th);
+      }
+      thead.appendChild(hrow);
+      table.appendChild(thead);
+
+      const tbody = el('tbody');
+      for (const line of game.lines) {
+        const tr = el('tr', line.played ? '' : 'dnp');
+        tr.appendChild(el('td', 'name', line.name));
+        tr.appendChild(el('td', 'mid', line.starter ? 'X' : ''));
+        tr.appendChild(el('td', 'num', line.played ? String(line.points) : 'NE'));
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+
+      const tfoot = el('tfoot');
+      const frow = el('tr');
+      frow.appendChild(el('td', undefined, 'Totale punti'));
+      frow.appendChild(el('td', 'mid', ''));
+      frow.appendChild(el('td', 'num', String(game.ourScore)));
+      tfoot.appendChild(frow);
+      table.appendChild(tfoot);
+
+      body.appendChild(table);
+    }
+
+    document.addEventListener('click', (event) => {
+      const trigger = event.target.closest('[data-game]');
+      if (trigger) {
+        const game = games.get(trigger.getAttribute('data-game'));
+        if (!game) return;
+        event.preventDefault();
+        lastTrigger = trigger;
+        render(game);
+        dialog.showModal();
+        return;
+      }
+      if (event.target.closest('[data-bx-close]')) dialog.close();
+    });
+
+    // Clicking the backdrop closes: the dialog element itself is the backdrop,
+    // its inner panel is not.
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    dialog.addEventListener('close', () => {
+      if (lastTrigger && document.contains(lastTrigger)) lastTrigger.focus();
+      lastTrigger = null;
+    });
+  }
+</script>
+
+<style is:global>
+  /* --- trigger ------------------------------------------------------------ */
+  .score-btn {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0.1rem 0.3rem;
+    margin: -0.1rem -0.3rem;
+    cursor: pointer;
+    border-bottom: 1px dotted var(--chalk-faint);
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+  .score-btn:hover {
+    color: var(--giallo);
+    border-bottom-color: var(--giallo);
+    background: var(--giallo-wash);
+  }
+
+  /* --- dialog ------------------------------------------------------------- */
+  .bx {
+    border: 1px solid var(--ink-line);
+    background: var(--ink-raised);
+    color: var(--chalk);
+    padding: 0;
+    width: min(100% - 2rem, 34rem);
+    /* The viewport is the only thing worth capping against. A second fixed cap
+       used to sit here and landed ~4px under the tallest boxscore (12 rows,
+       ~740px), so every modal offered a scrollbar that moved almost nothing.
+       Now it scrolls only when the window is genuinely too short for it. */
+    max-height: 88dvh;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .bx::backdrop { background: rgba(4, 4, 5, 0.78); backdrop-filter: blur(3px); }
+
+  .bx-inner { position: relative; padding: 1.4rem 1.4rem 1.6rem; }
+
+  .bx-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    display: grid;
+    place-items: center;
+    font-size: 1.4rem;
+    line-height: 1;
+    background: none;
+    border: 1px solid transparent;
+    color: var(--chalk-dim);
+    cursor: pointer;
+  }
+  .bx-close:hover { color: var(--giallo); border-color: var(--ink-line); }
+
+  .bx-head { margin-bottom: 1.1rem; }
+  .bx-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.85rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    margin: 0 0 0.6rem;
+    padding-right: 2rem;
+  }
+  .bx-meta span:first-child { color: var(--giallo-deep); }
+
+  .bx-opponent {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin: 0 0 0.5rem;
+  }
+
+  .bx-score {
+    font-family: var(--font-mono);
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    margin: 0;
+  }
+  .bx-score .ours { font-size: var(--step-2); font-weight: 700; }
+  .bx-score .sep { color: var(--chalk-faint); }
+  .bx-score .theirs { font-size: var(--step-1); color: var(--chalk-dim); }
+  .bx-score .verdict {
+    margin-left: 0.5rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .bx-score.won .ours { color: var(--giallo); }
+  .bx-score.won .verdict { color: var(--giallo-deep); }
+  .bx-score.lost .verdict { color: var(--brick); }
+
+  .bx-q {
+    display: inline-grid;
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+    font-family: var(--font-mono);
+    margin-bottom: 1.1rem;
+  }
+  .bx-q-row { display: grid; grid-template-columns: repeat(4, minmax(2.4rem, 1fr)); gap: 1px; }
+  .bx-q-row > span {
+    background: var(--ink-panel);
+    padding: 0.25rem 0.4rem;
+    text-align: center;
+    font-size: var(--step--1);
+  }
+  .bx-q-head > span { font-size: 0.58rem; letter-spacing: 0.12em; color: var(--chalk-faint); }
+  .bx-q-us > span { color: var(--chalk); }
+  .bx-q-us > span.up { color: var(--giallo); }
+  .bx-q-them > span { color: var(--chalk-dim); }
+
+  .bx-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); }
+  .bx-table th, .bx-table td {
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--ink-line-soft);
+    font-size: var(--step--1);
+  }
+  .bx-table thead th {
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    font-weight: 400;
+  }
+  .bx-table .mid { text-align: center; width: 6rem; color: var(--giallo); }
+  .bx-table .num { text-align: right; }
+  .bx-table tbody tr.dnp td { color: var(--chalk-faint); }
+  .bx-table tfoot td {
+    border-bottom: 0;
+    border-top: 1px solid var(--ink-line);
+    font-size: var(--step--2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    padding-top: 0.5rem;
+  }
+  .bx-table tfoot .num { color: var(--chalk); font-size: var(--step--1); }
+
+  .bx-tavolino {
+    font-size: var(--step--2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    border: 1px dashed var(--ink-line);
+    padding: 1.4rem 1rem;
+    text-align: center;
+    margin: 0;
+  }
+</style>

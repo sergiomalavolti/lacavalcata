@@ -1,0 +1,86 @@
+---
+/**
+ * One delegated tooltip for every chart on the page.
+ *
+ * Any SVG element carrying data-tip inside a [data-chart] container gets a
+ * tooltip on hover and on keyboard focus. Newlines in the attribute become
+ * separate lines.
+ */
+---
+
+<div class="tip" role="status" aria-live="polite" hidden></div>
+
+<script>
+  const tip = document.querySelector('.tip');
+  if (tip) {
+    const show = (target) => {
+      const text = target.getAttribute('data-tip');
+      if (!text) return;
+      tip.textContent = '';
+      for (const line of text.split('\n')) {
+        const row = document.createElement('span');
+        row.textContent = line;
+        tip.appendChild(row);
+      }
+      tip.hidden = false;
+      const box = target.getBoundingClientRect();
+      const width = tip.offsetWidth;
+      const left = Math.min(
+        Math.max(8, box.left + box.width / 2 - width / 2),
+        window.innerWidth - width - 8,
+      );
+      const above = box.top > tip.offsetHeight + 16;
+      tip.style.left = `${left + window.scrollX}px`;
+      tip.style.top = `${
+        (above ? box.top - tip.offsetHeight - 10 : box.bottom + 10) + window.scrollY
+      }px`;
+    };
+
+    const hide = () => { tip.hidden = true; };
+
+    for (const event of ['pointerover', 'focusin']) {
+      document.addEventListener(event, (e) => {
+        const target = e.target.closest?.('[data-tip]');
+        if (target && target.closest('[data-chart]')) show(target);
+      });
+    }
+    for (const event of ['pointerout', 'focusout']) {
+      document.addEventListener(event, (e) => {
+        if (e.target.closest?.('[data-tip]')) hide();
+      });
+    }
+    document.addEventListener('keydown', (e) => e.key === 'Escape' && hide());
+    window.addEventListener('scroll', hide, { passive: true });
+  }
+</script>
+
+<style is:global>
+  .tip {
+    position: absolute;
+    z-index: 30;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    background: var(--ink-panel);
+    border: 1px solid var(--ink-line);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+    padding: 0.6rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: var(--chalk);
+    white-space: nowrap;
+    max-width: min(92vw, 30rem);
+  }
+  .tip[hidden] { display: none; }
+  .tip > span:first-child {
+    color: var(--giallo);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.62rem;
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.2rem;
+    border-bottom: 1px solid var(--ink-line);
+  }
+</style>

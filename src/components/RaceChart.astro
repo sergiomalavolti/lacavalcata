@@ -1,0 +1,190 @@
+---
+import { season, teamShort, US } from '../lib/season.js';
+
+/**
+ * Position in Girone A after every matchday.
+ *
+ * Only one series carries identity — ours — so it is the only one coloured and
+ * the only one labelled. The other seven are context, drawn in a recessive
+ * grey: they answer "who was above us", not "which one was Ghironda". Hovering
+ * a matchday opens the full table for that week, which is where the other
+ * seven get their names back.
+ */
+const race = season.group.race;
+const teamsOrder = season.group.table.map((r) => r.team);
+
+const W = 920;
+const H = 330;
+const PAD = { top: 26, right: 132, bottom: 40, left: 46 };
+const N = race.length;
+
+const x = (md) => PAD.left + ((md - 1) * (W - PAD.left - PAD.right)) / (N - 1);
+const y = (pos) => PAD.top + ((pos - 1) * (H - PAD.top - PAD.bottom)) / 7;
+
+const posOf = (md, team) => race[md - 1].rows.find((r) => r.team === team).pos;
+const ptsOf = (md, team) => race[md - 1].rows.find((r) => r.team === team).pts;
+
+const pathFor = (team) =>
+  race.map((r, i) => `${i === 0 ? 'M' : 'L'}${x(i + 1)},${y(posOf(i + 1, team))}`).join(' ');
+
+const tipFor = (md) =>
+  race[md - 1].rows
+    .map((r) => `${r.pos}. ${teamShort(r.team)} — ${r.pts}`)
+    .join('\n');
+
+const ourEnd = posOf(N, US);
+---
+
+<figure class="chart">
+  <figcaption>
+    <h3>La risalita</h3>
+    <p class="dim">
+      Posizione in classifica dopo ogni giornata di calendario. La linea in oro
+      è il Caffè Matic; le altre sette squadre del girone restano in grigio.
+      Passa sopra una giornata per vedere la classifica di quella settimana.
+    </p>
+  </figcaption>
+
+  <div class="chart-plot" data-chart>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="race-desc">
+      <desc id="race-desc">
+        Il Caffè Matic parte quinto dopo la prima giornata, è quarto dalla terza,
+        terzo dalla decima e chiude secondo alla quattordicesima e ultima giornata.
+      </desc>
+
+      {[1, 2, 3, 4, 5, 6, 7, 8].map((pos) => (
+        <>
+          <line x1={PAD.left} x2={W - PAD.right} y1={y(pos)} y2={y(pos)} class="grid" />
+          <text x={PAD.left - 12} y={y(pos)} class="axis-y">{pos}</text>
+        </>
+      ))}
+
+      {/* The top two of each group went straight to the Super-League. */}
+      <line
+        x1={PAD.left} x2={W - PAD.right}
+        y1={(y(2) + y(3)) / 2} y2={(y(2) + y(3)) / 2}
+        class="cutline"
+      />
+      <text x={PAD.left + 6} y={(y(2) + y(3)) / 2 - 7} class="cutline-label">
+        prime 2 · qualificazione diretta
+      </text>
+
+      <text x={PAD.left - 12} y={PAD.top - 14} class="axis-y axis-name">pos.</text>
+
+      {race.map((r) => (
+        <text x={x(r.matchday)} y={H - 14} class="axis-x">{r.matchday}</text>
+      ))}
+
+      {teamsOrder.filter((t) => t !== US).map((team) => (
+        <path d={pathFor(team)} class="line-context" />
+      ))}
+
+      <path d={pathFor(US)} class="line-us" />
+
+      {race.map((r) => (
+        <circle cx={x(r.matchday)} cy={y(posOf(r.matchday, US))} r="4.5" class="dot-us" />
+      ))}
+
+      <text x={x(N) + 14} y={y(ourEnd) + 5} class="label-us">Caffè Matic</text>
+      <text x={x(N) + 14} y={y(ourEnd) + 22} class="label-us-sub">2° · 33 punti</text>
+
+      {race.map((r) => (
+        <rect
+          x={x(r.matchday) - (W - PAD.left - PAD.right) / (N - 1) / 2}
+          y={PAD.top - 14}
+          width={(W - PAD.left - PAD.right) / (N - 1)}
+          height={H - PAD.top - PAD.bottom + 20}
+          class="hit"
+          data-tip={`${r.matchday}ª giornata\n${tipFor(r.matchday)}`}
+        />
+      ))}
+    </svg>
+
+    <p class="axis-title">Giornata →</p>
+  </div>
+</figure>
+
+<style>
+
+  .chart-plot {
+    background: var(--ink-raised);
+    border: 1px solid var(--ink-line);
+    padding: 0.8rem 0.5rem 0.3rem;
+    position: relative;
+  }
+
+  svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+  .grid { stroke: var(--c-grid); stroke-width: 1; }
+
+  .cutline {
+    stroke: var(--chalk-faint);
+    stroke-width: 1;
+    stroke-dasharray: 2 6;
+  }
+  .cutline-label {
+    fill: var(--chalk-faint);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .axis-name { font-size: 9px; letter-spacing: 0.1em; }
+
+  .axis-y, .axis-x {
+    fill: var(--chalk-faint);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .axis-y { text-anchor: end; dominant-baseline: middle; }
+  .axis-x { text-anchor: middle; }
+
+  .line-context {
+    fill: none;
+    stroke: var(--c-context);
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+
+  .line-us {
+    fill: none;
+    stroke: var(--c-us);
+    stroke-width: 3;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  .dot-us {
+    fill: var(--c-us);
+    stroke: var(--ink-raised);
+    stroke-width: 2;
+  }
+
+  .label-us {
+    fill: var(--giallo);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .label-us-sub {
+    fill: var(--chalk-faint);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+  }
+
+  .hit { fill: transparent; cursor: crosshair; }
+  .hit:hover { fill: rgba(242, 197, 17, 0.06); }
+
+  .axis-title {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    margin: 0.1rem 0.6rem 0.4rem;
+  }
+
+  @media (max-width: 620px) {
+    .label-us, .label-us-sub { display: none; }
+  }
+</style>

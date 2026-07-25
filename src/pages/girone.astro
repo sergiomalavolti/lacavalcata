@@ -1,0 +1,447 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import RaceChart from '../components/RaceChart.astro';
+import ChartTooltip from '../components/ChartTooltip.astro';
+import BoxscoreModal from '../components/BoxscoreModal.astro';
+import Seed from '../components/Seed.astro';
+import {
+  season, teamName, teamShort, US, longDate, shortDate, num, groupGames,
+} from '../lib/season.js';
+
+const { table, fixtures } = season.group;
+const seeds = season.playoff.seeds;
+const ourSeed = seeds.find((s) => s.team === US);
+
+const dates = fixtures.map((f) => f.date).sort();
+const matchdays = [...new Set(fixtures.map((f) => f.matchday))].sort((a, b) => a - b);
+
+const seedOf = (team) => seeds.find((s) => s.team === team)?.seed ?? null;
+const qualified = new Set(seeds.map((s) => s.team));
+
+// A league fixture maps to one of our games only when we played in it; that
+// is the only case where a boxscore exists to open.
+const ourGameFor = (fixture) =>
+  groupGames.find(
+    (g) => g.date === fixture.date && g.home === fixture.home && g.away === fixture.away,
+  ) ?? null;
+
+// Our record against each team in the group.
+const headToHead = (team) => {
+  const played = groupGames.filter((g) => g.opponent === team);
+  return {
+    w: played.filter((g) => g.won).length,
+    l: played.filter((g) => !g.won).length,
+  };
+};
+---
+
+<Base
+  title="Girone A · Caffè Matic – Trottola Sport 2011-2012"
+  description="La stagione regolare del Girone A: classifica, 56 partite e la risalita dal quinto al secondo posto."
+  current="girone"
+>
+  <PageHead
+    title="Girone A"
+    facts={[
+      '8 squadre',
+      `${matchdays.length} giornate`,
+      `${fixtures.length} partite`,
+      `${shortDate(dates[0])} – ${shortDate(dates[dates.length - 1])}`,
+    ]}
+  >
+    <p>
+      Quattordici giornate per stabilire chi andava ai playoff e, soprattutto,
+      con che numero. Il Caffè Matic chiude <strong>secondo a 33 punti</strong>,
+      appaiato al Ghironda e staccato di quattro dal Birreria Amadeus. Il
+      secondo posto arriva solo all'ultima giornata.
+    </p>
+  </PageHead>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Classifica</h2>
+        <p class="section-note">
+          Vittoria 3 punti, vittoria dopo un supplementare 2, sconfitta dopo un
+          supplementare 1. Chi non si presenta perde 30–0 e viene penalizzato di
+          1 punto: è successo una volta sola, al Casalecchio il 23 febbraio.
+        </p>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption class="visually-hidden">
+            Classifica finale del Girone A
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col" class="num">#</th>
+              <th scope="col">Squadra</th>
+              <th scope="col" class="num">Punti</th>
+              <th scope="col" class="num">G</th>
+              <th scope="col" class="num">V</th>
+              <th scope="col" class="num">P</th>
+              <th scope="col" class="num">P.F.</th>
+              <th scope="col" class="num">P.S.</th>
+              <th scope="col" class="num">Q.P.</th>
+              <th scope="col" class="num">Q.C.</th>
+              <th scope="col" class="num">Q.TOT.</th>
+              <th scope="col">Playoff</th>
+            </tr>
+          </thead>
+          <tbody>
+            {table.map((row) => (
+              <tr class:list={{ us: row.team === US }}>
+                <td class="num">{row.pos}</td>
+                <td class="name">
+                  {teamName(row.team)}
+                  {row.noShow > 0 && (
+                    <span class="pen mono" title="1 punto di penalizzazione per rinuncia">
+                      −{row.noShow} pen.
+                    </span>
+                  )}
+                </td>
+                <td class="num strong">{row.pts}</td>
+                <td class="num">{row.g}</td>
+                <td class="num">{row.v}</td>
+                <td class="num">{row.p}</td>
+                <td class="num">{row.pf}</td>
+                <td class="num">{row.ps}</td>
+                <td class="num dim">{num(row.qp, 3)}</td>
+                <td class="num dim">{num(row.qc, 3)}</td>
+                <td class="num">{num(row.qtot, 3)}</td>
+                <td>
+                  {qualified.has(row.team) ? (
+                    <span class="qual">
+                      <Seed n={seedOf(row.team)} us={row.team === US} />
+                      <span class="qual-label mono">Super-League</span>
+                    </span>
+                  ) : (
+                    <span class="mono faint">Top-16 / Play-off</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="coefficient panel">
+        <h2>Il coefficiente che ha deciso tutto</h2>
+        <p class="prose dim">
+          La Super-League prendeva le prime due di ogni girone più le quattro
+          migliori terze — ventidue squadre per sedici posti, e servivano criteri.
+          Il CSI ordinava le qualificate con un coefficiente:{' '}
+          <strong>Q.P.</strong>{' '}sono i punti divisi per le partite,{' '}
+          <strong>Q.C.</strong> è il rapporto
+          fra punti fatti e subiti, e <strong>Q.TOT.</strong> è la loro somma.
+          Le sei prime classificate si spartivano le teste di serie da 1 a 6, le
+          sei seconde quelle da 7 a 12, le quattro terze le ultime quattro.
+        </p>
+        <p class="prose dim">
+          Il Caffè Matic era secondo nel girone con un Q.TOT. di
+          {' '}<strong>{num(ourSeed.qtot, 3)}</strong>: il più alto fra le seconde
+          era l'Ozzano con {num(seeds.find((s) => s.seed === 7).qtot, 3)}, e questo
+          ha fissato la posizione.
+        </p>
+        <p class="seed-callout">
+          <Seed n={8} us size="lg" label />
+          <span>
+            Ottava di sedici. Che significava incrociare la prima al secondo turno.
+          </span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <RaceChart />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Le nostre quattordici</h2>
+        <p class="section-note">
+          In ordine di data. Il numero di giornata del calendario ufficiale è
+          diverso dall'ordine in cui abbiamo giocato, per via dei recuperi:
+          entrambi sono riportati. <strong>Clicca un risultato</strong> per
+          aprire il tabellino.
+        </p>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col" class="num">#</th>
+              <th scope="col" class="num">G.</th>
+              <th scope="col">Data</th>
+              <th scope="col">Avversario</th>
+              <th scope="col">Campo</th>
+              <th scope="col" class="num">Risultato</th>
+              <th scope="col" class="num">Scarto</th>
+            </tr>
+          </thead>
+          <tbody>
+            {groupGames.map((game) => {
+              const official = fixtures.find(
+                (f) => f.date === game.date &&
+                  (f.home === game.home && f.away === game.away),
+              );
+              return (
+                <tr>
+                  <td class="num faint">{game.seq}</td>
+                  <td class="num faint">{official?.matchday ?? '–'}</td>
+                  <td class="mono">{longDate(game.date)}</td>
+                  <td class="name">{teamName(game.opponent)}</td>
+                  <td class="mono dim">{game.ourSide === 'home' ? 'casa' : 'trasferta'}</td>
+                  <td class="num score">
+                    <button
+                      type="button"
+                      class="score-btn"
+                      data-game={game.seq}
+                      aria-label={`Tabellino di ${teamName(game.opponent)}, ${longDate(game.date)}`}
+                    >{game.ourScore}–{game.theirScore}</button>
+                    {game.forfeit && <span class="tav mono">a tavolino</span>}
+                  </td>
+                  <td class:list={['num', game.won ? 'w' : 'l']}>
+                    {game.margin > 0 ? `+${game.margin}` : game.margin}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="section-note dim">
+        <a class="link" href="/statistiche/#tabellini">Tutti i tabellini partita per partita →</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Il girone completo</h2>
+        <p class="section-note">
+          Tutte le {fixtures.length} partite del Girone A, giornata per giornata
+          — anche quelle che non ci riguardavano, perché è così che si muoveva
+          la classifica sopra e sotto di noi. Il tabellino si apre solo sulle
+          nostre: delle altre esiste il risultato e nient'altro.
+        </p>
+      </div>
+
+      <div class="matchdays">
+        {matchdays.map((md) => {
+          const list = fixtures.filter((f) => f.matchday === md);
+          const ours = list.find((f) => f.home === US || f.away === US);
+          return (
+            <details class="md" open={md === 14}>
+              <summary>
+                <span class="md-n mono">{String(md).padStart(2, '0')}</span>
+                <span class="md-label">
+                  {md}ª giornata
+                  <span class="md-h2h mono dim">
+                    {ours
+                      ? `${teamShort(ours.home)} ${ours.homeScore}–${ours.awayScore} ${teamShort(ours.away)}`
+                      : 'riposo'}
+                  </span>
+                </span>
+              </summary>
+              <ul class="fixtures">
+                {list.map((f) => {
+                  const ourGame = ourGameFor(f);
+                  return (
+                    <li class:list={{ us: Boolean(ourGame) }}>
+                      <span class="fx-date mono faint">{shortDate(f.date)}</span>
+                      <span class:list={['fx-team', 'home', { win: f.homeScore > f.awayScore }]}>
+                        {teamName(f.home)}
+                      </span>
+                      <span class="fx-score mono">
+                        {ourGame ? (
+                          <button
+                            type="button"
+                            class="score-btn"
+                            data-game={ourGame.seq}
+                            aria-label={`Tabellino di ${teamName(ourGame.opponent)}, ${longDate(f.date)}`}
+                          >{f.homeScore}–{f.awayScore}</button>
+                        ) : (
+                          <>{f.homeScore}–{f.awayScore}</>
+                        )}
+                        {f.overtime && <em class="ot"> dts</em>}
+                      </span>
+                      <span class:list={['fx-team', 'away', { win: f.awayScore > f.homeScore }]}>
+                        {teamName(f.away)}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="section-title">Contro chi, e come è andata</h2>
+      <ul class="h2h">
+        {table.filter((r) => r.team !== US).map((row) => {
+          const rec = headToHead(row.team);
+          return (
+            <li>
+              <span class="h2h-team">{teamName(row.team)}</span>
+              <span class:list={['h2h-rec', 'mono', rec.w > rec.l ? 'w' : rec.w < rec.l ? 'l' : '']}>
+                {rec.w}–{rec.l}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+      <p class="section-note dim">
+        Due sconfitte su due contro il Birreria Amadeus nel girone. La terza
+        volta si sono incontrati il 9 giugno a Loiano.{' '}
+        <a class="link" href="/finale/">Com'è finita →</a>
+      </p>
+    </div>
+  </section>
+
+  <ChartTooltip />
+  <BoxscoreModal />
+</Base>
+
+<style>
+
+  td.strong { color: var(--chalk); font-weight: 700; }
+
+  .pen {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brick);
+    border: 1px solid var(--brick);
+    padding: 0.05rem 0.35rem;
+    vertical-align: middle;
+  }
+
+  .qual { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .qual-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+  }
+
+  .coefficient { margin-top: 2.5rem; }
+  .coefficient h2 { font-size: var(--step-2); margin-bottom: 1rem; }
+  .coefficient p { font-size: var(--step--1); }
+  .coefficient strong { color: var(--chalk); }
+
+  .seed-callout {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-top: 1.6rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--ink-line);
+    font-size: var(--step-0);
+    color: var(--chalk);
+  }
+  .seed-callout > span { max-width: 34ch; }
+
+  .score { color: var(--chalk); }
+  .score .tav {
+    display: block;
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+  }
+
+  .matchdays { display: grid; gap: 1px; background: var(--ink-line-soft); border-block: 1px solid var(--ink-line); }
+
+  .md { background: var(--ink); }
+  .md summary {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.75rem 0.3rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .md summary::-webkit-details-marker { display: none; }
+  .md summary:hover { background: var(--ink-raised); }
+  .md-n { color: var(--giallo-deep); font-size: var(--step--1); }
+  .md-label {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: var(--step-1);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 1rem;
+  }
+  .md-h2h {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: none;
+  }
+  .md[open] summary { border-bottom: 1px solid var(--ink-line-soft); }
+
+  .fixtures { list-style: none; margin: 0; padding: 0.5rem 0 1rem; }
+  .fixtures li {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr) 6.5rem minmax(0, 1fr);
+    gap: 0.7rem;
+    align-items: baseline;
+    padding: 0.35rem 0.3rem;
+    font-size: var(--step--1);
+  }
+  .fixtures li.us { background: var(--giallo-wash); box-shadow: inset 3px 0 0 var(--giallo); }
+  .fx-date { font-size: 0.66rem; }
+  .fx-team { color: var(--chalk-dim); }
+  .fx-team.win { color: var(--chalk); }
+  .fx-team.away { text-align: left; }
+  .fx-score { text-align: center; color: var(--chalk); }
+  .ot { color: var(--giallo-deep); font-style: normal; font-size: 0.62rem; }
+
+  .h2h {
+    list-style: none;
+    margin: 1.2rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .h2h li {
+    background: var(--ink-raised);
+    padding: 0.8rem 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .h2h-team { font-size: var(--step--1); }
+  .h2h-rec { font-size: var(--step-1); }
+
+  @media (max-width: 700px) {
+    .fixtures li {
+      grid-template-columns: minmax(0, 1fr) 5.5rem minmax(0, 1fr);
+      row-gap: 0.15rem;
+    }
+    .fx-date { grid-column: 1 / -1; }
+    .seed-callout { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
+  }
+</style>

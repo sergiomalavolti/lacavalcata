@@ -1,0 +1,241 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Seed from '../components/Seed.astro';
+import Bracket from '../components/Bracket.astro';
+import BoxscoreModal from '../components/BoxscoreModal.astro';
+import { season, teamName, US, longDate, shortDate, num, playoffGames } from '../lib/season.js';
+
+const { seeds, bracket } = season.playoff;
+const formula = season.meta.formula;
+const ourSeed = seeds.find((s) => s.team === US).seed;
+
+const seedOf = (team) => seeds.find((s) => s.team === team)?.seed ?? null;
+
+// Where each seed came from: first, second or third in its group.
+const tier = (s) =>
+  s.groupPos === 1 ? 'prima' : s.groupPos === 2 ? 'seconda' : 'terza';
+
+const ourRun = bracket.map((round) => {
+  const series = round.series.find((s) => s.involvesUs);
+  const opponent = series.teamA === US ? series.teamB : series.teamA;
+  const games = playoffGames.filter((g) => g.phase === round.id);
+  return { round, series, opponent, games };
+});
+---
+
+<Base
+  title="Playoff · Super-League Promozione 2011-2012"
+  description="Il tabellone completo della Super-League Promozione CSI 2011-2012, dalle sedici squadre alla finale di Loiano."
+  current="playoff"
+>
+  <PageHead
+    title="Super-League"
+    facts={[
+      `${formula['Squadre Partecipanti']} squadre iscritte`,
+      `${formula.Gironi} gironi`,
+      '16 ai playoff',
+      '26 marzo – 9 giugno 2012',
+    ]}
+  >
+    <p>
+      Quarantotto squadre in sei gironi si riducevano a sedici: le prime due di
+      ogni girone più le quattro migliori terze. Chi non entrava finiva nella
+      Top-16 o nei Play-off, tornei paralleli. Questo è il tabellone di quello
+      grosso — e il percorso di una testa di serie numero
+      {' '}<strong>{ourSeed}</strong> che ha battuto la 9, la 1, la 12 e la 3.
+    </p>
+  </PageHead>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="section-title">Le sedici teste di serie</h2>
+      <p class="section-note dim">
+        Le sei prime classificate prendevano i numeri da 1 a 6, le sei seconde
+        da 7 a 12, le quattro migliori terze da 13 a 16 — dentro ogni fascia
+        contava il coefficiente Q.TOT.
+      </p>
+
+      <ol class="seedlist">
+        {seeds.map((s) => (
+          <li class:list={{ us: s.team === US }}>
+            <Seed n={s.seed} us={s.team === US} size="md" />
+            <span class="seed-team">{teamName(s.team)}</span>
+            <span class="seed-origin mono dim">
+              {tier(s)} del girone {s.group}
+            </span>
+            <span class="seed-q mono">{num(s.qtot, 3)}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Il tabellone</h2>
+        <p class="section-note">
+          Otto squadre da una parte, otto dall'altra, la finale nel mezzo: la
+          nostra metà e quella dell'Amadeus non si sarebbero incontrate prima di
+          Loiano. Andata, ritorno ed eventuale bella, con la bella in casa della
+          meglio classificata.{' '}<strong>Il filo giallo</strong> è la nostra
+          corsa; ogni nostro risultato apre il tabellino.
+        </p>
+      </div>
+
+      <Bracket />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Quattro serie, nove partite</h2>
+        <p class="section-note">
+          <strong>Clicca un risultato</strong> per aprire il tabellino della
+          partita.
+        </p>
+      </div>
+
+      <ol class="run">
+        {ourRun.map(({ round, series, opponent, games }) => {
+          const wins = games.filter((g) => g.won).length;
+          const losses = games.length - wins;
+          return (
+            <li class="run-step">
+              <div class="run-head">
+                <p class="eyebrow"><span>{round.label}</span></p>
+                <h3>
+                  <Seed n={seedOf(opponent)} size="md" />
+                  <span>{teamName(opponent)}</span>
+                </h3>
+                <p class="run-record mono">
+                  {wins}–{losses}
+                </p>
+              </div>
+              <ol class="run-games">
+                {games.map((g) => (
+                  <li class:list={{ won: g.won }}>
+                    <span class="rg-date mono faint">{shortDate(g.date)}</span>
+                    <span class="rg-where mono faint">
+                      {g.neutral ? 'Loiano' : g.ourSide === 'home' ? 'casa' : 'fuori'}
+                    </span>
+                    <span class="rg-score mono">
+                      <button
+                        type="button"
+                        class="score-btn"
+                        data-game={g.seq}
+                        aria-label={`Tabellino di ${teamName(g.opponent)}, ${longDate(g.date)}`}
+                      ><strong>{g.ourScore}</strong>–{g.theirScore}</button>
+                    </span>
+                    <span class:list={['rg-margin', 'mono', g.won ? 'w' : 'l']}>
+                      {g.margin > 0 ? `+${g.margin}` : g.margin}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </li>
+          );
+        })}
+      </ol>
+
+      <p class="section-note dim">
+        La gara 3 dei quarti a Granarolo, vinta 52–51 in casa della squadra che
+        aveva chiuso la stagione regolare con tredici vittorie su quattordici, è
+        il punto in cui questa stagione ha smesso di essere una stagione
+        normale.{' '}<a class="link" href="/finale/">La finale, dieci giorni dopo →</a>
+      </p>
+    </div>
+  </section>
+
+  <BoxscoreModal />
+</Base>
+
+<style>
+
+  /* --- seeds ------------------------------------------------------------ */
+  .seedlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .seedlist li {
+    background: var(--ink-raised);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: 'seed team q' 'seed origin q';
+    align-items: center;
+    gap: 0 0.85rem;
+    padding: 0.7rem 0.9rem;
+  }
+  .seedlist li.us { background: var(--giallo-wash); }
+  .seedlist :global(.seed) { grid-area: seed; }
+  .seed-team { grid-area: team; font-size: var(--step--1); }
+  .seed-origin {
+    grid-area: origin;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .seed-q { grid-area: q; font-size: var(--step--1); color: var(--chalk-dim); }
+
+  /* --- our run ---------------------------------------------------------- */
+  .run {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+
+  .run-step {
+    background: var(--ink-raised);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+    gap: 1rem 2rem;
+    align-items: center;
+    padding: 1.1rem 1rem;
+  }
+
+  .run-head h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: var(--step-2);
+  }
+  .run-head .eyebrow { margin-bottom: 0.5rem; }
+  .run-record {
+    font-size: var(--step-1);
+    color: var(--giallo);
+    margin: 0.4rem 0 0;
+  }
+
+  .run-games { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+  .run-games li {
+    display: grid;
+    grid-template-columns: 5rem 4.5rem minmax(0, 1fr) 3.5rem;
+    gap: 0.7rem;
+    align-items: baseline;
+    font-size: var(--step--1);
+    padding: 0.25rem 0.4rem;
+    border-left: 2px solid var(--ink-line);
+  }
+  .run-games li.won { border-left-color: var(--giallo-deep); }
+  .rg-date, .rg-where { font-size: 0.65rem; letter-spacing: 0.06em; }
+  .rg-score { color: var(--chalk-dim); }
+  .rg-score strong { color: var(--chalk); font-weight: 700; }
+  .rg-margin { text-align: right; }
+
+  @media (max-width: 760px) {
+    .run-step { grid-template-columns: 1fr; }
+    .run-games li { grid-template-columns: 4.5rem 4rem minmax(0, 1fr) 3rem; }
+  }
+</style>

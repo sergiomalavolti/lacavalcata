@@ -1,0 +1,295 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Referto from '../components/Referto.astro';
+import { season, playerName, num, PHASES } from '../lib/season.js';
+
+const { playerStats, roster, games, advanced } = season;
+const record = advanced.record;
+// Season totals count all 23 games; per-game figures divide by the 22 that
+// were actually played, since the forfeit was never on the floor.
+const onCourt = record.onCourt;
+
+const scorers = playerStats.filter((p) => p.played > 0);
+// Quota is a share of the points the players actually scored, so it divides by
+// the boxscore total. The 30 awarded for the forfeit belong to no one.
+const totalPoints = onCourt.scored;
+
+const roleOf = (id) => roster.find((r) => r.id === id)?.role ?? '';
+
+// Single-game highs across the season.
+const bestGames = games
+  .flatMap((g) =>
+    g.boxscore
+      .filter((l) => l.played)
+      .map((l) => ({ ...l, game: g })),
+  )
+  .sort((a, b) => b.points - a.points)
+  .slice(0, 8);
+
+const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
+---
+
+<Base
+  title="Statistiche · Caffè Matic – Trottola Sport 2011-2012"
+  description="Statistiche individuali, tabellini di tutte le 23 partite e totali di squadra della stagione 2011-2012."
+  current="statistiche"
+>
+  <PageHead
+    title="Il conto"
+    facts={[
+      `${record.games} partite`,
+      `${record.scored} punti fatti`,
+      `${record.allowed} subiti`,
+      `${scorers.length} marcatori`,
+    ]}
+  >
+    <p>
+      Il campionato registrava una cosa sola oltre al punteggio: chi partiva in
+      quintetto e quanti punti segnava. Tutto quello che segue è ricostruito da
+      lì — nessun rimbalzo, nessun assist, nessun minuto. Bastano per capire
+      parecchio. Dei {record.scored} punti di squadra,
+      {' '}<strong>{onCourt.scored}</strong> sono stati segnati sul campo: gli
+      altri {record.scored - onCourt.scored} sono quelli assegnati per la
+      partita vinta a tavolino, e non appartengono a nessuno.
+    </p>
+  </PageHead>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="totals">
+        <div>
+          <p class="t-k mono">Bilancio</p>
+          <p class="t-v">{record.wins}<span class="t-sep">–</span>{record.losses}</p>
+          <p class="t-sub mono dim">
+            su {record.games} partite, una delle quali vinta a tavolino
+          </p>
+        </div>
+        <div>
+          <p class="t-k mono">Punti a partita</p>
+          <p class="t-v">{num(onCourt.avgFor, 1)}</p>
+          <p class="t-sub mono dim">
+            contro {num(onCourt.avgAgainst, 1)} subiti, sulle {onCourt.games} giocate sul campo
+          </p>
+        </div>
+        <div>
+          <p class="t-k mono">Scarto medio</p>
+          <p class="t-v">+{num(onCourt.avgMargin, 1)}</p>
+          <p class="t-sub mono dim">
+            +{onCourt.diff} sul campo, +{record.diff} con il 30–0 a tavolino
+          </p>
+        </div>
+        <div>
+          <p class="t-k mono">Striscia</p>
+          <p class="t-v">{record.bestWinStreak}</p>
+          <p class="t-sub mono dim">vittorie di fila, da gennaio ad aprile</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="section-title">Stagione individuale</h2>
+      <p class="section-note dim">
+        <strong>Presenze</strong> è quante volte un giocatore è andato a referto,{' '}
+        <strong>Entrato</strong> quante volte è effettivamente entrato: la
+        differenza sono le <span class="mono giallo">NE</span>.{' '}
+        <strong>Quota</strong> è la percentuale dei punti di squadra.
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col" class="num">#</th>
+              <th scope="col">Giocatore</th>
+              <th scope="col">Ruolo</th>
+              <th scope="col" class="num">Punti</th>
+              <th scope="col" class="num">Media</th>
+              <th scope="col" class="num">Presenze</th>
+              <th scope="col" class="num">Entrato</th>
+              <th scope="col" class="num">Quintetto</th>
+              <th scope="col" class="num">High</th>
+              <th scope="col" class="num">10+</th>
+              <th scope="col" class="num">Quota</th>
+            </tr>
+          </thead>
+          <tbody>
+            {playerStats.map((p, i) => (
+              <tr>
+                <td class="num faint">{i + 1}</td>
+                <td class="name">{playerName(p.player)}</td>
+                <td class="dim">{roleOf(p.player)}</td>
+                <td class="num strong">{p.points}</td>
+                <td class="num">{num(p.average, 1)}</td>
+                <td class="num dim">{p.games}</td>
+                <td class="num">{p.played}</td>
+                <td class="num">{p.starts}</td>
+                <td class="num">{p.high}</td>
+                <td class="num">{p.doubleFigures}</td>
+                <td class="num dim">{num((p.points / totalPoints) * 100, 1)}%</td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td>Squadra</td>
+              <td></td>
+              <td class="num strong">{totalPoints}</td>
+              <td class="num">{num(onCourt.avgFor, 1)}</td>
+              <td class="num" colspan="6"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="section-title">Le migliori partite</h2>
+      <ol class="bests">
+        {bestGames.map((b) => (
+          <li>
+            <span class="b-pts mono">{b.points}</span>
+            <span class="b-name">{playerName(b.player)}</span>
+            <span class="b-ctx mono dim">
+              {PHASES[b.game.phase]} · {b.game.ourScore}–{b.game.theirScore}
+            </span>
+            <a class="b-link mono" href={`#g${b.game.seq}`}>tabellino</a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="tabellini">
+    <div class="wrap">
+      <h2 class="section-title">Tutti i tabellini</h2>
+      <p class="section-note dim">
+        Ventitré partite in ordine di data, come sul referto: il quintetto
+        segnato con la <span class="mono giallo">X</span>, chi non è entrato
+        con{' '}<span class="mono giallo">NE</span>. Dove esistono, i parziali
+        per quarto vengono dal database.
+      </p>
+
+      {phases.map((phase) => {
+        const list = games.filter((g) => g.phase === phase);
+        return (
+          <div class="phase-block">
+            <h3 class="phase-title">
+              {PHASES[phase]}
+              <span class="phase-count mono dim">
+                {list.length} {list.length === 1 ? 'partita' : 'partite'}
+              </span>
+            </h3>
+            <div class="referti">
+              {list.map((g) => <Referto game={g} />)}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+</Base>
+
+<style>
+
+  .totals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .totals > div { background: var(--ink-raised); padding: 1.2rem 1.1rem; }
+  .t-k {
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    margin-bottom: 0.5rem;
+  }
+  .t-v {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    line-height: 1;
+    color: var(--giallo);
+    margin: 0;
+  }
+  .t-sep { color: var(--chalk-faint); margin: 0 0.1em; }
+  .t-sub { font-size: 0.63rem; letter-spacing: 0.06em; margin: 0.55rem 0 0; }
+
+  td.strong { color: var(--chalk); font-weight: 700; }
+  tfoot td {
+    border-bottom: 0;
+    border-top: 1px solid var(--ink-line);
+    color: var(--chalk-dim);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .bests {
+    list-style: none;
+    margin: 1.2rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .bests li {
+    background: var(--ink-raised);
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr) minmax(0, 1.1fr) auto;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.7rem 1rem;
+  }
+  .b-pts { font-size: var(--step-2); color: var(--giallo); font-weight: 700; }
+  .b-name { font-size: var(--step-0); }
+  .b-ctx { font-size: 0.68rem; }
+  .b-link {
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink-line);
+  }
+  .b-link:hover { color: var(--giallo); border-bottom-color: var(--giallo-deep); }
+
+  .phase-block + .phase-block { margin-top: 3rem; }
+  .phase-title {
+    font-size: var(--step-1);
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    border-bottom: 1px solid var(--ink-line);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .phase-count {
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .referti {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 700px) {
+    .bests li {
+      grid-template-columns: 3.5rem minmax(0, 1fr);
+      row-gap: 0.2rem;
+    }
+    .b-ctx, .b-link { grid-column: 2; }
+  }
+</style>

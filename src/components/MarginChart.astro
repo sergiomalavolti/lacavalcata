@@ -1,0 +1,149 @@
+---
+import { season, teamShort, shortDate, PHASES } from '../lib/season.js';
+
+/**
+ * Every played game's margin, in order.
+ *
+ * Polarity is the whole point — won or lost, and by how much — so the scale
+ * diverges around zero with two hues and no colour at the midpoint. Only the
+ * extremes are labelled; the rest are on hover.
+ */
+const margins = season.advanced.clutch.margins;
+const clutch = season.advanced.clutch;
+
+const W = 920;
+const H = 300;
+const PAD = { top: 26, right: 16, bottom: 44, left: 40 };
+
+const values = margins.map((m) => m.margin);
+const max = Math.max(...values);
+const min = Math.min(...values);
+const span = max - min;
+
+const plotH = H - PAD.top - PAD.bottom;
+const slot = (W - PAD.left - PAD.right) / margins.length;
+const barW = Math.min(26, slot - 4);
+
+const yOf = (v) => PAD.top + ((max - v) / span) * plotH;
+const zero = yOf(0);
+
+const extremes = new Set([
+  margins.reduce((a, b) => (b.margin > a.margin ? b : a)).seq,
+  margins.reduce((a, b) => (b.margin < a.margin ? b : a)).seq,
+]);
+---
+
+<figure class="chart">
+  <figcaption>
+    <h3>Ventidue scarti</h3>
+    <p class="dim">
+      Lo scarto di ogni partita giocata, in ordine di data (la vittoria a
+      tavolino è esclusa). Nove partite si sono decise entro cinque punti:
+      il bilancio lì dentro è <strong>{clutch.wins}–{clutch.losses}</strong>.
+    </p>
+  </figcaption>
+
+  <div class="chart-plot" data-chart>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="m-desc">
+      <desc id="m-desc">
+        Diciassette vittorie e cinque sconfitte. Lo scarto più ampio è
+        {' '}+{max}, il più pesante {min}.
+      </desc>
+
+      {[-10, 0, 10, 20, 30, 40].map((v) => (
+        <>
+          <line x1={PAD.left} x2={W - PAD.right} y1={yOf(v)} y2={yOf(v)} class="grid" />
+          <text x={PAD.left - 9} y={yOf(v)} class="axis-y">{v > 0 ? `+${v}` : v}</text>
+        </>
+      ))}
+
+      {/* The ±5 band: everything inside it was a one-possession game. */}
+      <rect
+        x={PAD.left} y={yOf(5)}
+        width={W - PAD.left - PAD.right} height={yOf(-5) - yOf(5)}
+        class="band"
+      />
+      <text x={W - PAD.right - 6} y={yOf(5) - 6} class="band-label">±5</text>
+
+      {margins.map((m, i) => {
+        const x = PAD.left + i * slot + (slot - barW) / 2;
+        const top = m.margin >= 0 ? yOf(m.margin) : zero;
+        const height = Math.max(2, Math.abs(yOf(m.margin) - zero));
+        return (
+          <>
+            <rect
+              x={x} y={top} width={barW} height={height} rx="4"
+              class:list={['bar', m.margin > 0 ? 'win' : 'loss']}
+            />
+            <rect
+              x={PAD.left + i * slot} y={PAD.top - 10}
+              width={slot} height={plotH + 20}
+              class="hit"
+              data-tip={`${PHASES[m.phase]} · ${shortDate(m.date)}\n${teamShort(m.opponent)}\nscarto ${m.margin > 0 ? '+' : ''}${m.margin}`}
+            />
+            {extremes.has(m.seq) && (
+              <text
+                x={x + barW / 2}
+                y={m.margin > 0 ? top - 8 : top + height + 16}
+                class="val"
+              >{m.margin > 0 ? `+${m.margin}` : m.margin}</text>
+            )}
+          </>
+        );
+      })}
+
+      <line x1={PAD.left} x2={W - PAD.right} y1={zero} y2={zero} class="zero" />
+      <text x={PAD.left + 4} y={H - 14} class="axis-x">novembre 2011</text>
+      <text x={W - PAD.right - 4} y={H - 14} class="axis-x end">giugno 2012</text>
+    </svg>
+  </div>
+</figure>
+
+<style>
+
+  .chart-plot {
+    background: var(--ink-raised);
+    border: 1px solid var(--ink-line);
+    padding: 0.8rem 0.6rem 0.3rem;
+  }
+  svg { width: 100%; height: auto; display: block; }
+
+  .grid { stroke: var(--c-grid); stroke-width: 1; }
+  .zero { stroke: var(--chalk-faint); stroke-width: 1.5; }
+  .band { fill: rgba(233, 231, 226, 0.045); }
+  .band-label {
+    fill: var(--chalk-faint);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-anchor: end;
+    letter-spacing: 0.1em;
+  }
+
+  .bar.win { fill: var(--c-us); }
+  .bar.loss { fill: var(--c-loss); }
+
+  .hit { fill: transparent; cursor: crosshair; }
+  .hit:hover { fill: rgba(233, 231, 226, 0.05); }
+
+  .axis-y {
+    fill: var(--chalk-faint);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-anchor: end;
+    dominant-baseline: middle;
+  }
+  .axis-x {
+    fill: var(--chalk-faint);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .axis-x.end { text-anchor: end; }
+  .val {
+    fill: var(--chalk);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-anchor: middle;
+  }
+</style>

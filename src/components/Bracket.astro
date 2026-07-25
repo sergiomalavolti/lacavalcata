@@ -1,0 +1,458 @@
+---
+import Seed from './Seed.astro';
+import { season, teamShort, teamName, US, playoffGames } from '../lib/season.js';
+
+/**
+ * The Super-League draw, laid out the way a wall chart lays it out: eight teams
+ * down the left, eight down the right, rounds converging on the final in the
+ * middle.
+ *
+ * The tree is *derived*, never hardcoded. In this bracket the pairing is
+ * positional — round[r].series[i] always feeds round[r+1].series[i >> 1] — so
+ * the halves, the elbows and our path all fall out of the data. That property
+ * is asserted below rather than assumed: a bracket whose lines are a lie is
+ * worse than no bracket, so if a source edit ever breaks it the build stops
+ * here.
+ */
+const { bracket } = season.playoff;
+
+for (let r = 0; r < bracket.length - 1; r += 1) {
+  const from = bracket[r];
+  const into = bracket[r + 1];
+  if (from.series.length !== into.series.length * 2) {
+    throw new Error(
+      `Tabellone: ${from.id} ha ${from.series.length} serie, ${into.id} ne ha ${into.series.length}`,
+    );
+  }
+  into.series.forEach((s, i) => {
+    const feeders = [from.series[2 * i].winner, from.series[2 * i + 1].winner].sort();
+    const played = [s.teamA, s.teamB].sort();
+    if (feeders.join('+') !== played.join('+')) {
+      throw new Error(
+        `Tabellone: la serie ${s.code} è ${played.join(' – ')}, ` +
+          `ma da ${from.id} arrivano ${feeders.join(' – ')}`,
+      );
+    }
+  });
+}
+
+// Our own games, by round, so the legs of our four series stay clickable.
+const ourGamesByRound = new Map(
+  bracket.map((r) => [r.id, playoffGames.filter((g) => g.phase === r.id)]),
+);
+
+/**
+ * Pair each leg of a series with its boxscore, for the four series we played.
+ * The two sources are independent — the bracket comes from `calendar.xls`, the
+ * boxscores from `season.ods` — so the scores are checked against each other
+ * rather than trusted to line up.
+ */
+function legsOf(round, s) {
+  const mine = s.involvesUs ? ourGamesByRound.get(round.id) : null;
+  if (mine && mine.length !== s.legs.length) {
+    throw new Error(
+      `Tabellone: ${round.id} ha ${s.legs.length} gare a tabellone ma ${mine.length} tabellini`,
+    );
+  }
+  return s.legs.map((leg, i) => {
+    const game = mine ? mine[i] : null;
+    if (game) {
+      const oursIsA = s.teamA === US;
+      const ours = oursIsA ? leg.scoreA : leg.scoreB;
+      const theirs = oursIsA ? leg.scoreB : leg.scoreA;
+      if (ours !== game.ourScore || theirs !== game.theirScore) {
+        throw new Error(
+          `Tabellone: ${round.id} gara ${leg.leg} è ${leg.scoreA}–${leg.scoreB} ` +
+            `a tabellone ma ${game.ourScore}–${game.theirScore} a tabellino`,
+        );
+      }
+    }
+    return { ...leg, game };
+  });
+}
+
+/**
+ * The two rows of a card, in the order they should be read.
+ *
+ * Everywhere except the final that is simply the bracket sheet's own order.
+ * The final was played on neutral ground, so neither club "hosted" it, but the
+ * referto still lists Birreria Amadeus first and Caffè Matic second — and that
+ * is the order this one card follows, so it reads the way the record of the
+ * game reads.
+ */
+function sidesOf(round, s, legs) {
+  const sides = [
+    { team: s.teamA, seed: s.seedA, wins: s.winsA, score: legs[0].scoreA, won: s.winsA > s.winsB },
+    { team: s.teamB, seed: s.seedB, wins: s.winsB, score: legs[0].scoreB, won: s.winsB > s.winsA },
+  ];
+  return round.id === 'finale' && season.final.game.home === s.teamB
+    ? sides.reverse()
+    : sides;
+}
+
+const SHORT = {
+  ottavi: 'Ottavi',
+  quarti: 'Quarti',
+  semifinale: 'Semifinali',
+  finale: 'Finale',
+};
+const HALF = { l: 'metà sinistra', r: 'metà destra' };
+
+function column(round, side, series, { first = false, final = false } = {}) {
+  return {
+    side,
+    first,
+    final,
+    short: SHORT[round.id],
+    label: HALF[side] ? `${round.label} — ${HALF[side]}` : round.label,
+    ties: series.map((s, i) => ({
+      s,
+      sides: sidesOf(round, s, legsOf(round, s)),
+      // Each tie of a pair draws its own half of the vertical that joins them
+      // to their parent — so the half a winner actually travelled can be drawn
+      // in its own colour. A column of one has nothing to join.
+      branch: series.length > 1 ? (i % 2 === 0 ? 'top' : 'bottom') : undefined,
+      legs: legsOf(round, s),
+    })),
+  };
+}
+
+const rounds = bracket.slice(0, -1); // ottavi, quarti, semifinali
+const finalRound = bracket[bracket.length - 1];
+const half = (round, side) => {
+  const n = round.series.length / 2;
+  return side === 'l' ? round.series.slice(0, n) : round.series.slice(n);
+};
+
+const columns = [
+  ...rounds.map((r, i) => column(r, 'l', half(r, 'l'), { first: i === 0 })),
+  column(finalRound, 'c', finalRound.series, { final: true }),
+  ...[...rounds].reverse().map((r, i) =>
+    column(r, 'r', half(r, 'r'), { first: i === rounds.length - 1 }),
+  ),
+];
+
+const champion = finalRound.series[0].winner;
+const { mvp } = season.final;
+
+// The round windows have nowhere to live in a 8rem-wide header cell, so they
+// sit under the draw, where they are readable without panning.
+const windows = [
+  ...rounds.map((r) => ({ label: r.label, when: r.window })),
+  { label: finalRound.label, when: `${season.final.when}, ${season.final.venueName}` },
+];
+---
+
+<div class="draw-scroll" tabindex="0" role="group" aria-label="Tabellone della Super-League">
+  <div class="draw">
+    {columns.map((col) => (
+      <p class:list={['col-label', 'mono', { fin: col.final }]} aria-hidden={col.side === 'r'}>
+        {col.short}
+      </p>
+    ))}
+
+    {columns.map((col) => (
+      <ol
+        class:list={['col', `half-${col.side}`, { 'is-first': col.first, 'is-final': col.final }]}
+        aria-label={col.label}
+      >
+        {col.ties.map(({ s, branch, legs, sides }) => {
+          return (
+            <li class:list={['tie', { ours: s.involvesUs }]} data-branch={branch}>
+              <div class:list={['card', { ours: s.involvesUs }]}>
+                {sides.map((side) => (
+                  <div class:list={['row', { won: side.won }]}>
+                    <Seed n={side.seed} us={side.team === US} />
+                    <span class="nm">{teamShort(side.team)}</span>
+                    {col.final ? (
+                      <span class="wn mono">{side.score}</span>
+                    ) : (
+                      <span class="wn mono">{side.wins}</span>
+                    )}
+                  </div>
+                ))}
+
+                {col.final ? (
+                  <p class="one-off mono">
+                    <button
+                      type="button"
+                      class="score-btn"
+                      data-game={legs[0].game.seq}
+                      aria-label={`Tabellino della finale contro ${teamName(legs[0].game.opponent)}`}
+                    >gara unica</button>
+                  </p>
+                ) : (
+                  <ol class="legs mono">
+                    {legs.map((leg) => (
+                      <li>
+                        <span class="leg-n">G{leg.leg}</span>
+                        <span class="leg-score">
+                          {leg.game ? (
+                            <button
+                              type="button"
+                              class="score-btn"
+                              data-game={leg.game.seq}
+                              aria-label={`Tabellino di ${teamName(leg.game.opponent)}, gara ${leg.leg}`}
+                            >{leg.scoreA}–{leg.scoreB}</button>
+                          ) : (
+                            <>{leg.scoreA}–{leg.scoreB}</>
+                          )}
+                          {leg.overtime && <em class="ot"> dts</em>}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+
+                {col.final && (
+                  <p class="champ">
+                    <span class="champ-label mono">Campione</span>
+                    <span class="champ-team">{teamName(champion)}</span>
+                    <span class="champ-mvp mono">MVP {mvp.fullName}</span>
+                    <span class="champ-mvp mono">maglia n.&#160;{mvp.number}</span>
+                  </p>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    ))}
+  </div>
+</div>
+
+<p class="draw-hint mono">Scorri il tabellone in orizzontale →</p>
+
+<dl class="draw-legend mono">
+  {windows.map((w) => (
+    <>
+      <dt>{w.label}</dt>
+      <dd>{w.when}</dd>
+    </>
+  ))}
+</dl>
+
+<style>
+  /* The draw needs ~66rem to stay legible, and it keeps its shape at every
+     size rather than becoming a different thing on a phone. Same contract as
+     .table-scroll and .chart-plot: the box scrolls, the page body never does.
+     tabindex makes it reachable by keyboard, since most of it is not. */
+  .draw-scroll {
+    overflow-x: auto;
+    scrollbar-color: var(--ink-line) transparent;
+    padding-bottom: 0.5rem;
+  }
+
+  .draw {
+    --elbow: 1.5rem;
+    --slot: 9.5rem;
+    /* One step lighter than --ink-line: here the lines are the structure, not
+       a border, and at --ink-line they read as smudges on the near-black. */
+    --wire: #35353c;
+    min-width: 66rem;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    column-gap: var(--elbow);
+  }
+
+  .col-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    text-align: center;
+    margin: 0 0 0.9rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--ink-line);
+  }
+  .col-label.fin { color: var(--giallo); border-bottom-color: var(--giallo-deep); }
+
+  /* Every column is stretched to the same height by the grid, and every tie
+     takes an equal share of it. That is what makes the elbows line up: with
+     4, 2 and 1 ties the centres land at 12.5/37.5/62.5/87.5%, 25/75% and 50%,
+     so each parent sits exactly on its two children's midpoint. No measuring,
+     no magic numbers. */
+  .col {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(var(--slot) * 4);
+  }
+
+  .tie {
+    position: relative;
+    flex: 1 1 0;
+    min-height: 0;
+    display: grid;
+    align-content: center;
+  }
+
+  /* --- connectors -------------------------------------------------------
+     Three lines per join:
+       .tie::before        the arm leaving a tie toward the next round
+       .tie::after         this tie's half of the vertical it shares with its
+                           sibling — half a slot tall, so the two halves meet
+                           exactly on their parent's centre line
+       .card::before       the arm arriving at the parent
+     Splitting the vertical in two is what lets our path stay one continuous
+     yellow line: only the half a winner actually travelled turns yellow, and
+     the loser's half stays grey. */
+  .tie::before,
+  .tie[data-branch]::after,
+  .card::before,
+  .is-final .card::after {
+    content: '';
+    position: absolute;
+    border-color: var(--wire);
+    border-style: solid;
+    border-width: 0;
+  }
+
+  .tie::before,
+  .card::before,
+  .is-final .card::after {
+    top: 50%;
+    width: calc(var(--elbow) / 2);
+    border-top-width: 1px;
+  }
+
+  .tie[data-branch]::after {
+    height: 50%;
+    border-left-width: 1px;
+  }
+  .tie[data-branch='top']::after { top: 50%; }
+  .tie[data-branch='bottom']::after { bottom: 50%; }
+
+  .half-l .tie::before { left: 100%; }
+  .half-l .tie[data-branch]::after { left: calc(100% + var(--elbow) / 2); }
+  .half-l .card::before { right: 100%; }
+
+  .half-r .tie::before { right: 100%; }
+  .half-r .tie[data-branch]::after { right: calc(100% + var(--elbow) / 2); }
+  .half-r .card::before { left: 100%; }
+
+  /* The first round has nothing arriving; the final has nothing leaving, and
+     is fed from both sides at once. */
+  .is-first .card::before { content: none; }
+  .is-final .tie::before { content: none; }
+  .is-final .card::before { right: 100%; }
+  .is-final .card::after { left: 100%; }
+
+  /* Our path: 8 over 9, then 1, then 12, then 3. The final's second arm is
+     Amadeus's half of the draw and stays grey. */
+  .tie.ours::before { border-top-color: var(--giallo-deep); }
+  .tie.ours::after { border-left-color: var(--giallo-deep); }
+  .card.ours::before { border-top-color: var(--giallo-deep); }
+
+  /* --- card -------------------------------------------------------------- */
+  .card {
+    position: relative;
+    border: 1px solid var(--ink-line);
+    background: var(--ink-raised);
+    padding: 0.45rem 0.5rem 0.35rem;
+  }
+  .card.ours { border-color: var(--giallo-deep); background: var(--ink-panel); }
+
+  .row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.12rem 0;
+  }
+
+  .nm {
+    font-size: 0.72rem;
+    line-height: 1.2;
+    color: var(--chalk-faint);
+  }
+  .row.won .nm { color: var(--chalk); }
+
+  .wn { font-size: 0.8rem; color: var(--chalk-faint); }
+  .row.won .wn { color: var(--giallo); font-weight: 700; }
+
+  .legs {
+    list-style: none;
+    margin: 0.4rem 0 0;
+    padding: 0.35rem 0 0;
+    border-top: 1px solid var(--ink-line-soft);
+  }
+  .legs li {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 1.35rem;
+  }
+  .leg-n { font-size: 0.56rem; letter-spacing: 0.08em; color: var(--chalk-faint); }
+  .leg-score { font-size: 0.7rem; color: var(--chalk-dim); }
+  .ot { color: var(--giallo-deep); font-style: normal; font-size: 0.56rem; }
+
+  /* The final was one game, so the card shows its score instead of a series
+     tally and the trigger says so. */
+  .one-off {
+    margin: 0.4rem 0 0;
+    padding: 0.35rem 0 0;
+    border-top: 1px solid var(--ink-line-soft);
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    text-align: center;
+  }
+
+  /* Hangs below the final rather than sitting inside it, so the card stays
+     centred on the two semifinals. There is half a column of clear space. */
+  .champ {
+    position: absolute;
+    top: calc(100% + 0.8rem);
+    left: 0;
+    right: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.15rem;
+    text-align: center;
+  }
+  .champ-label {
+    font-size: 0.56rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--giallo);
+  }
+  .champ-team {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    line-height: 1;
+    color: var(--chalk);
+  }
+  /* Two deliberate lines: at this width one string would wrap on its own and
+     leave the separator dangling at the end of a line. */
+  .champ-mvp { font-size: 0.56rem; letter-spacing: 0.08em; color: var(--chalk-faint); }
+  .champ-mvp + .champ-mvp { margin-top: -0.1rem; }
+
+  /* --- under the draw ---------------------------------------------------- */
+  .draw-hint {
+    display: none;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    margin: 0.6rem 0 0;
+  }
+  @media (max-width: 1150px) {
+    .draw-hint { display: block; }
+  }
+
+  .draw-legend {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.25rem 1rem;
+    margin: 1.6rem 0 0;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+  }
+  .draw-legend dt { color: var(--chalk-dim); text-transform: uppercase; }
+  .draw-legend dd { margin: 0; color: var(--chalk-faint); }
+</style>

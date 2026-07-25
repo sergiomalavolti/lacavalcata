@@ -1,0 +1,163 @@
+---
+import '@fontsource/league-gothic';
+import '@fontsource-variable/archivo';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+
+const { title, description, current } = Astro.props;
+
+const nav = [
+  { href: '/', label: 'La cavalcata', key: 'home' },
+  { href: '/squadra/', label: 'La squadra', key: 'squadra' },
+  { href: '/girone/', label: 'Girone A', key: 'girone' },
+  { href: '/playoff/', label: 'Playoff', key: 'playoff' },
+  { href: '/finale/', label: 'La finale', key: 'finale' },
+  { href: '/statistiche/', label: 'Statistiche', key: 'statistiche' },
+  { href: '/avanzate/', label: 'Avanzate', key: 'avanzate' },
+  { href: '/avversari/', label: 'Avversari', key: 'avversari' },
+];
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0a0a0b" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Vai al contenuto</a>
+
+    <header class="masthead">
+      <div class="wrap masthead-inner">
+        <a class="wordmark" href="/">
+          <span class="wordmark-team">Caffè Matic</span>
+          <span class="wordmark-sub">Trottola Sport · 2011-2012</span>
+        </a>
+        <nav aria-label="Sezioni">
+          <ul>
+            {nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={current === item.key ? 'page' : undefined}
+                >{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="foot">
+      <div class="wrap foot-inner">
+        <p class="mono">
+          CSI Promozione · Girone A · Super-League · Bologna, 2011-2012
+        </p>
+        <p class="mono dim">
+          Realizzato da <span class="giallo">Sergio Malavolti</span> e{' '}
+          <span class="giallo">Claudio Antropico</span>.
+        </p>
+      </div>
+    </footer>
+
+    <style>
+      .skip {
+        position: absolute;
+        left: -9999px;
+        background: var(--giallo);
+        color: var(--ink);
+        padding: 0.6rem 1rem;
+        font-family: var(--font-mono);
+        z-index: 20;
+      }
+      .skip:focus { left: 1rem; top: 1rem; }
+
+      .masthead {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: color-mix(in srgb, var(--ink) 88%, transparent);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--ink-line);
+      }
+
+      .masthead-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.5rem;
+        align-items: baseline;
+        justify-content: space-between;
+        padding-block: 0.7rem;
+      }
+
+      .wordmark {
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+      }
+
+      .wordmark-team {
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        font-size: var(--step-1);
+        line-height: 1;
+        letter-spacing: 0.02em;
+      }
+
+      .wordmark-sub {
+        font-family: var(--font-mono);
+        font-size: 0.63rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--chalk-dim);
+      }
+
+      nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.15rem 1.05rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav a {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        color: var(--chalk-dim);
+        text-decoration: none;
+        padding-block: 0.25rem;
+        border-bottom: 1px solid transparent;
+        transition: color 0.15s ease, border-color 0.15s ease;
+      }
+      nav a:hover { color: var(--chalk); }
+      nav a[aria-current='page'] {
+        color: var(--giallo);
+        border-bottom-color: var(--giallo);
+      }
+
+      .foot {
+        border-top: 1px solid var(--ink-line);
+        margin-top: var(--rhythm);
+        padding-block: 2.5rem 3.5rem;
+      }
+      .foot-inner p {
+        font-size: var(--step--2);
+        letter-spacing: 0.06em;
+        margin-bottom: 0.4rem;
+      }
+    </style>
+  </body>
+</html>
