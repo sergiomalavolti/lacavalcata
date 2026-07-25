@@ -1,0 +1,264 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--chalk);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+  text-rendering: optimizeLegibility;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+/* Browsers indent <figure> by 40px by default, which pushed every chart out of
+   line with the headings above it. */
+figure { margin: 0; }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--giallo);
+  outline-offset: 3px;
+}
+
+::selection { background: var(--giallo); color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- type ---------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-3); }
+h3 { font-size: var(--step-2); }
+
+p { margin: 0 0 1em; }
+p:last-child { margin-bottom: 0; }
+
+.prose { max-width: 62ch; }
+.prose p + p { margin-top: 0; }
+
+.lead {
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--chalk);
+}
+
+.dim { color: var(--chalk-dim); }
+.faint { color: var(--chalk-faint); }
+.mono { font-family: var(--font-mono); }
+.giallo { color: var(--giallo); }
+
+/* Section heading pattern — defined once, so every block on every page starts
+   at the same x, at the same size, with the same space beneath it. Charts use
+   the same rhythm through their <figcaption>. */
+.section-head { margin-bottom: 1.6rem; }
+
+.section-title,
+.chart figcaption h3 {
+  font-size: var(--step-2);
+  margin: 0 0 0.7rem;
+}
+
+.section-title.lg { font-size: var(--step-3); }
+
+.section-note,
+.chart figcaption p {
+  font-size: var(--step--1);
+  max-width: 68ch;
+  margin: 0 0 1.6rem;
+  color: var(--chalk-dim);
+}
+
+/* Inside a .section-head the wrapper owns the trailing space. */
+.section-head .section-note,
+.chart figcaption p { margin-bottom: 0; }
+
+/* A title with no note under it still needs room before the content. */
+.section-head .section-title:only-child { margin-bottom: 0; }
+
+.section-note strong,
+.chart figcaption strong { color: var(--chalk); }
+
+.chart figcaption { margin-bottom: 1.6rem; }
+
+/* The eyebrow always carries real data — a date span, a count, a round —
+   never a decorative label. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+  margin: 0 0 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+  align-items: baseline;
+}
+
+.eyebrow > span::before {
+  content: '·';
+  margin-right: 0.9rem;
+  color: var(--chalk-faint);
+}
+.eyebrow > span:first-child::before { content: none; }
+
+/* Below the point where the facts stop fitting on one line, they read better
+   as a stacked list than as a row of orphaned separators. */
+@media (max-width: 620px) {
+  .eyebrow { display: grid; gap: 0.25rem; }
+  .eyebrow > span::before { content: none; margin: 0; }
+}
+
+/* Charts keep their own scroll rather than shrinking their labels to nothing.
+   Same contract as .table-scroll: the page body never scrolls sideways. */
+.chart-plot { overflow-x: auto; scrollbar-color: var(--ink-line) transparent; }
+.chart-plot > svg { min-width: 32rem; }
+
+/* --- layout -------------------------------------------------------------- */
+
+.wrap {
+  width: min(100% - var(--gutter) * 2, var(--wrap));
+  margin-inline: auto;
+}
+
+.wrap-tight {
+  width: min(100% - var(--gutter) * 2, var(--wrap-tight));
+  margin-inline: auto;
+}
+
+.section { padding-block: var(--rhythm); }
+.section + .section { padding-top: 0; }
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--ink-line);
+  margin: 0;
+}
+
+.stack > * + * { margin-top: var(--flow, 1rem); }
+
+.panel {
+  background: var(--ink-raised);
+  border: 1px solid var(--ink-line);
+  padding: clamp(1rem, 3vw, 1.75rem);
+}
+
+/* --- tables -------------------------------------------------------------- */
+
+.table-scroll {
+  overflow-x: auto;
+  /* The page body must never scroll sideways; wide tables scroll themselves. */
+  scrollbar-color: var(--ink-line) transparent;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+}
+
+caption {
+  text-align: left;
+  color: var(--chalk-dim);
+  font-size: var(--step--2);
+  padding-bottom: 0.6rem;
+}
+
+th, td {
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  border-bottom: 1px solid var(--ink-line-soft);
+  white-space: nowrap;
+}
+
+thead th {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+  font-weight: 400;
+  border-bottom-color: var(--ink-line);
+  position: sticky;
+  top: 0;
+  background: var(--ink);
+}
+
+td.num, th.num { text-align: right; font-family: var(--font-mono); }
+td.name { white-space: normal; min-width: 12ch; }
+
+tbody tr:hover { background: var(--ink-raised); }
+
+/* Our row is marked with a rule, not a fill: quieter, and it reads as a
+   margin mark on a printed sheet. */
+tr.us td:first-child { box-shadow: inset 3px 0 0 var(--giallo); }
+tr.us td { background: var(--giallo-wash); color: var(--chalk); }
+tr.us:hover td { background: rgba(242, 197, 17, 0.14); }
+
+/* --- links --------------------------------------------------------------- */
+
+.link {
+  color: var(--giallo);
+  text-decoration: none;
+  border-bottom: 1px solid var(--giallo-deep);
+  transition: border-color 0.15s ease;
+}
+.link:hover { border-bottom-color: var(--giallo); }
+
+.jump {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--giallo);
+  text-decoration: none;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--ink-line);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.jump:hover { border-color: var(--giallo-deep); background: var(--giallo-wash); }
+.jump::after { content: '→'; }
+
+/* --- utility ------------------------------------------------------------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.w { color: var(--giallo); }
+.l { color: var(--brick); }

@@ -1,0 +1,176 @@
+---
+import { playerName, teamName, longDate, PHASES } from '../lib/season.js';
+import QuarterStrip from './QuarterStrip.astro';
+
+/**
+ * A facsimile of the Italian scoresheet the season was recorded on: the same
+ * three columns, the same "X" for the starting five, the same "NE" for a
+ * player who was on the bench and never came in. Rows stay in the order the
+ * original sheet listed them — starters first, as the scorer wrote them down.
+ */
+const { game } = Astro.props;
+const total = game.boxscore.reduce((sum, l) => sum + (l.points ?? 0), 0);
+---
+
+<article class="referto" id={`g${game.seq}`}>
+  <header class="referto-head">
+    <div class="referto-meta mono">
+      <span class="seq">{String(game.seq).padStart(2, '0')}</span>
+      <span>{PHASES[game.phase]}</span>
+      <span>{longDate(game.date)}</span>
+      <span>
+        {game.neutral ? 'campo neutro' : game.ourSide === 'home' ? 'in casa' : 'in trasferta'}
+      </span>
+    </div>
+
+    <h3 class="referto-title">
+      <span class="opp">{teamName(game.opponent)}</span>
+    </h3>
+
+    <p class:list={['referto-score', game.won ? 'won' : 'lost']}>
+      <span class="ours">{game.ourScore}</span>
+      <span class="sep">–</span>
+      <span class="theirs">{game.theirScore}</span>
+      <span class="verdict">{game.won ? 'vittoria' : 'sconfitta'}</span>
+    </p>
+  </header>
+
+  {game.forfeit ? (
+    <p class="tavolino mono">Vinta a tavolino. Nessun tabellino.</p>
+  ) : (
+    <>
+      <table class="sheet">
+        <caption class="visually-hidden">
+          Tabellino di {teamName(game.opponent)}, {longDate(game.date)}
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Giocatore</th>
+            <th scope="col" class="mid">Quintetto</th>
+            <th scope="col" class="num">Punti</th>
+          </tr>
+        </thead>
+        <tbody>
+          {game.boxscore.map((line) => (
+            <tr class:list={{ dnp: !line.played }}>
+              <td class="name">{playerName(line.player)}</td>
+              <td class="mid">{line.starter ? 'X' : ''}</td>
+              <td class="num">{line.played ? line.points : 'NE'}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>Totale punti</td>
+            <td class="mid"></td>
+            <td class="num">{total}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      {game.quarters && (
+        <div class="referto-quarters">
+          <QuarterStrip us={game.quarters.us} them={game.quarters.them} compact />
+          {!game.quarters.them && (
+            <p class="qnote mono">
+              Parziali avversari non ricostruibili
+            </p>
+          )}
+        </div>
+      )}
+    </>
+  )}
+</article>
+
+<style>
+  .referto {
+    background: var(--ink-raised);
+    border: 1px solid var(--ink-line);
+    padding: 1.1rem 1.2rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    scroll-margin-top: 6rem;
+  }
+
+  .referto-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.85rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    margin-bottom: 0.55rem;
+  }
+  .referto-meta .seq { color: var(--giallo-deep); }
+
+  .referto-title {
+    font-size: var(--step-2);
+    margin-bottom: 0.35rem;
+  }
+  .opp { color: var(--chalk); }
+
+  .referto-score {
+    font-family: var(--font-mono);
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    margin: 0;
+  }
+  .referto-score .ours {
+    font-size: var(--step-2);
+    font-weight: 700;
+  }
+  .referto-score .sep { color: var(--chalk-faint); }
+  .referto-score .theirs {
+    font-size: var(--step-1);
+    color: var(--chalk-dim);
+  }
+  .referto-score .verdict {
+    margin-left: 0.5rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .referto-score.won .ours { color: var(--giallo); }
+  .referto-score.won .verdict { color: var(--giallo-deep); }
+  .referto-score.lost .verdict { color: var(--brick); }
+
+  .sheet { font-family: var(--font-mono); }
+  .sheet th, .sheet td { padding: 0.28rem 0.5rem; }
+  .sheet thead th { position: static; background: transparent; }
+  .sheet .mid { text-align: center; width: 6.5rem; color: var(--giallo); }
+  .sheet tbody tr.dnp td { color: var(--chalk-faint); }
+  .sheet tbody tr:hover { background: var(--ink-panel); }
+  .sheet tfoot td {
+    border-bottom: 0;
+    border-top: 1px solid var(--ink-line);
+    font-size: var(--step--2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    padding-top: 0.5rem;
+  }
+  .sheet tfoot .num { color: var(--chalk); font-size: var(--step--1); }
+
+  .referto-quarters { margin-top: 0.2rem; }
+  .qnote {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    margin: 0.5rem 0 0;
+  }
+
+  .tavolino {
+    font-size: var(--step--2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    border: 1px dashed var(--ink-line);
+    padding: 1.4rem 1rem;
+    text-align: center;
+    margin: 0;
+  }
+</style>

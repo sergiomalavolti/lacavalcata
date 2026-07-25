@@ -1,0 +1,8472 @@
+{
+ "meta": {
+  "competition": "CSI Promozione",
+  "season": "2011-2012",
+  "group": "Girone A",
+  "formula": {
+   "Campionato": "CSI Promozione",
+   "Annata": "2011-2012",
+   "Squadre Partecipanti": "48",
+   "Gironi": "6",
+   "Ai Playoff SuperLeague": "Prime 2 di ogni girone e le 4 migliori terze"
+  },
+  "us": "trottola",
+  "teams": {
+   "trottola": {
+    "name": "Caffè Matic – Trottola Sport",
+    "short": "Caffè Matic",
+    "group": "A",
+    "groupPos": 2,
+    "venue": "Polo Scolastico-ITIS",
+    "threePointLine": "6.75",
+    "address": "Via F.lli Daldi e Matteucci - Porretta Terme",
+    "slot": "SABATO - 18,00",
+    "kit1": "BLU",
+    "kit2": "GIALLA"
+   },
+   "amadeus": {
+    "name": "Birreria Amadeus – Thunder Basket",
+    "short": "Amadeus",
+    "group": "A",
+    "groupPos": 1,
+    "venue": "Palestra Sede A.I.A. Bologna",
+    "threePointLine": "6.75",
+    "address": "Rotonda Italia, 8 – Bologna",
+    "slot": "LUNEDI - 21,30",
+    "kit1": "NERA",
+    "kit2": "BIANCA"
+   },
+   "ghironda": {
+    "name": "ASD Ghironda Basket",
+    "short": "Ghironda",
+    "group": "A",
+    "groupPos": 3,
+    "venue": "ITC Salvemini",
+    "threePointLine": "6.75",
+    "address": "Via S. Pertini, 7 - Casalecchio (Meridiana)",
+    "slot": "LUNEDI - 21,45",
+    "kit1": "BIANCA",
+    "kit2": "GRANATA"
+   },
+   "sasso_a": {
+    "name": "CSI Sasso Marconi «A»",
+    "short": "Sasso Marconi A",
+    "group": "A",
+    "groupPos": 4,
+    "venue": "Centro Sportivo Cà de' Testi",
+    "threePointLine": "6.75",
+    "address": "Via Cà de' Testi - Sasso Marconi",
+    "slot": "DOMENICA - 17,00",
+    "kit1": "GIALLA",
+    "kit2": "BLU"
+   },
+   "endurance": {
+    "name": "Endurance Web Solutions – PP on Fire",
+    "short": "PP on Fire",
+    "group": "A",
+    "groupPos": 5,
+    "venue": "Scuole Righi",
+    "threePointLine": "6.25",
+    "address": "Viale Pepoli, 3 – Bologna",
+    "slot": "MERCOLEDI - 22,00",
+    "kit1": "BLU",
+    "kit2": "BIANCA"
+   },
+   "casalecchio": {
+    "name": "CSI Casalecchio – Vota Quimby",
+    "short": "Vota Quimby",
+    "group": "A",
+    "groupPos": 6,
+    "venue": "Scuole Galilei \"1\"",
+    "threePointLine": "6.75",
+    "address": "Via Porrettana, 97 – Casalecchio",
+    "slot": "LUNEDI - 21,45",
+    "kit1": "NERA",
+    "kit2": "BIANCA"
+   },
+   "ceretolese": {
+    "name": "Polisportiva Ceretolese",
+    "short": "Ceretolese",
+    "group": "A",
+    "groupPos": 7,
+    "venue": "Palestra XXV Aprile",
+    "threePointLine": "6.75",
+    "address": "Via Carracci – Croce di Casalecchio",
+    "slot": "VENERDI - 21,50",
+    "kit1": "NERA",
+    "kit2": "ARANCIONE"
+   },
+   "pontecchio": {
+    "name": "CSP Pontecchio Marconi",
+    "short": "Pontecchio",
+    "group": "A",
+    "groupPos": 8,
+    "venue": "Palestra Scuole Medie",
+    "threePointLine": "6.75",
+    "address": "Via Porrettana, 260 - Sasso Marconi",
+    "slot": "LUNEDI - 21,15",
+    "kit1": "BLU",
+    "kit2": "ROSSA"
+   },
+   "granarolo": {
+    "name": "Pallacanestro Granarolo",
+    "short": "Granarolo",
+    "group": "C",
+    "groupPos": 1,
+    "venue": "Palazzetto",
+    "address": "Via Roma, 32 – Granarolo"
+   },
+   "vis_trebbo": {
+    "name": "Bortolotti Impianti – Vis Trebbo",
+    "short": "Vis Trebbo",
+    "group": "E",
+    "groupPos": 1
+   },
+   "san_buca": {
+    "name": "San Buca Basket",
+    "short": "San Buca",
+    "group": "B",
+    "groupPos": 1
+   },
+   "thc": {
+    "name": "THC – Fullbasket 2001",
+    "short": "THC Fullbasket",
+    "group": "D",
+    "groupPos": 1
+   },
+   "bellaria": {
+    "name": "Tecno Bar Cerè – PGS Bellaria",
+    "short": "Pgs Bellaria",
+    "group": "F",
+    "groupPos": 1
+   },
+   "ozzano": {
+    "name": "O&T Ozzano Tolara",
+    "short": "Ozzano",
+    "group": "E",
+    "groupPos": 2
+   },
+   "ghepard": {
+    "name": "Tecnocem – Ghepard 2003",
+    "short": "Ghepard",
+    "group": "D",
+    "groupPos": 2,
+    "venue": "Scuole ITIS Belluzzi",
+    "address": "Via Cassini, 3 – Bologna"
+   },
+   "towers": {
+    "name": "Towers Basket Bologna",
+    "short": "Towers",
+    "group": "B",
+    "groupPos": 2
+   },
+   "tema_gabbi": {
+    "name": "Tema Gabbi",
+    "short": "Tema Gabbi",
+    "group": "C",
+    "groupPos": 2
+   },
+   "zola": {
+    "name": "Pallacanestro Zola Predosa",
+    "short": "Zola Predosa",
+    "group": "F",
+    "groupPos": 2,
+    "venue": "Palestra Deserti",
+    "address": "Via dell'Abbazzia - Zola Predosa"
+   },
+   "budrio": {
+    "name": "Pub Vecchie Mura Budrio",
+    "short": "Budrio",
+    "group": "E",
+    "groupPos": 3
+   },
+   "legion": {
+    "name": "Tecnolamiera Srl – Legion of Doom",
+    "short": "Legion of Doom",
+    "group": "C",
+    "groupPos": 3
+   },
+   "futa": {
+    "name": "Gironi Pavimenti – Futa Jazz GT",
+    "short": "Futa Jazz",
+    "group": "F",
+    "groupPos": 3
+   }
+  },
+  "checks": 149
+ },
+ "roster": [
+  {
+   "id": "bartoletti-alberto",
+   "surname": "Bartoletti",
+   "name": "Alberto",
+   "fullName": "Bartoletti Alberto",
+   "birthdate": "1987-10-21",
+   "height": 190,
+   "role": "Ala grande"
+  },
+  {
+   "id": "bruni-kristian",
+   "surname": "Bruni",
+   "name": "Kristian",
+   "fullName": "Bruni Kristian",
+   "birthdate": "1986-08-03",
+   "height": 175,
+   "role": "Guardia"
+  },
+  {
+   "id": "carrieri-riccardo",
+   "surname": "Carrieri",
+   "name": "Riccardo",
+   "fullName": "Carrieri Riccardo",
+   "birthdate": "1995-10-29",
+   "height": 182,
+   "role": "Ala/Centro"
+  },
+  {
+   "id": "gentilini-nicola",
+   "surname": "Gentilini",
+   "name": "Nicola",
+   "fullName": "Gentilini Nicola",
+   "birthdate": "1976-11-22",
+   "height": 182,
+   "role": "Centro"
+  },
+  {
+   "id": "gherardini-matia",
+   "surname": "Gherardini",
+   "name": "Matia",
+   "fullName": "Gherardini Matia",
+   "birthdate": "1994-02-20",
+   "height": 175,
+   "role": "Ala piccola"
+  },
+  {
+   "id": "grassi-filippo",
+   "surname": "Grassi",
+   "name": "Filippo",
+   "fullName": "Grassi Filippo",
+   "birthdate": "1993-01-16",
+   "height": 178,
+   "role": "Playmaker"
+  },
+  {
+   "id": "greco-paride",
+   "surname": "Greco",
+   "name": "Paride",
+   "fullName": "Greco Paride",
+   "birthdate": "1982-01-26",
+   "height": 182,
+   "role": "Guardia/Ala"
+  },
+  {
+   "id": "malavolti-fabio",
+   "surname": "Malavolti",
+   "name": "Fabio",
+   "fullName": "Malavolti Fabio",
+   "birthdate": "1989-12-19",
+   "height": 173,
+   "role": "Playmaker"
+  },
+  {
+   "id": "malavolti-sergio",
+   "surname": "Malavolti",
+   "name": "Sergio",
+   "fullName": "Malavolti Sergio",
+   "birthdate": "1983-08-30",
+   "height": 175,
+   "role": "Playmaker"
+  },
+  {
+   "id": "maranelli-roberto",
+   "surname": "Maranelli",
+   "name": "Roberto",
+   "fullName": "Maranelli Roberto",
+   "birthdate": "1985-12-28",
+   "height": 193,
+   "role": "Centro"
+  },
+  {
+   "id": "marchioni-ermes",
+   "surname": "Marchioni",
+   "name": "Ermes",
+   "fullName": "Marchioni Ermes",
+   "birthdate": "1986-05-26",
+   "height": 165,
+   "role": "Playmaker"
+  },
+  {
+   "id": "marconi-tiberio",
+   "surname": "Marconi",
+   "name": "Tiberio",
+   "fullName": "Marconi Tiberio",
+   "birthdate": "1991-04-11",
+   "height": 180,
+   "role": "Guardia"
+  },
+  {
+   "id": "mellini-valerio",
+   "surname": "Mellini",
+   "name": "Valerio",
+   "fullName": "Mellini Valerio",
+   "birthdate": "1987-04-07",
+   "height": 182,
+   "role": "Ala piccola"
+  },
+  {
+   "id": "monari-michele",
+   "surname": "Monari",
+   "name": "Michele",
+   "fullName": "Monari Michele",
+   "birthdate": "1983-10-31",
+   "height": 185,
+   "role": "Centro"
+  },
+  {
+   "id": "nanni-jacopo",
+   "surname": "Nanni",
+   "name": "Jacopo",
+   "fullName": "Nanni Jacopo",
+   "birthdate": "1992-07-22",
+   "height": 183,
+   "role": "Guardia"
+  },
+  {
+   "id": "scardovi-nicola",
+   "surname": "Scardovi",
+   "name": "Nicola",
+   "fullName": "Scardovi Nicola",
+   "birthdate": "1984-02-24",
+   "height": 187,
+   "role": "Ala grande"
+  },
+  {
+   "id": "torracchi-matteo",
+   "surname": "Torracchi",
+   "name": "Matteo",
+   "fullName": "Torracchi Matteo",
+   "birthdate": "1983-03-12",
+   "height": 170,
+   "role": "Playmaker"
+  },
+  {
+   "id": "ugolini-riccardo",
+   "surname": "Ugolini",
+   "name": "Riccardo",
+   "fullName": "Ugolini Riccardo",
+   "birthdate": "1984-05-20",
+   "height": 183,
+   "role": "Ala/Centro"
+  },
+  {
+   "id": "zolin-mattia",
+   "surname": "Zolin",
+   "name": "Mattia",
+   "fullName": "Zolin Mattia",
+   "birthdate": "1987-04-03",
+   "height": 175,
+   "role": "Guardia"
+  }
+ ],
+ "games": [
+  {
+   "seq": 1,
+   "phase": "girone",
+   "phaseLabel": "1ª giornata",
+   "date": "2011-11-12",
+   "time": "18:00",
+   "home": "trottola",
+   "away": "amadeus",
+   "homeScore": 58,
+   "awayScore": 60,
+   "overtime": false,
+   "ourSide": "home",
+   "opponent": "amadeus",
+   "ourScore": 58,
+   "theirScore": 60,
+   "margin": -2,
+   "won": false,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "1 GIORNATA:Caffè Matic Trottola Sport – 58–Birreria Amadeus Thunder Basket – 60",
+   "boxscore": [
+    {
+     "player": "torracchi-matteo",
+     "starter": true,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": true,
+     "played": true,
+     "points": 19
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 7
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": true,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 12
+    },
+    {
+     "player": "malavolti-fabio",
+     "starter": false,
+     "played": true,
+     "points": 11
+    },
+    {
+     "player": "zolin-mattia",
+     "starter": false,
+     "played": true,
+     "points": 5
+    },
+    {
+     "player": "monari-michele",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "carrieri-riccardo",
+     "starter": false,
+     "played": false,
+     "points": null
+    }
+   ],
+   "quarters": {
+    "us": [
+     11,
+     15,
+     8,
+     24
+    ],
+    "them": [
+     21,
+     2,
+     19,
+     18
+    ],
+    "usable": true,
+    "rawThem": [
+     21,
+     2,
+     19,
+     20
+    ],
+    "rawThemSum": 62,
+    "correctedThem": true
+   }
+  },
+  {
+   "seq": 2,
+   "phase": "girone",
+   "phaseLabel": "2ª giornata",
+   "date": "2011-11-19",
+   "time": "18:00",
+   "home": "trottola",
+   "away": "ghironda",
+   "homeScore": 72,
+   "awayScore": 61,
+   "overtime": false,
+   "ourSide": "home",
+   "opponent": "ghironda",
+   "ourScore": 72,
+   "theirScore": 61,
+   "margin": 11,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "2 GIORNATA:Caffè Matic Trottola Sport – 72–ASD Ghironda Basket – 61",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 8
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": true,
+     "played": true,
+     "points": 8
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 11
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "monari-michele",
+     "starter": false,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": false,
+     "played": true,
+     "points": 23
+    },
+    {
+     "player": "gentilini-nicola",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "zolin-mattia",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "carrieri-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "gherardini-matia",
+     "starter": false,
+     "played": true,
+     "points": 0
+    }
+   ],
+   "quarters": {
+    "us": [
+     15,
+     17,
+     20,
+     20
+    ],
+    "them": [
+     19,
+     14,
+     17,
+     11
+    ],
+    "usable": true,
+    "rawThem": [
+     19,
+     14,
+     17,
+     11
+    ],
+    "rawThemSum": 61,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 3,
+   "phase": "girone",
+   "phaseLabel": "3ª giornata",
+   "date": "2011-11-21",
+   "time": "21:45",
+   "home": "casalecchio",
+   "away": "trottola",
+   "homeScore": 67,
+   "awayScore": 68,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "casalecchio",
+   "ourScore": 68,
+   "theirScore": 67,
+   "margin": 1,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "3 GIORNATA:CSI Casalecchio Vota Quimby – 67–Caffè Matic Trottola Sport – 68",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 16
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": true,
+     "played": true,
+     "points": 19
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 12
+    },
+    {
+     "player": "carrieri-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "gentilini-nicola",
+     "starter": false,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "monari-michele",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "gherardini-matia",
+     "starter": false,
+     "played": true,
+     "points": 2
+    }
+   ],
+   "quarters": {
+    "us": [
+     24,
+     14,
+     12,
+     18
+    ],
+    "them": [
+     13,
+     18,
+     17,
+     19
+    ],
+    "usable": true,
+    "rawThem": [
+     13,
+     18,
+     17,
+     19
+    ],
+    "rawThemSum": 67,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 4,
+   "phase": "girone",
+   "phaseLabel": "4ª giornata",
+   "date": "2011-12-03",
+   "time": "18:00",
+   "home": "trottola",
+   "away": "sasso_a",
+   "homeScore": 55,
+   "awayScore": 57,
+   "overtime": false,
+   "ourSide": "home",
+   "opponent": "sasso_a",
+   "ourScore": 55,
+   "theirScore": 57,
+   "margin": -2,
+   "won": false,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "4 GIORNATA:Caffè Matic Trottola Sport – 55–CSI Sasso Marconi 'A' – 57",
+   "boxscore": [
+    {
+     "player": "marconi-tiberio",
+     "starter": true,
+     "played": true,
+     "points": 18
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": true,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 7
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "monari-michele",
+     "starter": true,
+     "played": true,
+     "points": 8
+    },
+    {
+     "player": "malavolti-fabio",
+     "starter": false,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "zolin-mattia",
+     "starter": false,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "gentilini-nicola",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "carrieri-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 2
+    }
+   ],
+   "quarters": {
+    "us": [
+     18,
+     16,
+     8,
+     13
+    ],
+    "them": [
+     17,
+     12,
+     16,
+     12
+    ],
+    "usable": true,
+    "rawThem": [
+     17,
+     12,
+     16,
+     12
+    ],
+    "rawThemSum": 57,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 5,
+   "phase": "girone",
+   "phaseLabel": "5ª giornata",
+   "date": "2011-12-12",
+   "time": "21:15",
+   "home": "pontecchio",
+   "away": "trottola",
+   "homeScore": 59,
+   "awayScore": 74,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "pontecchio",
+   "ourScore": 74,
+   "theirScore": 59,
+   "margin": 15,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "5 GIORNATA:CSP Pontecchio Marconi – 59–Caffè Matic Trottola Sport – 74",
+   "boxscore": [
+    {
+     "player": "torracchi-matteo",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": true,
+     "played": true,
+     "points": 27
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": true,
+     "played": true,
+     "points": 11
+    },
+    {
+     "player": "carrieri-riccardo",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": true,
+     "played": true,
+     "points": 1
+    },
+    {
+     "player": "malavolti-fabio",
+     "starter": false,
+     "played": true,
+     "points": 11
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": false,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "nanni-jacopo",
+     "starter": false,
+     "played": true,
+     "points": 6
+    }
+   ],
+   "quarters": {
+    "us": [
+     19,
+     17,
+     17,
+     21
+    ],
+    "them": [
+     20,
+     10,
+     15,
+     14
+    ],
+    "usable": true,
+    "rawThem": [
+     20,
+     10,
+     15,
+     14
+    ],
+    "rawThemSum": 59,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 6,
+   "phase": "girone",
+   "phaseLabel": "6ª giornata",
+   "date": "2012-01-17",
+   "time": "22:15",
+   "home": "ceretolese",
+   "away": "trottola",
+   "homeScore": 47,
+   "awayScore": 58,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "ceretolese",
+   "ourScore": 58,
+   "theirScore": 47,
+   "margin": 11,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "6 GIORNATA:Polisportiva Ceretolese – 47–Caffè Matic Trottola Sport – 58",
+   "boxscore": [
+    {
+     "player": "gentilini-nicola",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": true,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 23
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "malavolti-fabio",
+     "starter": false,
+     "played": true,
+     "points": 16
+    }
+   ],
+   "quarters": {
+    "us": [
+     15,
+     7,
+     22,
+     14
+    ],
+    "them": [
+     6,
+     13,
+     9,
+     19
+    ],
+    "usable": true,
+    "rawThem": [
+     6,
+     13,
+     9,
+     19
+    ],
+    "rawThemSum": 47,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 7,
+   "phase": "girone",
+   "phaseLabel": "7ª giornata",
+   "date": "2012-01-23",
+   "time": "21:30",
+   "home": "amadeus",
+   "away": "trottola",
+   "homeScore": 54,
+   "awayScore": 42,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "amadeus",
+   "ourScore": 42,
+   "theirScore": 54,
+   "margin": -12,
+   "won": false,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "7 GIORNATA:Birreria Amadeus Thunder Basket – 54–Caffè Matic Trottola Sport – 42",
+   "boxscore": [
+    {
+     "player": "gentilini-nicola",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 11
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "malavolti-fabio",
+     "starter": false,
+     "played": true,
+     "points": 11
+    }
+   ],
+   "quarters": {
+    "us": [
+     11,
+     11,
+     9,
+     11
+    ],
+    "them": [
+     15,
+     17,
+     13,
+     9
+    ],
+    "usable": true,
+    "rawThem": [
+     15,
+     17,
+     13,
+     9
+    ],
+    "rawThemSum": 54,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 8,
+   "phase": "girone",
+   "phaseLabel": "8ª giornata",
+   "date": "2012-01-30",
+   "time": "21:45",
+   "home": "ghironda",
+   "away": "trottola",
+   "homeScore": 69,
+   "awayScore": 71,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "ghironda",
+   "ourScore": 71,
+   "theirScore": 69,
+   "margin": 2,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "8 GIORNATA:ASD Ghironda Basket – 69–Caffè Matic Trottola Sport – 71",
+   "boxscore": [
+    {
+     "player": "torracchi-matteo",
+     "starter": true,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 13
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": true,
+     "played": true,
+     "points": 14
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": true,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "gentilini-nicola",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "monari-michele",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": false,
+     "played": true,
+     "points": 16
+    },
+    {
+     "player": "malavolti-fabio",
+     "starter": false,
+     "played": true,
+     "points": 16
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": false,
+     "played": true,
+     "points": 0
+    }
+   ],
+   "quarters": {
+    "us": [
+     15,
+     11,
+     23,
+     22
+    ],
+    "them": [
+     19,
+     9,
+     24,
+     17
+    ],
+    "usable": true,
+    "rawThem": [
+     19,
+     9,
+     24,
+     17
+    ],
+    "rawThemSum": 69,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 9,
+   "phase": "girone",
+   "phaseLabel": "9ª giornata",
+   "date": "2012-02-18",
+   "time": "17:00",
+   "home": "sasso_a",
+   "away": "trottola",
+   "homeScore": 52,
+   "awayScore": 57,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "sasso_a",
+   "ourScore": 57,
+   "theirScore": 52,
+   "margin": 5,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "9 GIORNATA:CSI Sasso Marconi 'A' – 52–Caffè Matic Trottola Sport – 57",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 7
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 15
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": true,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": true,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 18
+    },
+    {
+     "player": "greco-paride",
+     "starter": false,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "monari-michele",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "gentilini-nicola",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": false,
+     "played": true,
+     "points": 1
+    }
+   ],
+   "quarters": {
+    "us": [
+     7,
+     13,
+     24,
+     13
+    ],
+    "them": [
+     9,
+     12,
+     15,
+     16
+    ],
+    "usable": true,
+    "rawThem": [
+     9,
+     12,
+     15,
+     16
+    ],
+    "rawThemSum": 52,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 10,
+   "phase": "girone",
+   "phaseLabel": "10ª giornata",
+   "date": "2012-02-23",
+   "time": "18:00",
+   "home": "trottola",
+   "away": "casalecchio",
+   "homeScore": 30,
+   "awayScore": 0,
+   "overtime": false,
+   "ourSide": "home",
+   "opponent": "casalecchio",
+   "ourScore": 30,
+   "theirScore": 0,
+   "margin": 30,
+   "won": true,
+   "forfeit": true,
+   "neutral": false,
+   "boxscoreTitle": "10 GIORNATA:Caffè Matic Trottola Sport – 30–CSI Casalecchio Vota Quimby – 0",
+   "boxscore": [],
+   "quarters": null
+  },
+  {
+   "seq": 11,
+   "phase": "girone",
+   "phaseLabel": "11ª giornata",
+   "date": "2012-02-25",
+   "time": "18:00",
+   "home": "trottola",
+   "away": "pontecchio",
+   "homeScore": 72,
+   "awayScore": 25,
+   "overtime": false,
+   "ourSide": "home",
+   "opponent": "pontecchio",
+   "ourScore": 72,
+   "theirScore": 25,
+   "margin": 47,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "11 GIORNATA:Caffè Matic Trottola Sport – 72–CSP Pontecchio Marconi – 25",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 17
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": true,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "greco-paride",
+     "starter": true,
+     "played": true,
+     "points": 8
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 14
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": true,
+     "points": 5
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 1
+    },
+    {
+     "player": "monari-michele",
+     "starter": false,
+     "played": true,
+     "points": 8
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "gentilini-nicola",
+     "starter": false,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 5
+    }
+   ],
+   "quarters": {
+    "us": [
+     15,
+     24,
+     12,
+     21
+    ],
+    "them": [
+     3,
+     6,
+     10,
+     6
+    ],
+    "usable": true,
+    "rawThem": [
+     3,
+     6,
+     10,
+     6
+    ],
+    "rawThemSum": 25,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 12,
+   "phase": "girone",
+   "phaseLabel": "12ª giornata",
+   "date": "2012-02-29",
+   "time": "22:00",
+   "home": "endurance",
+   "away": "trottola",
+   "homeScore": 45,
+   "awayScore": 88,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "endurance",
+   "ourScore": 88,
+   "theirScore": 45,
+   "margin": 43,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "12 GIORNATA:Endurance Web Solutions PP. on Fire – 43–Caffè Matic Trottola Sport – 88",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 12
+    },
+    {
+     "player": "monari-michele",
+     "starter": true,
+     "played": true,
+     "points": 13
+    },
+    {
+     "player": "greco-paride",
+     "starter": true,
+     "played": true,
+     "points": 17
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 12
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": true,
+     "played": true,
+     "points": 8
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": false,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": false,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    }
+   ],
+   "quarters": {
+    "us": [
+     20,
+     27,
+     22,
+     19
+    ],
+    "them": [
+     8,
+     11,
+     12,
+     14
+    ],
+    "usable": true,
+    "rawThem": [
+     8,
+     11,
+     12,
+     14
+    ],
+    "rawThemSum": 45,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 13,
+   "phase": "girone",
+   "phaseLabel": "13ª giornata",
+   "date": "2012-03-10",
+   "time": "18:00",
+   "home": "trottola",
+   "away": "ceretolese",
+   "homeScore": 64,
+   "awayScore": 44,
+   "overtime": false,
+   "ourSide": "home",
+   "opponent": "ceretolese",
+   "ourScore": 64,
+   "theirScore": 44,
+   "margin": 20,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "13 GIORNATA:Caffè Matic Trottola Sport – 64–Polisportiva Ceretolese – 44",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 7
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": true,
+     "played": true,
+     "points": 9
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 8
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": true,
+     "played": true,
+     "points": 13
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": true,
+     "played": true,
+     "points": 5
+    },
+    {
+     "player": "gentilini-nicola",
+     "starter": false,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "monari-michele",
+     "starter": false,
+     "played": true,
+     "points": 7
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "greco-paride",
+     "starter": false,
+     "played": true,
+     "points": 1
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "grassi-filippo",
+     "starter": false,
+     "played": true,
+     "points": 4
+    }
+   ],
+   "quarters": {
+    "us": [
+     14,
+     16,
+     22,
+     12
+    ],
+    "them": [
+     6,
+     20,
+     10,
+     8
+    ],
+    "usable": true,
+    "rawThem": [
+     6,
+     20,
+     10,
+     8
+    ],
+    "rawThemSum": 44,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 14,
+   "phase": "girone",
+   "phaseLabel": "14ª giornata",
+   "date": "2012-03-17",
+   "time": "18:00",
+   "home": "trottola",
+   "away": "endurance",
+   "homeScore": 67,
+   "awayScore": 58,
+   "overtime": false,
+   "ourSide": "home",
+   "opponent": "endurance",
+   "ourScore": 67,
+   "theirScore": 58,
+   "margin": 9,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "14 GIORNATA:Caffè Matic Trottola Sport – 67–Endurance Web Solutions PP. on Fire – 58",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "monari-michele",
+     "starter": true,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": true,
+     "played": true,
+     "points": 12
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 29
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": true,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "greco-paride",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": false,
+     "played": true,
+     "points": 5
+    },
+    {
+     "player": "gentilini-nicola",
+     "starter": false,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": false,
+     "played": true,
+     "points": 0
+    }
+   ],
+   "quarters": {
+    "us": [
+     18,
+     13,
+     14,
+     22
+    ],
+    "them": [
+     12,
+     15,
+     15,
+     16
+    ],
+    "usable": true,
+    "rawThem": [
+     12,
+     15,
+     15,
+     16
+    ],
+    "rawThemSum": 58,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 15,
+   "phase": "ottavi",
+   "phaseLabel": "Ottavi di finale",
+   "date": "2012-03-31",
+   "time": "18:00",
+   "home": "trottola",
+   "away": "ghepard",
+   "homeScore": 57,
+   "awayScore": 53,
+   "overtime": false,
+   "ourSide": "home",
+   "opponent": "ghepard",
+   "ourScore": 57,
+   "theirScore": 53,
+   "margin": 4,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "OTTAVI DI FINALE GARA 1:Caffè Matic Trottola Sport – 57–Tecnocem Ghepard 2003 – 53",
+   "boxscore": [
+    {
+     "player": "bartoletti-alberto",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 12
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": true,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 11
+    },
+    {
+     "player": "greco-paride",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "gentilini-nicola",
+     "starter": false,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "monari-michele",
+     "starter": false,
+     "played": true,
+     "points": 1
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 1
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": false,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "malavolti-fabio",
+     "starter": false,
+     "played": true,
+     "points": 8
+    }
+   ],
+   "quarters": {
+    "us": [
+     16,
+     17,
+     11,
+     13
+    ],
+    "them": [
+     16,
+     9,
+     13,
+     15
+    ],
+    "usable": true,
+    "rawThem": [
+     16,
+     9,
+     13,
+     15
+    ],
+    "rawThemSum": 53,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 16,
+   "phase": "ottavi",
+   "phaseLabel": "Ottavi di finale",
+   "date": "2012-04-03",
+   "time": "21:45",
+   "home": "ghepard",
+   "away": "trottola",
+   "homeScore": 54,
+   "awayScore": 63,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "ghepard",
+   "ourScore": 63,
+   "theirScore": 54,
+   "margin": 9,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "OTTAVI DI FINALE GARA 2:Tecnocem Ghepard 2003 – 54–Caffè Matic Trottola Sport – 63",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 15
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 9
+    },
+    {
+     "player": "greco-paride",
+     "starter": true,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 5
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": false,
+     "played": true,
+     "points": 11
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": false,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "monari-michele",
+     "starter": false,
+     "played": true,
+     "points": 8
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    }
+   ],
+   "quarters": {
+    "us": [
+     24,
+     15,
+     12,
+     12
+    ],
+    "them": [
+     14,
+     19,
+     11,
+     10
+    ],
+    "usable": true,
+    "rawThem": [
+     14,
+     19,
+     11,
+     10
+    ],
+    "rawThemSum": 54,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 17,
+   "phase": "quarti",
+   "phaseLabel": "Quarti di finale",
+   "date": "2012-04-27",
+   "time": "21:45",
+   "home": "granarolo",
+   "away": "trottola",
+   "homeScore": 59,
+   "awayScore": 55,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "granarolo",
+   "ourScore": 55,
+   "theirScore": 59,
+   "margin": -4,
+   "won": false,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "QUARTI DI FINALE GARA 1:Pallacanestro Granarolo – 59–Caffè Matic Trottola Sport – 55",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 23
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": true,
+     "played": true,
+     "points": 12
+    },
+    {
+     "player": "monari-michele",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": true,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "carrieri-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    }
+   ],
+   "quarters": {
+    "us": [
+     10,
+     16,
+     13,
+     16
+    ],
+    "them": [
+     19,
+     10,
+     18,
+     12
+    ],
+    "usable": true,
+    "rawThem": [
+     19,
+     10,
+     18,
+     12
+    ],
+    "rawThemSum": 59,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 18,
+   "phase": "quarti",
+   "phaseLabel": "Quarti di finale",
+   "date": "2012-05-05",
+   "time": "18:00",
+   "home": "trottola",
+   "away": "granarolo",
+   "homeScore": 60,
+   "awayScore": 57,
+   "overtime": false,
+   "ourSide": "home",
+   "opponent": "granarolo",
+   "ourScore": 60,
+   "theirScore": 57,
+   "margin": 3,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "QUARTI DI FINALE GARA 2:Caffè Matic Trottola Sport – 60–Pallacanestro Granarolo – 57",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 9
+    },
+    {
+     "player": "monari-michele",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": true,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": true,
+     "played": true,
+     "points": 20
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": false,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "greco-paride",
+     "starter": false,
+     "played": true,
+     "points": 1
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": false,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 4
+    }
+   ],
+   "quarters": {
+    "us": [
+     16,
+     17,
+     15,
+     12
+    ],
+    "them": [
+     16,
+     14,
+     18,
+     9
+    ],
+    "usable": true,
+    "rawThem": [
+     16,
+     14,
+     18,
+     9
+    ],
+    "rawThemSum": 57,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 19,
+   "phase": "quarti",
+   "phaseLabel": "Quarti di finale",
+   "date": "2012-05-11",
+   "time": "21:45",
+   "home": "granarolo",
+   "away": "trottola",
+   "homeScore": 51,
+   "awayScore": 52,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "granarolo",
+   "ourScore": 52,
+   "theirScore": 51,
+   "margin": 1,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "QUARTI DI FINALE GARA 3:Pallacanestro Granarolo – 51–Caffè Matic Trottola Sport – 52",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 7
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 12
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": true,
+     "played": true,
+     "points": 20
+    },
+    {
+     "player": "monari-michele",
+     "starter": true,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "greco-paride",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": false,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": false,
+     "played": true,
+     "points": 0
+    }
+   ],
+   "quarters": {
+    "us": [
+     10,
+     7,
+     14,
+     21
+    ],
+    "them": [
+     13,
+     11,
+     11,
+     16
+    ],
+    "usable": true,
+    "rawThem": [
+     13,
+     11,
+     11,
+     16
+    ],
+    "rawThemSum": 51,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 20,
+   "phase": "semifinale",
+   "phaseLabel": "Semifinale",
+   "date": "2012-05-19",
+   "time": "18:30",
+   "home": "trottola",
+   "away": "zola",
+   "homeScore": 87,
+   "awayScore": 77,
+   "overtime": false,
+   "ourSide": "home",
+   "opponent": "zola",
+   "ourScore": 87,
+   "theirScore": 77,
+   "margin": 10,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "SEMIFINALE GARA 1:Caffè Matic Trottola Sport – 87–Pallacanestro Zola Predosa – 77",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 14
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 17
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": true,
+     "played": true,
+     "points": 23
+    },
+    {
+     "player": "monari-michele",
+     "starter": true,
+     "played": true,
+     "points": 12
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 4
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "greco-paride",
+     "starter": false,
+     "played": true,
+     "points": 8
+    },
+    {
+     "player": "marchioni-ermes",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": false,
+     "points": null
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": false,
+     "played": true,
+     "points": 0
+    }
+   ],
+   "quarters": {
+    "us": [
+     24,
+     16,
+     17,
+     30
+    ],
+    "them": [
+     13,
+     9,
+     24,
+     31
+    ],
+    "usable": true,
+    "rawThem": [
+     13,
+     9,
+     24,
+     31
+    ],
+    "rawThemSum": 77,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 21,
+   "phase": "semifinale",
+   "phaseLabel": "Semifinale",
+   "date": "2012-05-23",
+   "time": "22:00",
+   "home": "zola",
+   "away": "trottola",
+   "homeScore": 76,
+   "awayScore": 63,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "zola",
+   "ourScore": 63,
+   "theirScore": 76,
+   "margin": -13,
+   "won": false,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "SEMIFINALE GARA 2:Pallacanestro Zola Predosa – 76–Caffè Matic Trottola Sport – 63",
+   "boxscore": [
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": true,
+     "played": true,
+     "points": 18
+    },
+    {
+     "player": "monari-michele",
+     "starter": true,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "greco-paride",
+     "starter": true,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": true,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "malavolti-fabio",
+     "starter": false,
+     "played": true,
+     "points": 19
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": false,
+     "played": true,
+     "points": 12
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": false,
+     "played": true,
+     "points": 0
+    }
+   ],
+   "quarters": {
+    "us": [
+     12,
+     14,
+     14,
+     23
+    ],
+    "them": [
+     17,
+     23,
+     8,
+     28
+    ],
+    "usable": true,
+    "rawThem": [
+     17,
+     23,
+     8,
+     28
+    ],
+    "rawThemSum": 76,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 22,
+   "phase": "semifinale",
+   "phaseLabel": "Semifinale",
+   "date": "2012-06-02",
+   "time": "18:00",
+   "home": "trottola",
+   "away": "zola",
+   "homeScore": 79,
+   "awayScore": 68,
+   "overtime": false,
+   "ourSide": "home",
+   "opponent": "zola",
+   "ourScore": 79,
+   "theirScore": 68,
+   "margin": 11,
+   "won": true,
+   "forfeit": false,
+   "neutral": false,
+   "boxscoreTitle": "SEMIFINALE GARA 3:Caffè Matic Trottola Sport – 79–Pallacanestro Zola Predosa – 68",
+   "boxscore": [
+    {
+     "player": "malavolti-fabio",
+     "starter": true,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "monari-michele",
+     "starter": true,
+     "played": true,
+     "points": 7
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "scardovi-nicola",
+     "starter": true,
+     "played": true,
+     "points": 1
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "greco-paride",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": false,
+     "played": true,
+     "points": 13
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": false,
+     "played": true,
+     "points": 29
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    },
+    {
+     "player": "carrieri-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 0
+    }
+   ],
+   "quarters": {
+    "us": [
+     20,
+     12,
+     28,
+     19
+    ],
+    "them": [
+     15,
+     15,
+     16,
+     22
+    ],
+    "usable": true,
+    "rawThem": [
+     15,
+     15,
+     16,
+     22
+    ],
+    "rawThemSum": 68,
+    "correctedThem": false
+   }
+  },
+  {
+   "seq": 23,
+   "phase": "finale",
+   "phaseLabel": "Finale",
+   "date": "2012-06-09",
+   "time": "12:30",
+   "home": "amadeus",
+   "away": "trottola",
+   "homeScore": 55,
+   "awayScore": 66,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "amadeus",
+   "ourScore": 66,
+   "theirScore": 55,
+   "margin": 11,
+   "won": true,
+   "forfeit": false,
+   "neutral": true,
+   "boxscoreTitle": "FINALE AL PALASPORT DI LOIANOVIA G. MARCONI 40:–Birreria Amadeus Thunder Basket – 55–Caffè Matic Trottola Sport – 66",
+   "boxscore": [
+    {
+     "player": "scardovi-nicola",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": true,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": true,
+     "played": true,
+     "points": 7
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 14
+    },
+    {
+     "player": "monari-michele",
+     "starter": true,
+     "played": true,
+     "points": 5
+    },
+    {
+     "player": "gentilini-nicola",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "greco-paride",
+     "starter": false,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": false,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": false,
+     "played": true,
+     "points": 1
+    }
+   ],
+   "quarters": {
+    "us": [
+     13,
+     18,
+     8,
+     27
+    ],
+    "them": [
+     4,
+     16,
+     14,
+     21
+    ],
+    "usable": true,
+    "rawThem": [
+     4,
+     16,
+     14,
+     21
+    ],
+    "rawThemSum": 55,
+    "correctedThem": false
+   }
+  }
+ ],
+ "playerStats": [
+  {
+   "player": "marconi-tiberio",
+   "points": 282,
+   "games": 18,
+   "played": 18,
+   "starts": 10,
+   "high": 29,
+   "doubleFigures": 15,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 19,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 23,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": 19,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 18,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 5,
+     "date": "2011-12-12",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 27,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 16,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 3,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 10,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 4,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 11,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 12,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 20,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 20,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 23,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 18,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 29,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 10,
+     "starter": true,
+     "played": true
+    }
+   ],
+   "average": 15.666666666666666
+  },
+  {
+   "player": "malavolti-fabio",
+   "points": 247,
+   "games": 21,
+   "played": 21,
+   "starts": 13,
+   "high": 23,
+   "doubleFigures": 13,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 11,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 8,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": 16,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 4,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 5,
+     "date": "2011-12-12",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 11,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 6,
+     "date": "2012-01-17",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 16,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 11,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 16,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 7,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 17,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 12,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 7,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 8,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 15,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 23,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 9,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 7,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 14,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 19,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 10,
+     "starter": true,
+     "played": true
+    }
+   ],
+   "average": 11.761904761904763
+  },
+  {
+   "player": "maranelli-roberto",
+   "points": 203,
+   "games": 19,
+   "played": 19,
+   "starts": 17,
+   "high": 23,
+   "doubleFigures": 13,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 12,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 10,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": 12,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 10,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 6,
+     "date": "2012-01-17",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 23,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 11,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 13,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 15,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 2,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 5,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 12,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 9,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 4,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 6,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 12,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 17,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 10,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 14,
+     "starter": true,
+     "played": true
+    }
+   ],
+   "average": 10.68421052631579
+  },
+  {
+   "player": "bruni-kristian",
+   "points": 199,
+   "games": 20,
+   "played": 20,
+   "starts": 15,
+   "high": 29,
+   "doubleFigures": 11,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 7,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 11,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": 4,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 7,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 6,
+     "date": "2012-01-17",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 4,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 10,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 10,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 18,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 14,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 12,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 8,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 29,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 11,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 5,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 4,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 6,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 4,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 12,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 13,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 10,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 9.95
+  },
+  {
+   "player": "monari-michele",
+   "points": 88,
+   "games": 19,
+   "played": 19,
+   "starts": 10,
+   "high": 13,
+   "doubleFigures": 2,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 6,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 8,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 8,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 13,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 7,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 0,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 1,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 8,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 2,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 3,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 12,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 0,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 7,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 5,
+     "starter": true,
+     "played": true
+    }
+   ],
+   "average": 4.631578947368421
+  },
+  {
+   "player": "malavolti-sergio",
+   "points": 78,
+   "games": 18,
+   "played": 18,
+   "starts": 10,
+   "high": 14,
+   "doubleFigures": 3,
+   "log": [
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": 3,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 0,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 5,
+     "date": "2011-12-12",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 11,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 6,
+     "date": "2012-01-17",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 2,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 14,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 10,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 9,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 3,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 0,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 3,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 2,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 7,
+     "starter": true,
+     "played": true
+    }
+   ],
+   "average": 4.333333333333333
+  },
+  {
+   "player": "bartoletti-alberto",
+   "points": 71,
+   "games": 16,
+   "played": 16,
+   "starts": 11,
+   "high": 13,
+   "doubleFigures": 2,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 4,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 8,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 4,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 3,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 8,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 13,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 12,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 0,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 1,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 4.4375
+  },
+  {
+   "player": "greco-paride",
+   "points": 66,
+   "games": 13,
+   "played": 13,
+   "starts": 5,
+   "high": 17,
+   "doubleFigures": 1,
+   "log": [
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 4,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 8,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 17,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 1,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 3,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 1,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 8,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 6,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 5.076923076923077
+  },
+  {
+   "player": "gentilini-nicola",
+   "points": 46,
+   "games": 12,
+   "played": 12,
+   "starts": 2,
+   "high": 10,
+   "doubleFigures": 1,
+   "log": [
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": 6,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 6,
+     "date": "2012-01-17",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 2,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 2,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 6,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 6,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 10,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 6,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 2,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 3.8333333333333335
+  },
+  {
+   "player": "scardovi-nicola",
+   "points": 38,
+   "games": 15,
+   "played": 14,
+   "starts": 6,
+   "high": 10,
+   "doubleFigures": 1,
+   "log": [
+    {
+     "seq": 5,
+     "date": "2011-12-12",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 10,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 6,
+     "date": "2012-01-17",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 1,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 4,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 2,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 0,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 1,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 2,
+     "starter": true,
+     "played": true
+    }
+   ],
+   "average": 2.7142857142857144
+  },
+  {
+   "player": "ugolini-riccardo",
+   "points": 31,
+   "games": 18,
+   "played": 18,
+   "starts": 3,
+   "high": 5,
+   "doubleFigures": 0,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 5,
+     "date": "2011-12-12",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 1,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 6,
+     "date": "2012-01-17",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 0,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 1,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 5,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 3,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 4,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 3,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 1.7222222222222223
+  },
+  {
+   "player": "mellini-valerio",
+   "points": 27,
+   "games": 20,
+   "played": 20,
+   "starts": 1,
+   "high": 5,
+   "doubleFigures": 0,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 5,
+     "date": "2011-12-12",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 6,
+     "date": "2012-01-17",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 0,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 5,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 4,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 1,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 3,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 4,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 3,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 3,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 1.35
+  },
+  {
+   "player": "torracchi-matteo",
+   "points": 16,
+   "games": 20,
+   "played": 17,
+   "starts": 6,
+   "high": 3,
+   "doubleFigures": 0,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 0,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 2,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 5,
+     "date": "2011-12-12",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 2,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 6,
+     "date": "2012-01-17",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 3,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 2,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 0,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "points": 3,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 0.9411764705882353
+  },
+  {
+   "player": "zolin-mattia",
+   "points": 9,
+   "games": 3,
+   "played": 3,
+   "starts": 0,
+   "high": 5,
+   "doubleFigures": 0,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": 5,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 4,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 3.0
+  },
+  {
+   "player": "carrieri-riccardo",
+   "points": 8,
+   "games": 7,
+   "played": 6,
+   "starts": 1,
+   "high": 6,
+   "doubleFigures": 0,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 5,
+     "date": "2011-12-12",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 6,
+     "starter": true,
+     "played": true
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": 0,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 1.3333333333333333
+  },
+  {
+   "player": "marchioni-ermes",
+   "points": 7,
+   "games": 14,
+   "played": 5,
+   "starts": 0,
+   "high": 5,
+   "doubleFigures": 0,
+   "log": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 5,
+     "date": "2011-12-12",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 6,
+     "date": "2012-01-17",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 5,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 2,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "points": null,
+     "starter": false,
+     "played": false
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "points": null,
+     "starter": false,
+     "played": false
+    }
+   ],
+   "average": 1.4
+  },
+  {
+   "player": "nanni-jacopo",
+   "points": 6,
+   "games": 1,
+   "played": 1,
+   "starts": 0,
+   "high": 6,
+   "doubleFigures": 0,
+   "log": [
+    {
+     "seq": 5,
+     "date": "2011-12-12",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "points": 6,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 6.0
+  },
+  {
+   "player": "grassi-filippo",
+   "points": 4,
+   "games": 1,
+   "played": 1,
+   "starts": 0,
+   "high": 4,
+   "doubleFigures": 0,
+   "log": [
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "points": 4,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 4.0
+  },
+  {
+   "player": "gherardini-matia",
+   "points": 2,
+   "games": 2,
+   "played": 2,
+   "starts": 0,
+   "high": 2,
+   "doubleFigures": 0,
+   "log": [
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "points": 0,
+     "starter": false,
+     "played": true
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "points": 2,
+     "starter": false,
+     "played": true
+    }
+   ],
+   "average": 1.0
+  }
+ ],
+ "group": {
+  "table": [
+   {
+    "team": "amadeus",
+    "pts": 37,
+    "g": 14,
+    "v": 12,
+    "p": 2,
+    "pf": 947,
+    "ps": 699,
+    "noShow": 0,
+    "qp": 2.642857142857143,
+    "qc": 1.3547925608011444,
+    "qtot": 3.997649703658287,
+    "pos": 1
+   },
+   {
+    "team": "trottola",
+    "pts": 33,
+    "g": 14,
+    "v": 11,
+    "p": 3,
+    "pf": 876,
+    "ps": 698,
+    "noShow": 0,
+    "qp": 2.357142857142857,
+    "qc": 1.2550143266475644,
+    "qtot": 3.612157183790422,
+    "pos": 2
+   },
+   {
+    "team": "ghironda",
+    "pts": 33,
+    "g": 14,
+    "v": 11,
+    "p": 3,
+    "pf": 971,
+    "ps": 850,
+    "noShow": 0,
+    "qp": 2.357142857142857,
+    "qc": 1.1423529411764706,
+    "qtot": 3.4994957983193276,
+    "pos": 3
+   },
+   {
+    "team": "sasso_a",
+    "pts": 23,
+    "g": 14,
+    "v": 8,
+    "p": 6,
+    "pf": 944,
+    "ps": 892,
+    "noShow": 0,
+    "qp": 1.6428571428571428,
+    "qc": 1.0582959641255605,
+    "qtot": 2.7011531069827033,
+    "pos": 4
+   },
+   {
+    "team": "endurance",
+    "pts": 18,
+    "g": 14,
+    "v": 6,
+    "p": 8,
+    "pf": 842,
+    "ps": 928,
+    "noShow": 0,
+    "qp": 1.2857142857142858,
+    "qc": 0.9073275862068966,
+    "qtot": 2.1930418719211824,
+    "pos": 5
+   },
+   {
+    "team": "casalecchio",
+    "pts": 15,
+    "g": 14,
+    "v": 5,
+    "p": 9,
+    "pf": 918,
+    "ps": 1000,
+    "noShow": 1,
+    "qp": 1.0714285714285714,
+    "qc": 0.918,
+    "qtot": 1.9894285714285713,
+    "pos": 6
+   },
+   {
+    "team": "ceretolese",
+    "pts": 5,
+    "g": 14,
+    "v": 2,
+    "p": 12,
+    "pf": 711,
+    "ps": 852,
+    "noShow": 0,
+    "qp": 0.35714285714285715,
+    "qc": 0.8345070422535211,
+    "qtot": 1.1916498993963782,
+    "pos": 7
+   },
+   {
+    "team": "pontecchio",
+    "pts": 3,
+    "g": 14,
+    "v": 1,
+    "p": 13,
+    "pf": 746,
+    "ps": 1036,
+    "noShow": 0,
+    "qp": 0.21428571428571427,
+    "qc": 0.7200772200772201,
+    "qtot": 0.9343629343629344,
+    "pos": 8
+   }
+  ],
+  "fixtures": [
+   {
+    "matchday": 1,
+    "date": "2011-11-12",
+    "home": "trottola",
+    "away": "amadeus",
+    "homeScore": 58,
+    "awayScore": 60,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 1,
+    "date": "2011-11-07",
+    "home": "casalecchio",
+    "away": "ceretolese",
+    "homeScore": 81,
+    "awayScore": 69,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 1,
+    "date": "2011-11-06",
+    "home": "sasso_a",
+    "away": "endurance",
+    "homeScore": 69,
+    "awayScore": 58,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 1,
+    "date": "2011-12-05",
+    "home": "ghironda",
+    "away": "pontecchio",
+    "homeScore": 90,
+    "awayScore": 53,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 2,
+    "date": "2011-11-14",
+    "home": "pontecchio",
+    "away": "endurance",
+    "homeScore": 39,
+    "awayScore": 75,
+    "overtime": false,
+    "note": "inversione campo"
+   },
+   {
+    "matchday": 2,
+    "date": "2011-11-15",
+    "home": "ceretolese",
+    "away": "sasso_a",
+    "homeScore": 49,
+    "awayScore": 59,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 2,
+    "date": "2011-11-14",
+    "home": "amadeus",
+    "away": "casalecchio",
+    "homeScore": 94,
+    "awayScore": 60,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 2,
+    "date": "2011-11-19",
+    "home": "trottola",
+    "away": "ghironda",
+    "homeScore": 72,
+    "awayScore": 61,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 3,
+    "date": "2011-11-21",
+    "home": "casalecchio",
+    "away": "trottola",
+    "homeScore": 67,
+    "awayScore": 68,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 3,
+    "date": "2011-11-20",
+    "home": "sasso_a",
+    "away": "amadeus",
+    "homeScore": 84,
+    "awayScore": 76,
+    "overtime": true,
+    "note": ""
+   },
+   {
+    "matchday": 3,
+    "date": "2011-11-21",
+    "home": "pontecchio",
+    "away": "ceretolese",
+    "homeScore": 52,
+    "awayScore": 44,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 3,
+    "date": "2011-11-21",
+    "home": "ghironda",
+    "away": "endurance",
+    "homeScore": 68,
+    "awayScore": 57,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 4,
+    "date": "2011-11-29",
+    "home": "ceretolese",
+    "away": "endurance",
+    "homeScore": 45,
+    "awayScore": 47,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 4,
+    "date": "2011-11-28",
+    "home": "amadeus",
+    "away": "pontecchio",
+    "homeScore": 63,
+    "awayScore": 38,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 4,
+    "date": "2011-12-03",
+    "home": "trottola",
+    "away": "sasso_a",
+    "homeScore": 55,
+    "awayScore": 57,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 4,
+    "date": "2011-11-28",
+    "home": "casalecchio",
+    "away": "ghironda",
+    "homeScore": 66,
+    "awayScore": 79,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 5,
+    "date": "2012-01-22",
+    "home": "sasso_a",
+    "away": "casalecchio",
+    "homeScore": 68,
+    "awayScore": 55,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 5,
+    "date": "2011-12-12",
+    "home": "pontecchio",
+    "away": "trottola",
+    "homeScore": 59,
+    "awayScore": 74,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 5,
+    "date": "2011-12-14",
+    "home": "endurance",
+    "away": "amadeus",
+    "homeScore": 45,
+    "awayScore": 60,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 5,
+    "date": "2011-12-12",
+    "home": "ghironda",
+    "away": "ceretolese",
+    "homeScore": 66,
+    "awayScore": 38,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 6,
+    "date": "2012-01-09",
+    "home": "amadeus",
+    "away": "ceretolese",
+    "homeScore": 64,
+    "awayScore": 32,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 6,
+    "date": "2012-03-17",
+    "home": "trottola",
+    "away": "endurance",
+    "homeScore": 67,
+    "awayScore": 58,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 6,
+    "date": "2012-01-09",
+    "home": "casalecchio",
+    "away": "pontecchio",
+    "homeScore": 87,
+    "awayScore": 66,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 6,
+    "date": "2012-03-01",
+    "home": "sasso_a",
+    "away": "ghironda",
+    "homeScore": 50,
+    "awayScore": 67,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 7,
+    "date": "2012-01-16",
+    "home": "pontecchio",
+    "away": "sasso_a",
+    "homeScore": 59,
+    "awayScore": 83,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 7,
+    "date": "2012-01-18",
+    "home": "endurance",
+    "away": "casalecchio",
+    "homeScore": 77,
+    "awayScore": 67,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 7,
+    "date": "2012-01-17",
+    "home": "ceretolese",
+    "away": "trottola",
+    "homeScore": 47,
+    "awayScore": 58,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 7,
+    "date": "2012-01-16",
+    "home": "ghironda",
+    "away": "amadeus",
+    "homeScore": 68,
+    "awayScore": 63,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 8,
+    "date": "2012-01-23",
+    "home": "amadeus",
+    "away": "trottola",
+    "homeScore": 54,
+    "awayScore": 42,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 8,
+    "date": "2012-01-24",
+    "home": "ceretolese",
+    "away": "casalecchio",
+    "homeScore": 52,
+    "awayScore": 48,
+    "overtime": true,
+    "note": ""
+   },
+   {
+    "matchday": 8,
+    "date": "2012-01-25",
+    "home": "endurance",
+    "away": "sasso_a",
+    "homeScore": 73,
+    "awayScore": 71,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 8,
+    "date": "2012-01-23",
+    "home": "pontecchio",
+    "away": "ghironda",
+    "homeScore": 48,
+    "awayScore": 64,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 9,
+    "date": "2012-02-22",
+    "home": "endurance",
+    "away": "pontecchio",
+    "homeScore": 81,
+    "awayScore": 77,
+    "overtime": false,
+    "note": "inversione campo"
+   },
+   {
+    "matchday": 9,
+    "date": "2012-01-29",
+    "home": "sasso_a",
+    "away": "ceretolese",
+    "homeScore": 65,
+    "awayScore": 47,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 9,
+    "date": "2012-01-30",
+    "home": "casalecchio",
+    "away": "amadeus",
+    "homeScore": 49,
+    "awayScore": 85,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 9,
+    "date": "2012-01-30",
+    "home": "ghironda",
+    "away": "trottola",
+    "homeScore": 69,
+    "awayScore": 71,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 10,
+    "date": "2012-02-23",
+    "home": "trottola",
+    "away": "casalecchio",
+    "homeScore": 30,
+    "awayScore": 0,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 10,
+    "date": "2012-02-23",
+    "home": "amadeus",
+    "away": "sasso_a",
+    "homeScore": 67,
+    "awayScore": 40,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 10,
+    "date": "2012-03-16",
+    "home": "ceretolese",
+    "away": "pontecchio",
+    "homeScore": 76,
+    "awayScore": 61,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 10,
+    "date": "2012-03-07",
+    "home": "endurance",
+    "away": "ghironda",
+    "homeScore": 60,
+    "awayScore": 69,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 11,
+    "date": "2012-03-14",
+    "home": "endurance",
+    "away": "ceretolese",
+    "homeScore": 57,
+    "awayScore": 54,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 11,
+    "date": "2012-03-12",
+    "home": "pontecchio",
+    "away": "amadeus",
+    "homeScore": 48,
+    "awayScore": 65,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 11,
+    "date": "2012-02-18",
+    "home": "sasso_a",
+    "away": "trottola",
+    "homeScore": 52,
+    "awayScore": 57,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 11,
+    "date": "2012-03-12",
+    "home": "ghironda",
+    "away": "casalecchio",
+    "homeScore": 84,
+    "awayScore": 79,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 12,
+    "date": "2012-02-20",
+    "home": "casalecchio",
+    "away": "sasso_a",
+    "homeScore": 95,
+    "awayScore": 92,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 12,
+    "date": "2012-02-25",
+    "home": "trottola",
+    "away": "pontecchio",
+    "homeScore": 72,
+    "awayScore": 25,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 12,
+    "date": "2012-02-20",
+    "home": "amadeus",
+    "away": "endurance",
+    "homeScore": 66,
+    "awayScore": 36,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 12,
+    "date": "2012-02-24",
+    "home": "ceretolese",
+    "away": "ghironda",
+    "homeScore": 60,
+    "awayScore": 65,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 13,
+    "date": "2012-03-02",
+    "home": "ceretolese",
+    "away": "amadeus",
+    "homeScore": 54,
+    "awayScore": 65,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 13,
+    "date": "2012-02-29",
+    "home": "endurance",
+    "away": "trottola",
+    "homeScore": 45,
+    "awayScore": 88,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 13,
+    "date": "2012-03-08",
+    "home": "pontecchio",
+    "away": "casalecchio",
+    "homeScore": 63,
+    "awayScore": 76,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 13,
+    "date": "2012-02-27",
+    "home": "ghironda",
+    "away": "sasso_a",
+    "homeScore": 76,
+    "awayScore": 68,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 14,
+    "date": "2012-03-03",
+    "home": "sasso_a",
+    "away": "pontecchio",
+    "homeScore": 86,
+    "awayScore": 58,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 14,
+    "date": "2012-03-05",
+    "home": "casalecchio",
+    "away": "endurance",
+    "homeScore": 88,
+    "awayScore": 73,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 14,
+    "date": "2012-03-10",
+    "home": "trottola",
+    "away": "ceretolese",
+    "homeScore": 64,
+    "awayScore": 44,
+    "overtime": false,
+    "note": ""
+   },
+   {
+    "matchday": 14,
+    "date": "2012-03-05",
+    "home": "amadeus",
+    "away": "ghironda",
+    "homeScore": 65,
+    "awayScore": 45,
+    "overtime": false,
+    "note": ""
+   }
+  ],
+  "race": [
+   {
+    "matchday": 1,
+    "rows": [
+     {
+      "team": "ghironda",
+      "pos": 1,
+      "pts": 3,
+      "g": 1
+     },
+     {
+      "team": "sasso_a",
+      "pos": 2,
+      "pts": 3,
+      "g": 1
+     },
+     {
+      "team": "casalecchio",
+      "pos": 3,
+      "pts": 3,
+      "g": 1
+     },
+     {
+      "team": "amadeus",
+      "pos": 4,
+      "pts": 3,
+      "g": 1
+     },
+     {
+      "team": "trottola",
+      "pos": 5,
+      "pts": 0,
+      "g": 1
+     },
+     {
+      "team": "ceretolese",
+      "pos": 6,
+      "pts": 0,
+      "g": 1
+     },
+     {
+      "team": "endurance",
+      "pos": 7,
+      "pts": 0,
+      "g": 1
+     },
+     {
+      "team": "pontecchio",
+      "pos": 8,
+      "pts": 0,
+      "g": 1
+     }
+    ]
+   },
+   {
+    "matchday": 2,
+    "rows": [
+     {
+      "team": "amadeus",
+      "pos": 1,
+      "pts": 6,
+      "g": 2
+     },
+     {
+      "team": "sasso_a",
+      "pos": 2,
+      "pts": 6,
+      "g": 2
+     },
+     {
+      "team": "endurance",
+      "pos": 3,
+      "pts": 3,
+      "g": 2
+     },
+     {
+      "team": "ghironda",
+      "pos": 4,
+      "pts": 3,
+      "g": 2
+     },
+     {
+      "team": "trottola",
+      "pos": 5,
+      "pts": 3,
+      "g": 2
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 3,
+      "g": 2
+     },
+     {
+      "team": "ceretolese",
+      "pos": 7,
+      "pts": 0,
+      "g": 2
+     },
+     {
+      "team": "pontecchio",
+      "pos": 8,
+      "pts": 0,
+      "g": 2
+     }
+    ]
+   },
+   {
+    "matchday": 3,
+    "rows": [
+     {
+      "team": "sasso_a",
+      "pos": 1,
+      "pts": 8,
+      "g": 3
+     },
+     {
+      "team": "amadeus",
+      "pos": 2,
+      "pts": 7,
+      "g": 3
+     },
+     {
+      "team": "ghironda",
+      "pos": 3,
+      "pts": 6,
+      "g": 3
+     },
+     {
+      "team": "trottola",
+      "pos": 4,
+      "pts": 6,
+      "g": 3
+     },
+     {
+      "team": "endurance",
+      "pos": 5,
+      "pts": 3,
+      "g": 3
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 3,
+      "g": 3
+     },
+     {
+      "team": "pontecchio",
+      "pos": 7,
+      "pts": 3,
+      "g": 3
+     },
+     {
+      "team": "ceretolese",
+      "pos": 8,
+      "pts": 0,
+      "g": 3
+     }
+    ]
+   },
+   {
+    "matchday": 4,
+    "rows": [
+     {
+      "team": "sasso_a",
+      "pos": 1,
+      "pts": 11,
+      "g": 4
+     },
+     {
+      "team": "amadeus",
+      "pos": 2,
+      "pts": 10,
+      "g": 4
+     },
+     {
+      "team": "ghironda",
+      "pos": 3,
+      "pts": 9,
+      "g": 4
+     },
+     {
+      "team": "endurance",
+      "pos": 4,
+      "pts": 6,
+      "g": 4
+     },
+     {
+      "team": "trottola",
+      "pos": 5,
+      "pts": 6,
+      "g": 4
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 3,
+      "g": 4
+     },
+     {
+      "team": "pontecchio",
+      "pos": 7,
+      "pts": 3,
+      "g": 4
+     },
+     {
+      "team": "ceretolese",
+      "pos": 8,
+      "pts": 0,
+      "g": 4
+     }
+    ]
+   },
+   {
+    "matchday": 5,
+    "rows": [
+     {
+      "team": "sasso_a",
+      "pos": 1,
+      "pts": 14,
+      "g": 5
+     },
+     {
+      "team": "amadeus",
+      "pos": 2,
+      "pts": 13,
+      "g": 5
+     },
+     {
+      "team": "ghironda",
+      "pos": 3,
+      "pts": 12,
+      "g": 5
+     },
+     {
+      "team": "trottola",
+      "pos": 4,
+      "pts": 9,
+      "g": 5
+     },
+     {
+      "team": "endurance",
+      "pos": 5,
+      "pts": 6,
+      "g": 5
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 3,
+      "g": 5
+     },
+     {
+      "team": "pontecchio",
+      "pos": 7,
+      "pts": 3,
+      "g": 5
+     },
+     {
+      "team": "ceretolese",
+      "pos": 8,
+      "pts": 0,
+      "g": 5
+     }
+    ]
+   },
+   {
+    "matchday": 6,
+    "rows": [
+     {
+      "team": "amadeus",
+      "pos": 1,
+      "pts": 16,
+      "g": 6
+     },
+     {
+      "team": "ghironda",
+      "pos": 2,
+      "pts": 15,
+      "g": 6
+     },
+     {
+      "team": "sasso_a",
+      "pos": 3,
+      "pts": 14,
+      "g": 6
+     },
+     {
+      "team": "trottola",
+      "pos": 4,
+      "pts": 12,
+      "g": 6
+     },
+     {
+      "team": "endurance",
+      "pos": 5,
+      "pts": 6,
+      "g": 6
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 6,
+      "g": 6
+     },
+     {
+      "team": "pontecchio",
+      "pos": 7,
+      "pts": 3,
+      "g": 6
+     },
+     {
+      "team": "ceretolese",
+      "pos": 8,
+      "pts": 0,
+      "g": 6
+     }
+    ]
+   },
+   {
+    "matchday": 7,
+    "rows": [
+     {
+      "team": "ghironda",
+      "pos": 1,
+      "pts": 18,
+      "g": 7
+     },
+     {
+      "team": "sasso_a",
+      "pos": 2,
+      "pts": 17,
+      "g": 7
+     },
+     {
+      "team": "amadeus",
+      "pos": 3,
+      "pts": 16,
+      "g": 7
+     },
+     {
+      "team": "trottola",
+      "pos": 4,
+      "pts": 15,
+      "g": 7
+     },
+     {
+      "team": "endurance",
+      "pos": 5,
+      "pts": 9,
+      "g": 7
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 6,
+      "g": 7
+     },
+     {
+      "team": "pontecchio",
+      "pos": 7,
+      "pts": 3,
+      "g": 7
+     },
+     {
+      "team": "ceretolese",
+      "pos": 8,
+      "pts": 0,
+      "g": 7
+     }
+    ]
+   },
+   {
+    "matchday": 8,
+    "rows": [
+     {
+      "team": "ghironda",
+      "pos": 1,
+      "pts": 21,
+      "g": 8
+     },
+     {
+      "team": "amadeus",
+      "pos": 2,
+      "pts": 19,
+      "g": 8
+     },
+     {
+      "team": "sasso_a",
+      "pos": 3,
+      "pts": 17,
+      "g": 8
+     },
+     {
+      "team": "trottola",
+      "pos": 4,
+      "pts": 15,
+      "g": 8
+     },
+     {
+      "team": "endurance",
+      "pos": 5,
+      "pts": 12,
+      "g": 8
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 7,
+      "g": 8
+     },
+     {
+      "team": "pontecchio",
+      "pos": 7,
+      "pts": 3,
+      "g": 8
+     },
+     {
+      "team": "ceretolese",
+      "pos": 8,
+      "pts": 2,
+      "g": 8
+     }
+    ]
+   },
+   {
+    "matchday": 9,
+    "rows": [
+     {
+      "team": "amadeus",
+      "pos": 1,
+      "pts": 22,
+      "g": 9
+     },
+     {
+      "team": "ghironda",
+      "pos": 2,
+      "pts": 21,
+      "g": 9
+     },
+     {
+      "team": "sasso_a",
+      "pos": 3,
+      "pts": 20,
+      "g": 9
+     },
+     {
+      "team": "trottola",
+      "pos": 4,
+      "pts": 18,
+      "g": 9
+     },
+     {
+      "team": "endurance",
+      "pos": 5,
+      "pts": 15,
+      "g": 9
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 7,
+      "g": 9
+     },
+     {
+      "team": "pontecchio",
+      "pos": 7,
+      "pts": 3,
+      "g": 9
+     },
+     {
+      "team": "ceretolese",
+      "pos": 8,
+      "pts": 2,
+      "g": 9
+     }
+    ]
+   },
+   {
+    "matchday": 10,
+    "rows": [
+     {
+      "team": "amadeus",
+      "pos": 1,
+      "pts": 25,
+      "g": 10
+     },
+     {
+      "team": "ghironda",
+      "pos": 2,
+      "pts": 24,
+      "g": 10
+     },
+     {
+      "team": "trottola",
+      "pos": 3,
+      "pts": 21,
+      "g": 10
+     },
+     {
+      "team": "sasso_a",
+      "pos": 4,
+      "pts": 20,
+      "g": 10
+     },
+     {
+      "team": "endurance",
+      "pos": 5,
+      "pts": 15,
+      "g": 10
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 6,
+      "g": 10
+     },
+     {
+      "team": "ceretolese",
+      "pos": 7,
+      "pts": 5,
+      "g": 10
+     },
+     {
+      "team": "pontecchio",
+      "pos": 8,
+      "pts": 3,
+      "g": 10
+     }
+    ]
+   },
+   {
+    "matchday": 11,
+    "rows": [
+     {
+      "team": "amadeus",
+      "pos": 1,
+      "pts": 28,
+      "g": 11
+     },
+     {
+      "team": "ghironda",
+      "pos": 2,
+      "pts": 27,
+      "g": 11
+     },
+     {
+      "team": "trottola",
+      "pos": 3,
+      "pts": 24,
+      "g": 11
+     },
+     {
+      "team": "sasso_a",
+      "pos": 4,
+      "pts": 20,
+      "g": 11
+     },
+     {
+      "team": "endurance",
+      "pos": 5,
+      "pts": 18,
+      "g": 11
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 6,
+      "g": 11
+     },
+     {
+      "team": "ceretolese",
+      "pos": 7,
+      "pts": 5,
+      "g": 11
+     },
+     {
+      "team": "pontecchio",
+      "pos": 8,
+      "pts": 3,
+      "g": 11
+     }
+    ]
+   },
+   {
+    "matchday": 12,
+    "rows": [
+     {
+      "team": "amadeus",
+      "pos": 1,
+      "pts": 31,
+      "g": 12
+     },
+     {
+      "team": "ghironda",
+      "pos": 2,
+      "pts": 30,
+      "g": 12
+     },
+     {
+      "team": "trottola",
+      "pos": 3,
+      "pts": 27,
+      "g": 12
+     },
+     {
+      "team": "sasso_a",
+      "pos": 4,
+      "pts": 20,
+      "g": 12
+     },
+     {
+      "team": "endurance",
+      "pos": 5,
+      "pts": 18,
+      "g": 12
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 9,
+      "g": 12
+     },
+     {
+      "team": "ceretolese",
+      "pos": 7,
+      "pts": 5,
+      "g": 12
+     },
+     {
+      "team": "pontecchio",
+      "pos": 8,
+      "pts": 3,
+      "g": 12
+     }
+    ]
+   },
+   {
+    "matchday": 13,
+    "rows": [
+     {
+      "team": "amadeus",
+      "pos": 1,
+      "pts": 34,
+      "g": 13
+     },
+     {
+      "team": "ghironda",
+      "pos": 2,
+      "pts": 33,
+      "g": 13
+     },
+     {
+      "team": "trottola",
+      "pos": 3,
+      "pts": 30,
+      "g": 13
+     },
+     {
+      "team": "sasso_a",
+      "pos": 4,
+      "pts": 20,
+      "g": 13
+     },
+     {
+      "team": "endurance",
+      "pos": 5,
+      "pts": 18,
+      "g": 13
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 12,
+      "g": 13
+     },
+     {
+      "team": "ceretolese",
+      "pos": 7,
+      "pts": 5,
+      "g": 13
+     },
+     {
+      "team": "pontecchio",
+      "pos": 8,
+      "pts": 3,
+      "g": 13
+     }
+    ]
+   },
+   {
+    "matchday": 14,
+    "rows": [
+     {
+      "team": "amadeus",
+      "pos": 1,
+      "pts": 37,
+      "g": 14
+     },
+     {
+      "team": "trottola",
+      "pos": 2,
+      "pts": 33,
+      "g": 14
+     },
+     {
+      "team": "ghironda",
+      "pos": 3,
+      "pts": 33,
+      "g": 14
+     },
+     {
+      "team": "sasso_a",
+      "pos": 4,
+      "pts": 23,
+      "g": 14
+     },
+     {
+      "team": "endurance",
+      "pos": 5,
+      "pts": 18,
+      "g": 14
+     },
+     {
+      "team": "casalecchio",
+      "pos": 6,
+      "pts": 15,
+      "g": 14
+     },
+     {
+      "team": "ceretolese",
+      "pos": 7,
+      "pts": 5,
+      "g": 14
+     },
+     {
+      "team": "pontecchio",
+      "pos": 8,
+      "pts": 3,
+      "g": 14
+     }
+    ]
+   }
+  ]
+ },
+ "playoff": {
+  "seeds": [
+   {
+    "seed": 1,
+    "team": "granarolo",
+    "pts": 39,
+    "g": 14,
+    "v": 13,
+    "p": 1,
+    "pf": 831,
+    "ps": 638,
+    "qtot": 4.088222,
+    "qp": 2.785714,
+    "qc": 1.302508,
+    "group": "C",
+    "groupPos": 1
+   },
+   {
+    "seed": 2,
+    "team": "vis_trebbo",
+    "pts": 37,
+    "g": 14,
+    "v": 12,
+    "p": 2,
+    "pf": 885,
+    "ps": 627,
+    "qtot": 4.05434,
+    "qp": 2.642857,
+    "qc": 1.411483,
+    "group": "E",
+    "groupPos": 1
+   },
+   {
+    "seed": 3,
+    "team": "amadeus",
+    "pts": 37,
+    "g": 14,
+    "v": 12,
+    "p": 2,
+    "pf": 947,
+    "ps": 699,
+    "qtot": 3.99765,
+    "qp": 2.642857,
+    "qc": 1.354793,
+    "group": "A",
+    "groupPos": 1
+   },
+   {
+    "seed": 4,
+    "team": "san_buca",
+    "pts": 36,
+    "g": 14,
+    "v": 12,
+    "p": 2,
+    "pf": 1027,
+    "ps": 820,
+    "qtot": 3.823868,
+    "qp": 2.571429,
+    "qc": 1.252439,
+    "group": "B",
+    "groupPos": 1
+   },
+   {
+    "seed": 5,
+    "team": "thc",
+    "pts": 35,
+    "g": 14,
+    "v": 12,
+    "p": 2,
+    "pf": 940,
+    "ps": 797,
+    "qtot": 3.679423,
+    "qp": 2.5,
+    "qc": 1.179423,
+    "group": "D",
+    "groupPos": 1
+   },
+   {
+    "seed": 6,
+    "team": "bellaria",
+    "pts": 33,
+    "g": 14,
+    "v": 11,
+    "p": 3,
+    "pf": 899,
+    "ps": 694,
+    "qtot": 3.652532,
+    "qp": 2.357143,
+    "qc": 1.295389,
+    "group": "F",
+    "groupPos": 1
+   },
+   {
+    "seed": 7,
+    "team": "ozzano",
+    "pts": 35,
+    "g": 14,
+    "v": 12,
+    "p": 2,
+    "pf": 883,
+    "ps": 733,
+    "qtot": 3.704638,
+    "qp": 2.5,
+    "qc": 1.204638,
+    "group": "E",
+    "groupPos": 2
+   },
+   {
+    "seed": 8,
+    "team": "trottola",
+    "pts": 33,
+    "g": 14,
+    "v": 11,
+    "p": 3,
+    "pf": 876,
+    "ps": 698,
+    "qtot": 3.612157,
+    "qp": 2.357143,
+    "qc": 1.255014,
+    "group": "A",
+    "groupPos": 2
+   },
+   {
+    "seed": 9,
+    "team": "ghepard",
+    "pts": 33,
+    "g": 14,
+    "v": 11,
+    "p": 3,
+    "pf": 867,
+    "ps": 792,
+    "qtot": 3.45184,
+    "qp": 2.357143,
+    "qc": 1.094697,
+    "group": "D",
+    "groupPos": 2
+   },
+   {
+    "seed": 10,
+    "team": "towers",
+    "pts": 31,
+    "g": 14,
+    "v": 10,
+    "p": 4,
+    "pf": 905,
+    "ps": 775,
+    "qtot": 3.382028,
+    "qp": 2.214286,
+    "qc": 1.167742,
+    "group": "B",
+    "groupPos": 2
+   },
+   {
+    "seed": 11,
+    "team": "tema_gabbi",
+    "pts": 30,
+    "g": 14,
+    "v": 10,
+    "p": 4,
+    "pf": 871,
+    "ps": 755,
+    "qtot": 3.2965,
+    "qp": 2.142857,
+    "qc": 1.153642,
+    "group": "C",
+    "groupPos": 2
+   },
+   {
+    "seed": 12,
+    "team": "zola",
+    "pts": 30,
+    "g": 14,
+    "v": 10,
+    "p": 4,
+    "pf": 851,
+    "ps": 798,
+    "qtot": 3.209273,
+    "qp": 2.142857,
+    "qc": 1.066416,
+    "group": "F",
+    "groupPos": 2
+   },
+   {
+    "seed": 13,
+    "team": "ghironda",
+    "pts": 33,
+    "g": 14,
+    "v": 11,
+    "p": 3,
+    "pf": 971,
+    "ps": 850,
+    "qtot": 3.499496,
+    "qp": 2.357143,
+    "qc": 1.142353,
+    "group": "A",
+    "groupPos": 3
+   },
+   {
+    "seed": 14,
+    "team": "budrio",
+    "pts": 31,
+    "g": 14,
+    "v": 10,
+    "p": 4,
+    "pf": 847,
+    "ps": 680,
+    "qtot": 3.459874,
+    "qp": 2.214286,
+    "qc": 1.245588,
+    "group": "E",
+    "groupPos": 3
+   },
+   {
+    "seed": 15,
+    "team": "legion",
+    "pts": 30,
+    "g": 14,
+    "v": 10,
+    "p": 4,
+    "pf": 803,
+    "ps": 719,
+    "qtot": 3.259686,
+    "qp": 2.142857,
+    "qc": 1.116829,
+    "group": "C",
+    "groupPos": 3
+   },
+   {
+    "seed": 16,
+    "team": "futa",
+    "pts": 27,
+    "g": 14,
+    "v": 9,
+    "p": 5,
+    "pf": 877,
+    "ps": 785,
+    "qtot": 3.045769,
+    "qp": 1.928571,
+    "qc": 1.117197,
+    "group": "F",
+    "groupPos": 3
+   }
+  ],
+  "bracket": [
+   {
+    "id": "ottavi",
+    "label": "Ottavi di finale",
+    "window": "dal 26 marzo al 22 aprile 2012",
+    "series": [
+     {
+      "code": "A",
+      "teamA": "granarolo",
+      "seedA": 1,
+      "teamB": "futa",
+      "seedB": 16,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 65,
+        "scoreB": 40,
+        "overtime": false,
+        "hostedBy": "granarolo"
+       },
+       {
+        "leg": 2,
+        "scoreA": 65,
+        "scoreB": 55,
+        "overtime": false,
+        "hostedBy": "futa"
+       }
+      ],
+      "winsA": 2,
+      "winsB": 0,
+      "involvesUs": false,
+      "winner": "granarolo"
+     },
+     {
+      "code": "B",
+      "teamA": "trottola",
+      "seedA": 8,
+      "teamB": "ghepard",
+      "seedB": 9,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 57,
+        "scoreB": 53,
+        "overtime": false,
+        "hostedBy": "trottola"
+       },
+       {
+        "leg": 2,
+        "scoreA": 63,
+        "scoreB": 54,
+        "overtime": false,
+        "hostedBy": "ghepard"
+       }
+      ],
+      "winsA": 2,
+      "winsB": 0,
+      "involvesUs": true,
+      "winner": "trottola"
+     },
+     {
+      "code": "C",
+      "teamA": "thc",
+      "seedA": 5,
+      "teamB": "zola",
+      "seedB": 12,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 64,
+        "scoreB": 63,
+        "overtime": false,
+        "hostedBy": "thc"
+       },
+       {
+        "leg": 2,
+        "scoreA": 57,
+        "scoreB": 67,
+        "overtime": false,
+        "hostedBy": "zola"
+       },
+       {
+        "leg": 3,
+        "scoreA": 47,
+        "scoreB": 60,
+        "overtime": false,
+        "hostedBy": "thc"
+       }
+      ],
+      "winsA": 1,
+      "winsB": 2,
+      "involvesUs": false,
+      "winner": "zola"
+     },
+     {
+      "code": "D",
+      "teamA": "san_buca",
+      "seedA": 4,
+      "teamB": "ghironda",
+      "seedB": 13,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 49,
+        "scoreB": 60,
+        "overtime": false,
+        "hostedBy": "san_buca"
+       },
+       {
+        "leg": 2,
+        "scoreA": 90,
+        "scoreB": 67,
+        "overtime": false,
+        "hostedBy": "ghironda"
+       },
+       {
+        "leg": 3,
+        "scoreA": 78,
+        "scoreB": 86,
+        "overtime": false,
+        "hostedBy": "san_buca"
+       }
+      ],
+      "winsA": 1,
+      "winsB": 2,
+      "involvesUs": false,
+      "winner": "ghironda"
+     },
+     {
+      "code": "E",
+      "teamA": "amadeus",
+      "seedA": 3,
+      "teamB": "budrio",
+      "seedB": 14,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 47,
+        "scoreB": 27,
+        "overtime": false,
+        "hostedBy": "amadeus"
+       },
+       {
+        "leg": 2,
+        "scoreA": 52,
+        "scoreB": 31,
+        "overtime": false,
+        "hostedBy": "budrio"
+       }
+      ],
+      "winsA": 2,
+      "winsB": 0,
+      "involvesUs": false,
+      "winner": "amadeus"
+     },
+     {
+      "code": "F",
+      "teamA": "bellaria",
+      "seedA": 6,
+      "teamB": "tema_gabbi",
+      "seedB": 11,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 58,
+        "scoreB": 55,
+        "overtime": false,
+        "hostedBy": "bellaria"
+       },
+       {
+        "leg": 2,
+        "scoreA": 69,
+        "scoreB": 64,
+        "overtime": true,
+        "hostedBy": "tema_gabbi"
+       }
+      ],
+      "winsA": 2,
+      "winsB": 0,
+      "involvesUs": false,
+      "winner": "bellaria"
+     },
+     {
+      "code": "G",
+      "teamA": "ozzano",
+      "seedA": 7,
+      "teamB": "towers",
+      "seedB": 10,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 53,
+        "scoreB": 73,
+        "overtime": false,
+        "hostedBy": "ozzano"
+       },
+       {
+        "leg": 2,
+        "scoreA": 52,
+        "scoreB": 67,
+        "overtime": false,
+        "hostedBy": "towers"
+       }
+      ],
+      "winsA": 0,
+      "winsB": 2,
+      "involvesUs": false,
+      "winner": "towers"
+     },
+     {
+      "code": "H",
+      "teamA": "vis_trebbo",
+      "seedA": 2,
+      "teamB": "legion",
+      "seedB": 15,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 51,
+        "scoreB": 55,
+        "overtime": false,
+        "hostedBy": "vis_trebbo"
+       },
+       {
+        "leg": 2,
+        "scoreA": 53,
+        "scoreB": 62,
+        "overtime": false,
+        "hostedBy": "legion"
+       }
+      ],
+      "winsA": 0,
+      "winsB": 2,
+      "involvesUs": false,
+      "winner": "legion"
+     }
+    ]
+   },
+   {
+    "id": "quarti",
+    "label": "Quarti di finale",
+    "window": "dal 23 aprile al 13 maggio 2012",
+    "series": [
+     {
+      "code": "I",
+      "teamA": "granarolo",
+      "seedA": 1,
+      "teamB": "trottola",
+      "seedB": 8,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 59,
+        "scoreB": 55,
+        "overtime": false,
+        "hostedBy": "granarolo"
+       },
+       {
+        "leg": 2,
+        "scoreA": 57,
+        "scoreB": 60,
+        "overtime": false,
+        "hostedBy": "trottola"
+       },
+       {
+        "leg": 3,
+        "scoreA": 51,
+        "scoreB": 52,
+        "overtime": false,
+        "hostedBy": "granarolo"
+       }
+      ],
+      "winsA": 1,
+      "winsB": 2,
+      "involvesUs": true,
+      "winner": "trottola"
+     },
+     {
+      "code": "L",
+      "teamA": "zola",
+      "seedA": 12,
+      "teamB": "ghironda",
+      "seedB": 13,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 71,
+        "scoreB": 62,
+        "overtime": false,
+        "hostedBy": "zola"
+       },
+       {
+        "leg": 2,
+        "scoreA": 60,
+        "scoreB": 59,
+        "overtime": false,
+        "hostedBy": "ghironda"
+       }
+      ],
+      "winsA": 2,
+      "winsB": 0,
+      "involvesUs": false,
+      "winner": "zola"
+     },
+     {
+      "code": "M",
+      "teamA": "amadeus",
+      "seedA": 3,
+      "teamB": "bellaria",
+      "seedB": 6,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 58,
+        "scoreB": 59,
+        "overtime": false,
+        "hostedBy": "amadeus"
+       },
+       {
+        "leg": 2,
+        "scoreA": 61,
+        "scoreB": 60,
+        "overtime": false,
+        "hostedBy": "bellaria"
+       },
+       {
+        "leg": 3,
+        "scoreA": 61,
+        "scoreB": 33,
+        "overtime": false,
+        "hostedBy": "amadeus"
+       }
+      ],
+      "winsA": 2,
+      "winsB": 1,
+      "involvesUs": false,
+      "winner": "amadeus"
+     },
+     {
+      "code": "N",
+      "teamA": "towers",
+      "seedA": 10,
+      "teamB": "legion",
+      "seedB": 15,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 64,
+        "scoreB": 52,
+        "overtime": false,
+        "hostedBy": "towers"
+       },
+       {
+        "leg": 2,
+        "scoreA": 49,
+        "scoreB": 66,
+        "overtime": false,
+        "hostedBy": "legion"
+       },
+       {
+        "leg": 3,
+        "scoreA": 50,
+        "scoreB": 51,
+        "overtime": false,
+        "hostedBy": "towers"
+       }
+      ],
+      "winsA": 1,
+      "winsB": 2,
+      "involvesUs": false,
+      "winner": "legion"
+     }
+    ]
+   },
+   {
+    "id": "semifinale",
+    "label": "Semifinali",
+    "window": "dal 14 maggio al 3 giugno 2012",
+    "series": [
+     {
+      "code": "O",
+      "teamA": "trottola",
+      "seedA": 8,
+      "teamB": "zola",
+      "seedB": 12,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 87,
+        "scoreB": 77,
+        "overtime": false,
+        "hostedBy": "trottola"
+       },
+       {
+        "leg": 2,
+        "scoreA": 63,
+        "scoreB": 76,
+        "overtime": false,
+        "hostedBy": "zola"
+       },
+       {
+        "leg": 3,
+        "scoreA": 79,
+        "scoreB": 68,
+        "overtime": false,
+        "hostedBy": "trottola"
+       }
+      ],
+      "winsA": 2,
+      "winsB": 1,
+      "involvesUs": true,
+      "winner": "trottola"
+     },
+     {
+      "code": "P",
+      "teamA": "amadeus",
+      "seedA": 3,
+      "teamB": "legion",
+      "seedB": 15,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 52,
+        "scoreB": 49,
+        "overtime": false,
+        "hostedBy": "amadeus"
+       },
+       {
+        "leg": 2,
+        "scoreA": 55,
+        "scoreB": 51,
+        "overtime": false,
+        "hostedBy": "legion"
+       }
+      ],
+      "winsA": 2,
+      "winsB": 0,
+      "involvesUs": false,
+      "winner": "amadeus"
+     }
+    ]
+   },
+   {
+    "id": "finale",
+    "label": "Finale",
+    "window": "Sabato 9 Giugno 2012 ore 12,30 - PALASPORT DI LOIANO",
+    "series": [
+     {
+      "code": "Q",
+      "teamA": "trottola",
+      "seedA": 8,
+      "teamB": "amadeus",
+      "seedB": 3,
+      "legs": [
+       {
+        "leg": 1,
+        "scoreA": 66,
+        "scoreB": 55,
+        "overtime": false,
+        "hostedBy": null
+       }
+      ],
+      "winsA": 1,
+      "winsB": 0,
+      "involvesUs": true,
+      "winner": "trottola"
+     }
+    ]
+   }
+  ]
+ },
+ "final": {
+  "game": {
+   "seq": 23,
+   "phase": "finale",
+   "phaseLabel": "Finale",
+   "date": "2012-06-09",
+   "time": "12:30",
+   "home": "amadeus",
+   "away": "trottola",
+   "homeScore": 55,
+   "awayScore": 66,
+   "overtime": false,
+   "ourSide": "away",
+   "opponent": "amadeus",
+   "ourScore": 66,
+   "theirScore": 55,
+   "margin": 11,
+   "won": true,
+   "forfeit": false,
+   "neutral": true,
+   "boxscoreTitle": "FINALE AL PALASPORT DI LOIANOVIA G. MARCONI 40:–Birreria Amadeus Thunder Basket – 55–Caffè Matic Trottola Sport – 66",
+   "boxscore": [
+    {
+     "player": "scardovi-nicola",
+     "starter": true,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "marconi-tiberio",
+     "starter": true,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "malavolti-sergio",
+     "starter": true,
+     "played": true,
+     "points": 7
+    },
+    {
+     "player": "maranelli-roberto",
+     "starter": true,
+     "played": true,
+     "points": 14
+    },
+    {
+     "player": "monari-michele",
+     "starter": true,
+     "played": true,
+     "points": 5
+    },
+    {
+     "player": "gentilini-nicola",
+     "starter": false,
+     "played": true,
+     "points": 2
+    },
+    {
+     "player": "ugolini-riccardo",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "torracchi-matteo",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "mellini-valerio",
+     "starter": false,
+     "played": true,
+     "points": 3
+    },
+    {
+     "player": "greco-paride",
+     "starter": false,
+     "played": true,
+     "points": 6
+    },
+    {
+     "player": "bruni-kristian",
+     "starter": false,
+     "played": true,
+     "points": 10
+    },
+    {
+     "player": "bartoletti-alberto",
+     "starter": false,
+     "played": true,
+     "points": 1
+    }
+   ],
+   "quarters": {
+    "us": [
+     13,
+     18,
+     8,
+     27
+    ],
+    "them": [
+     4,
+     16,
+     14,
+     21
+    ],
+    "usable": true,
+    "rawThem": [
+     4,
+     16,
+     14,
+     21
+    ],
+    "rawThemSum": 55,
+    "correctedThem": false
+   }
+  },
+  "venueName": "Palasport di Loiano",
+  "address": "Via G. Marconi, n. 40",
+  "when": "sabato 9 giugno 2012, ore 12:30",
+  "sourceLine": "Sabato 9 Giugno 2012 ore 12,30 - PALASPORT DI LOIANO",
+  "mvp": {
+   "player": "greco-paride",
+   "fullName": "Paride Greco",
+   "number": 16,
+   "source": "Paride Greco (n. 16 Trottola Sport Caffè Matic)"
+  },
+  "kits": {
+   "home": "GIALLA",
+   "away": "NERA"
+  },
+  "prize": "Alla squadra vincente \"BORSA MEDICA\"",
+  "photos": [
+   {
+    "file": "3.jpg",
+    "slot": "hero",
+    "alt": "Il tabellone segna 55-66 a fine partita mentre i giocatori in giallo si abbracciano al centro del campo",
+    "caption": "00:00. Il tabellone del Centro Sportivo di Loiano dice 55-66.",
+    "credit": "Palasport di Loiano, 9 giugno 2012"
+   },
+   {
+    "file": "1.jpg",
+    "slot": "timeout",
+    "alt": "La squadra raccolta attorno all'allenatore durante un time-out, sullo sfondo lo striscione «CSI Basket Bologna Finali»",
+    "caption": "Time-out. Alle spalle della panchina lo striscione delle Finali CSI Basket Bologna.",
+    "credit": "Palasport di Loiano, 9 giugno 2012"
+   },
+   {
+    "file": "2.jpg",
+    "slot": "warmup",
+    "alt": "Un giocatore sorride a bordo campo prima della palla a due",
+    "caption": "Prima della palla a due.",
+    "credit": "Palasport di Loiano, 9 giugno 2012"
+   },
+   {
+    "file": "final_game.jpg",
+    "slot": "team",
+    "alt": "Foto di squadra: quattordici persone in maglia gialla Caffè Matic posano sul campo attorno a due palloni",
+    "caption": "La squadra al completo sul parquet di Loiano.",
+    "credit": "Palasport di Loiano, 9 giugno 2012"
+   },
+   {
+    "file": "final_game-2.jpg",
+    "slot": "team-wide",
+    "alt": "La stessa foto di squadra ripresa più larga, con il campo e i canestri visibili attorno al gruppo",
+    "caption": "Lo stesso scatto, più largo, prima della palla a due: il campo che di lì a poco avrebbe deciso la stagione.",
+    "credit": "Palasport di Loiano, 9 giugno 2012"
+   }
+  ]
+ },
+ "advanced": {
+  "record": {
+   "games": 23,
+   "wins": 18,
+   "losses": 5,
+   "forfeitWins": 1,
+   "scored": 1458,
+   "allowed": 1248,
+   "diff": 210,
+   "bestWinStreak": 9,
+   "onCourt": {
+    "games": 22,
+    "wins": 17,
+    "losses": 5,
+    "scored": 1428,
+    "allowed": 1248,
+    "diff": 180,
+    "avgFor": 64.9090909090909,
+    "avgAgainst": 56.72727272727273,
+    "avgMargin": 8.181818181818182
+   }
+  },
+  "quarters": {
+   "sample": 22,
+   "pool": 22,
+   "excluded": [
+    {
+     "date": "2012-02-23",
+     "opponent": "casalecchio",
+     "reason": "forfeit"
+    }
+   ],
+   "rows": [
+    {
+     "quarter": 1,
+     "us": 347,
+     "them": 295,
+     "usAvg": 15.772727272727273,
+     "themAvg": 13.409090909090908,
+     "net": 52,
+     "netAvg": 2.3636363636363638,
+     "won": 11
+    },
+    {
+     "quarter": 2,
+     "us": 333,
+     "them": 285,
+     "usAvg": 15.136363636363637,
+     "themAvg": 12.954545454545455,
+     "net": 48,
+     "netAvg": 2.1818181818181817,
+     "won": 13
+    },
+    {
+     "quarter": 3,
+     "us": 345,
+     "them": 325,
+     "usAvg": 15.681818181818182,
+     "themAvg": 14.772727272727273,
+     "net": 20,
+     "netAvg": 0.9090909090909091,
+     "won": 11
+    },
+    {
+     "quarter": 4,
+     "us": 403,
+     "them": 343,
+     "usAvg": 18.318181818181817,
+     "themAvg": 15.590909090909092,
+     "net": 60,
+     "netAvg": 2.727272727272727,
+     "won": 15
+    }
+   ]
+  },
+  "balance": {
+   "overall": {
+    "starters": 945,
+    "bench": 483,
+    "total": 1428,
+    "benchShare": 0.3382
+   },
+   "girone": {
+    "starters": 572,
+    "bench": 274,
+    "total": 846,
+    "benchShare": 0.3239
+   },
+   "playoff": {
+    "starters": 373,
+    "bench": 209,
+    "total": 582,
+    "benchShare": 0.3591
+   },
+   "perGame": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "topShare": 0.3276,
+     "hhi": 0.2128,
+     "scorers": 6,
+     "doubleFigures": 3
+    },
+    {
+     "seq": 2,
+     "date": "2011-11-19",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "topShare": 0.3194,
+     "hhi": 0.1786,
+     "scorers": 9,
+     "doubleFigures": 3
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "topShare": 0.2794,
+     "hhi": 0.1864,
+     "scorers": 8,
+     "doubleFigures": 3
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "topShare": 0.3273,
+     "hhi": 0.1907,
+     "scorers": 8,
+     "doubleFigures": 2
+    },
+    {
+     "seq": 5,
+     "date": "2011-12-12",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "topShare": 0.3649,
+     "hhi": 0.2096,
+     "scorers": 8,
+     "doubleFigures": 4
+    },
+    {
+     "seq": 6,
+     "date": "2012-01-17",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "topShare": 0.3966,
+     "hhi": 0.2551,
+     "scorers": 8,
+     "doubleFigures": 2
+    },
+    {
+     "seq": 7,
+     "date": "2012-01-23",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "topShare": 0.2619,
+     "hhi": 0.2052,
+     "scorers": 8,
+     "doubleFigures": 3
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "topShare": 0.2254,
+     "hhi": 0.1946,
+     "scorers": 6,
+     "doubleFigures": 5
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "topShare": 0.3158,
+     "hhi": 0.1991,
+     "scorers": 10,
+     "doubleFigures": 2
+    },
+    {
+     "seq": 11,
+     "date": "2012-02-25",
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "topShare": 0.2361,
+     "hhi": 0.1393,
+     "scorers": 11,
+     "doubleFigures": 2
+    },
+    {
+     "seq": 12,
+     "date": "2012-02-29",
+     "phase": "girone",
+     "opponent": "endurance",
+     "topShare": 0.1932,
+     "hhi": 0.133,
+     "scorers": 9,
+     "doubleFigures": 6
+    },
+    {
+     "seq": 13,
+     "date": "2012-03-10",
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "topShare": 0.2031,
+     "hhi": 0.1216,
+     "scorers": 11,
+     "doubleFigures": 1
+    },
+    {
+     "seq": 14,
+     "date": "2012-03-17",
+     "phase": "girone",
+     "opponent": "endurance",
+     "topShare": 0.4328,
+     "hhi": 0.2582,
+     "scorers": 7,
+     "doubleFigures": 3
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "topShare": 0.2105,
+     "hhi": 0.1413,
+     "scorers": 10,
+     "doubleFigures": 2
+    },
+    {
+     "seq": 16,
+     "date": "2012-04-03",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "topShare": 0.2381,
+     "hhi": 0.1464,
+     "scorers": 9,
+     "doubleFigures": 2
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "topShare": 0.4182,
+     "hhi": 0.2509,
+     "scorers": 7,
+     "doubleFigures": 2
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "topShare": 0.3333,
+     "hhi": 0.1728,
+     "scorers": 11,
+     "doubleFigures": 1
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "topShare": 0.3846,
+     "hhi": 0.233,
+     "scorers": 8,
+     "doubleFigures": 2
+    },
+    {
+     "seq": 20,
+     "date": "2012-05-19",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "topShare": 0.2644,
+     "hhi": 0.1695,
+     "scorers": 8,
+     "doubleFigures": 4
+    },
+    {
+     "seq": 21,
+     "date": "2012-05-23",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "topShare": 0.3016,
+     "hhi": 0.228,
+     "scorers": 6,
+     "doubleFigures": 3
+    },
+    {
+     "seq": 22,
+     "date": "2012-06-02",
+     "phase": "semifinale",
+     "opponent": "zola",
+     "topShare": 0.3671,
+     "hhi": 0.2053,
+     "scorers": 10,
+     "doubleFigures": 4
+    },
+    {
+     "seq": 23,
+     "date": "2012-06-09",
+     "phase": "finale",
+     "opponent": "amadeus",
+     "topShare": 0.2121,
+     "hhi": 0.1244,
+     "scorers": 12,
+     "doubleFigures": 3
+    }
+   ]
+  },
+  "clutch": {
+   "threshold": 5,
+   "games": 9,
+   "wins": 6,
+   "losses": 3,
+   "list": [
+    {
+     "seq": 1,
+     "date": "2011-11-12",
+     "phase": "girone",
+     "opponent": "amadeus",
+     "margin": -2,
+     "score": [
+      58,
+      60
+     ]
+    },
+    {
+     "seq": 3,
+     "date": "2011-11-21",
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "margin": 1,
+     "score": [
+      68,
+      67
+     ]
+    },
+    {
+     "seq": 4,
+     "date": "2011-12-03",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "margin": -2,
+     "score": [
+      55,
+      57
+     ]
+    },
+    {
+     "seq": 8,
+     "date": "2012-01-30",
+     "phase": "girone",
+     "opponent": "ghironda",
+     "margin": 2,
+     "score": [
+      71,
+      69
+     ]
+    },
+    {
+     "seq": 9,
+     "date": "2012-02-18",
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "margin": 5,
+     "score": [
+      57,
+      52
+     ]
+    },
+    {
+     "seq": 15,
+     "date": "2012-03-31",
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "margin": 4,
+     "score": [
+      57,
+      53
+     ]
+    },
+    {
+     "seq": 17,
+     "date": "2012-04-27",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "margin": -4,
+     "score": [
+      55,
+      59
+     ]
+    },
+    {
+     "seq": 18,
+     "date": "2012-05-05",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "margin": 3,
+     "score": [
+      60,
+      57
+     ]
+    },
+    {
+     "seq": 19,
+     "date": "2012-05-11",
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "margin": 1,
+     "score": [
+      52,
+      51
+     ]
+    }
+   ],
+   "pythagorean": {
+    "exponent": 14.3,
+    "winPct": 0.8729,
+    "expectedWins": 19.2,
+    "actualWins": 17
+   },
+   "margins": [
+    {
+     "seq": 1,
+     "margin": -2,
+     "phase": "girone",
+     "opponent": "amadeus",
+     "date": "2011-11-12"
+    },
+    {
+     "seq": 2,
+     "margin": 11,
+     "phase": "girone",
+     "opponent": "ghironda",
+     "date": "2011-11-19"
+    },
+    {
+     "seq": 3,
+     "margin": 1,
+     "phase": "girone",
+     "opponent": "casalecchio",
+     "date": "2011-11-21"
+    },
+    {
+     "seq": 4,
+     "margin": -2,
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "date": "2011-12-03"
+    },
+    {
+     "seq": 5,
+     "margin": 15,
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "date": "2011-12-12"
+    },
+    {
+     "seq": 6,
+     "margin": 11,
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "date": "2012-01-17"
+    },
+    {
+     "seq": 7,
+     "margin": -12,
+     "phase": "girone",
+     "opponent": "amadeus",
+     "date": "2012-01-23"
+    },
+    {
+     "seq": 8,
+     "margin": 2,
+     "phase": "girone",
+     "opponent": "ghironda",
+     "date": "2012-01-30"
+    },
+    {
+     "seq": 9,
+     "margin": 5,
+     "phase": "girone",
+     "opponent": "sasso_a",
+     "date": "2012-02-18"
+    },
+    {
+     "seq": 11,
+     "margin": 47,
+     "phase": "girone",
+     "opponent": "pontecchio",
+     "date": "2012-02-25"
+    },
+    {
+     "seq": 12,
+     "margin": 43,
+     "phase": "girone",
+     "opponent": "endurance",
+     "date": "2012-02-29"
+    },
+    {
+     "seq": 13,
+     "margin": 20,
+     "phase": "girone",
+     "opponent": "ceretolese",
+     "date": "2012-03-10"
+    },
+    {
+     "seq": 14,
+     "margin": 9,
+     "phase": "girone",
+     "opponent": "endurance",
+     "date": "2012-03-17"
+    },
+    {
+     "seq": 15,
+     "margin": 4,
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "date": "2012-03-31"
+    },
+    {
+     "seq": 16,
+     "margin": 9,
+     "phase": "ottavi",
+     "opponent": "ghepard",
+     "date": "2012-04-03"
+    },
+    {
+     "seq": 17,
+     "margin": -4,
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "date": "2012-04-27"
+    },
+    {
+     "seq": 18,
+     "margin": 3,
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "date": "2012-05-05"
+    },
+    {
+     "seq": 19,
+     "margin": 1,
+     "phase": "quarti",
+     "opponent": "granarolo",
+     "date": "2012-05-11"
+    },
+    {
+     "seq": 20,
+     "margin": 10,
+     "phase": "semifinale",
+     "opponent": "zola",
+     "date": "2012-05-19"
+    },
+    {
+     "seq": 21,
+     "margin": -13,
+     "phase": "semifinale",
+     "opponent": "zola",
+     "date": "2012-05-23"
+    },
+    {
+     "seq": 22,
+     "margin": 11,
+     "phase": "semifinale",
+     "opponent": "zola",
+     "date": "2012-06-02"
+    },
+    {
+     "seq": 23,
+     "margin": 11,
+     "phase": "finale",
+     "opponent": "amadeus",
+     "date": "2012-06-09"
+    }
+   ]
+  },
+  "splits": {
+   "home": {
+    "games": 10,
+    "wins": 8,
+    "losses": 2,
+    "scored": 671,
+    "allowed": 560,
+    "avgMargin": 11.1
+   },
+   "away": {
+    "games": 12,
+    "wins": 9,
+    "losses": 3,
+    "scored": 757,
+    "allowed": 688,
+    "avgMargin": 5.75
+   },
+   "girone": {
+    "games": 13,
+    "wins": 10,
+    "losses": 3,
+    "scored": 846,
+    "allowed": 698,
+    "avgMargin": 11.384615384615385
+   },
+   "playoff": {
+    "games": 9,
+    "wins": 7,
+    "losses": 2,
+    "scored": 582,
+    "allowed": 550,
+    "avgMargin": 3.5555555555555554
+   }
+  },
+  "run": [
+   {
+    "phase": "ottavi",
+    "opponent": "ghepard",
+    "opponentSeed": 9,
+    "games": 2,
+    "record": [
+     2,
+     0
+    ],
+    "scored": 120,
+    "allowed": 107
+   },
+   {
+    "phase": "quarti",
+    "opponent": "granarolo",
+    "opponentSeed": 1,
+    "games": 3,
+    "record": [
+     2,
+     1
+    ],
+    "scored": 167,
+    "allowed": 167
+   },
+   {
+    "phase": "semifinale",
+    "opponent": "zola",
+    "opponentSeed": 12,
+    "games": 3,
+    "record": [
+     2,
+     1
+    ],
+    "scored": 229,
+    "allowed": 221
+   },
+   {
+    "phase": "finale",
+    "opponent": "amadeus",
+    "opponentSeed": 3,
+    "games": 1,
+    "record": [
+     1,
+     0
+    ],
+    "scored": 66,
+    "allowed": 55
+   }
+  ]
+ }
+}

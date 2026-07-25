@@ -1,0 +1,399 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Seed from '../components/Seed.astro';
+import BoxscoreModal from '../components/BoxscoreModal.astro';
+import {
+  season, teamName, team, US, longDate, shortDate, signed, PHASES,
+} from '../lib/season.js';
+
+const { games, group, playoff, meta } = season;
+const seedOf = (t) => playoff.seeds.find((s) => s.team === t)?.seed ?? null;
+const rowOf = (t) => group.table.find((r) => r.team === t) ?? null;
+
+// Every club we actually faced, group stage and playoffs, in the order we
+// first met them.
+const seen = [];
+for (const g of games) {
+  if (!seen.includes(g.opponent)) seen.push(g.opponent);
+}
+
+const opponents = seen.map((id) => {
+  const met = games.filter((g) => g.opponent === id);
+  const wins = met.filter((g) => g.won).length;
+  const scored = met.reduce((s, g) => s + g.ourScore, 0);
+  const allowed = met.reduce((s, g) => s + g.theirScore, 0);
+  return {
+    id,
+    info: team(id),
+    games: met,
+    wins,
+    losses: met.length - wins,
+    scored,
+    allowed,
+    margin: (scored - allowed) / met.length,
+    inGroup: Boolean(rowOf(id)),
+    groupRow: rowOf(id),
+    seed: seedOf(id),
+  };
+});
+
+const groupOpponents = opponents.filter((o) => o.inGroup);
+const playoffOpponents = opponents.filter((o) => !o.inGroup);
+
+const totalMeetings = games.length;
+const kitClass = (name) => (name || '').toLowerCase().replace(/[^a-z]/g, '');
+
+// Distinct gyms played in, ours included.
+const venues = new Set(
+  [US, ...seen].map((id) => team(id).venue).filter(Boolean),
+);
+
+// The Amadeus were met twice in the group and once more in the final, so the
+// group section is not simply "two games each".
+const groupRematch = groupOpponents.find((o) => o.games.length > 2);
+---
+
+<Base
+  title="Gli avversari · Caffè Matic – Trottola Sport 2011-2012"
+  description="Le squadre affrontate nella stagione 2011-2012: palestre, colori sociali e i confronti diretti."
+  current="avversari"
+>
+  <PageHead
+    title="Gli avversari"
+    facts={[
+      `${opponents.length} squadre affrontate`,
+      `${totalMeetings} confronti`,
+      `${groupOpponents.length} nel girone`,
+      `${playoffOpponents.length} solo ai playoff`,
+    ]}
+  >
+    <p>
+      {venues.size} palestre fra Bologna e l'Appennino, quasi tutte scuole,
+      quasi tutte di sera. Questa è la stagione vista dall'altra parte del
+      campo: chi c'era, dove si giocava, con che maglia, e come sono finiti i
+      confronti.
+    </p>
+  </PageHead>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Nel girone</h2>
+        <p class="section-note">
+          Le {groupOpponents.length} squadre del Girone A, incontrate due volte
+          ciascuna — tre volte il {team(groupRematch.id).short}, che ritrovammo
+          in finale. <strong>Clicca un risultato</strong> per aprire il
+          tabellino.
+        </p>
+      </div>
+
+      <ul class="opponents">
+        {groupOpponents.map((o) => (
+          <li class="opp">
+            <div class="opp-id">
+              <h3>{teamName(o.id)}</h3>
+              <p class="opp-place mono dim">
+                {o.info.venue}{o.info.address ? ` · ${o.info.address}` : ''}
+              </p>
+              <p class="opp-tags mono">
+                {o.groupRow && (
+                  <span class="tag">{o.groupRow.pos}º nel girone · {o.groupRow.pts} punti</span>
+                )}
+                {o.seed && <span class="tag tag-seed">testa di serie {o.seed}</span>}
+                {o.info.slot && <span class="tag faint">{o.info.slot.toLowerCase()}</span>}
+              </p>
+            </div>
+
+            <div class="opp-kit">
+              {[o.info.kit1, o.info.kit2].filter(Boolean).map((k) => (
+                <span class="kit">
+                  <i class={`swatch ${kitClass(k)}`} aria-hidden="true"></i>
+                  <span class="mono">{k.toLowerCase()}</span>
+                </span>
+              ))}
+            </div>
+
+            <div class="opp-record">
+              <p class:list={['rec', o.wins > o.losses ? 'w' : o.wins < o.losses ? 'l' : '']}>
+                {o.wins}–{o.losses}
+              </p>
+              <ul class="opp-games mono">
+                {o.games.map((g) => (
+                  <li>
+                    <span class="og-date faint">
+                      {shortDate(g.date)}
+                      {g.phase !== 'girone' && (
+                        <em class="og-phase">{PHASES[g.phase]}</em>
+                      )}
+                    </span>
+                    <button
+                      type="button"
+                      class="score-btn"
+                      data-game={g.seq}
+                      aria-label={`Tabellino di ${teamName(g.opponent)}, ${longDate(g.date)}`}
+                    >{g.ourScore}–{g.theirScore}</button>
+                    <span class:list={['og-margin', g.won ? 'w' : 'l']}>
+                      {signed(g.margin, 0)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Ai playoff</h2>
+        <p class="section-note">
+          Quattro squadre da quattro gironi diversi, mai incontrate prima di
+          marzo. Nessuna di loro era arrivata più in basso del secondo posto nel
+          proprio girone.
+        </p>
+      </div>
+
+      <ul class="opponents">
+        {playoffOpponents.map((o) => (
+          <li class="opp">
+            <div class="opp-id">
+              <h3>
+                {o.seed && <Seed n={o.seed} size="md" />}
+                <span>{teamName(o.id)}</span>
+              </h3>
+              <p class="opp-place mono dim">
+                {o.info.venue}{o.info.address ? ` · ${o.info.address}` : ''}
+              </p>
+              <p class="opp-tags mono">
+                <span class="tag">
+                  {o.info.groupPos}º del girone {o.info.group}
+                </span>
+                <span class="tag faint">{PHASES[o.games[0].phase]}</span>
+              </p>
+            </div>
+
+            <div class="opp-kit">
+              {[o.info.kit1, o.info.kit2].filter(Boolean).map((k) => (
+                <span class="kit">
+                  <i class={`swatch ${kitClass(k)}`} aria-hidden="true"></i>
+                  <span class="mono">{k.toLowerCase()}</span>
+                </span>
+              ))}
+            </div>
+
+            <div class="opp-record">
+              <p class:list={['rec', o.wins > o.losses ? 'w' : 'l']}>
+                {o.wins}–{o.losses}
+              </p>
+              <ul class="opp-games mono">
+                {o.games.map((g) => (
+                  <li>
+                    <span class="og-date faint">
+                      {shortDate(g.date)}
+                      {g.phase !== 'girone' && (
+                        <em class="og-phase">{PHASES[g.phase]}</em>
+                      )}
+                    </span>
+                    <button
+                      type="button"
+                      class="score-btn"
+                      data-game={g.seq}
+                      aria-label={`Tabellino di ${teamName(g.opponent)}, ${longDate(g.date)}`}
+                    >{g.ourScore}–{g.theirScore}</button>
+                    <span class:list={['og-margin', g.won ? 'w' : 'l']}>
+                      {signed(g.margin, 0)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Dove si giocava</h2>
+        <p class="section-note">
+          Il campo di casa era il Polo Scolastico-ITIS di Porretta Terme, il
+          sabato alle 18. Quasi tutti gli altri giocavano in palestre
+          scolastiche, di sera tardi, in settimana.
+        </p>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <caption class="visually-hidden">Palestre delle squadre affrontate</caption>
+          <thead>
+            <tr>
+              <th scope="col">Squadra</th>
+              <th scope="col">Palestra</th>
+              <th scope="col">Indirizzo</th>
+              <th scope="col">Giorno e ora</th>
+              <th scope="col" class="num">Tiro da 3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="us">
+              <td class="name">{teamName(US)}</td>
+              <td>{meta.teams[US].venue}</td>
+              <td class="dim">{meta.teams[US].address}</td>
+              <td class="mono dim">{meta.teams[US].slot?.toLowerCase()}</td>
+              <td class="num mono">{meta.teams[US].threePointLine} m</td>
+            </tr>
+            {opponents.map((o) => (
+              <tr>
+                <td class="name">{teamName(o.id)}</td>
+                <td>{o.info.venue || '–'}</td>
+                <td class="dim">{o.info.address || '–'}</td>
+                <td class="mono dim">{o.info.slot ? o.info.slot.toLowerCase() : '–'}</td>
+                <td class="num mono">{o.info.threePointLine ? `${o.info.threePointLine} m` : '–'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="section-note">
+        La distanza del tiro da tre non era uguale per tutti: alcune palestre
+        avevano la linea a 6,25 m invece dei 6,75 regolamentari, e si giocava
+        con quella del campo di casa.
+      </p>
+    </div>
+  </section>
+
+  <BoxscoreModal />
+</Base>
+
+<style>
+  .opponents {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+
+  .opp {
+    background: var(--ink-raised);
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) auto minmax(0, 1fr);
+    gap: 1rem 1.8rem;
+    align-items: center;
+    padding: 1.15rem 1.1rem;
+  }
+  .opp:hover { background: var(--ink-panel); }
+
+  .opp-id h3 {
+    font-size: var(--step-2);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.45rem;
+  }
+  .opp-place {
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    margin: 0 0 0.5rem;
+  }
+  .opp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    margin: 0;
+  }
+  .tag {
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    border: 1px solid var(--ink-line);
+    padding: 0.15rem 0.45rem;
+  }
+  .tag-seed { color: var(--giallo); border-color: var(--giallo-deep); }
+  .tag.faint { color: var(--chalk-faint); }
+
+  .opp-kit { display: grid; gap: 0.4rem; }
+  .kit {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    white-space: nowrap;
+  }
+  .swatch {
+    width: 0.85rem;
+    height: 0.85rem;
+    border: 1px solid var(--ink-line);
+    background: var(--ink-panel);
+    flex: none;
+  }
+  /* Kit colours as the league recorded them. */
+  .swatch.nera { background: #111114; }
+  .swatch.bianca { background: #e9e7e2; }
+  .swatch.gialla { background: var(--giallo); }
+  .swatch.blu { background: #1d2b4a; }
+  .swatch.azzurra, .swatch.azzurro { background: #4f7fb5; }
+  .swatch.rossa { background: #9b2f26; }
+  .swatch.verde { background: #2f6b45; }
+  .swatch.granata { background: #6b2230; }
+  .swatch.arancione { background: #c2621f; }
+  .swatch.grigia { background: #6d6d72; }
+  .swatch.oro { background: #b8912f; }
+  .swatch.argento { background: #adadb4; }
+  .swatch.marrone { background: #5a3f2c; }
+  .swatch.blumarino { background: #172038; }
+
+  .opp-record { text-align: right; }
+  .rec {
+    font-family: var(--font-mono);
+    font-size: var(--step-2);
+    margin: 0 0 0.5rem;
+    color: var(--chalk);
+  }
+  .rec.w { color: var(--giallo); }
+  .rec.l { color: var(--brick); }
+
+  .opp-games { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.2rem; }
+  .opp-games li {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 0.7rem;
+    align-items: baseline;
+    font-size: var(--step--1);
+    justify-items: end;
+  }
+  .og-date { font-size: 0.65rem; justify-self: start; }
+  .og-phase {
+    font-style: normal;
+    color: var(--giallo-deep);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.55rem;
+    margin-left: 0.45rem;
+  }
+  .og-margin { min-width: 2.6rem; text-align: right; }
+
+  @media (max-width: 820px) {
+    .opp { grid-template-columns: minmax(0, 1fr) auto; }
+    .opp-record { grid-column: 1 / -1; text-align: left; }
+    .opp-games li { justify-items: start; grid-template-columns: 5rem auto auto; }
+    .og-margin { text-align: left; }
+  }
+  @media (max-width: 520px) {
+    .opp { grid-template-columns: 1fr; }
+    .opp-kit { grid-auto-flow: column; justify-content: start; gap: 1rem; }
+  }
+</style>

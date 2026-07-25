@@ -1,0 +1,422 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import QuarterChart from '../components/QuarterChart.astro';
+import MarginChart from '../components/MarginChart.astro';
+import ChartTooltip from '../components/ChartTooltip.astro';
+import Seed from '../components/Seed.astro';
+import {
+  season, teamName, num, pct, signed, shortDate, PHASES, playerName,
+} from '../lib/season.js';
+
+const { advanced } = season;
+const { quarters, balance, clutch, splits, run, record } = advanced;
+
+const pyth = clutch.pythagorean;
+const benchShare = balance.overall.benchShare;
+
+// Games where nobody reached ten points — a proxy for "everyone contributed".
+const spread = balance.perGame.filter((g) => g.doubleFigures <= 1).length;
+const mostShared = [...balance.perGame].sort((a, b) => a.hhi - b.hhi)[0];
+const mostConcentrated = [...balance.perGame].sort((a, b) => b.hhi - a.hhi)[0];
+
+const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
+---
+
+<Base
+  title="Statistiche avanzate · Caffè Matic – Trottola Sport 2011-2012"
+  description="Parziali per quarto, distribuzione dei punti, partite in equilibrio e difficoltà del percorso playoff."
+  current="avanzate"
+>
+  <PageHead
+    title="Sotto i numeri"
+    facts={[
+      `${record.games} partite di stagione`,
+      `${quarters.pool} giocate sul campo`,
+      `${quarters.sample} con parziali per quarto`,
+      'nessun rimbalzo registrato',
+    ]}
+  >
+    <p>
+      Le fonti registrano punti, quintetti e parziali per quarto. Non ci sono
+      tiri, rimbalzi o minuti, quindi qui non troverai un'efficienza o un
+      plus-minus: solo cose che i dati sostengono davvero. Tutto quello che
+      segue è calcolato sulle <strong>{quarters.pool} partite giocate sul
+      campo</strong>: la vittoria a tavolino conta nel bilancio della stagione
+      ma non ha un tabellino da analizzare. Dove il campione è più piccolo
+      ancora, è scritto quanto.
+    </p>
+  </PageHead>
+
+  <section class="section" id="quarti">
+    <div class="wrap">
+      <QuarterChart />
+
+      <div class="readout">
+        <div>
+          <p class="r-k mono">Miglior quarto</p>
+          <p class="r-v">Q4</p>
+          <p class="r-sub dim">
+            {num(quarters.rows[3].usAvg, 1)} punti di media, il massimo della
+            partita, e {quarters.rows[3].won} quarti vinti su {quarters.sample}.
+          </p>
+        </div>
+        <div>
+          <p class="r-k mono">Margine per quarto</p>
+          <ul class="netlist mono">
+            {quarters.rows.map((r) => (
+              <li>
+                <span>Q{r.quarter}</span>
+                <span class="net">{signed(r.netAvg, 2)}</span>
+                <span class="netbar" style={`--w:${(r.netAvg / 3) * 100}%`}></span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class="r-k mono">Campione</p>
+          <p class="r-v">{quarters.sample}<span class="of">/{quarters.pool}</span></p>
+          <p class="r-sub dim">
+            Tutte le partite giocate sul campo hanno parziali completi, compreso
+            l'esordio del 12 novembre. La ventitreesima, vinta a tavolino, non è
+            mai stata giocata e non ha un tabellino.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="equilibrio">
+    <div class="wrap">
+      <h2 class="section-title">Chi segnava</h2>
+      <p class="section-note dim">
+        Un terzo dei punti della stagione è arrivato da chi non partiva in
+        quintetto. È la statistica che spiega meglio perché una testa di serie
+        numero 8 ha retto quattro serie in due mesi.
+      </p>
+
+      <div class="balance">
+        <div class="balance-head">
+          <p class="b-figure">{pct(benchShare, 1)}</p>
+          <p class="b-label mono dim">punti dalla panchina, in tutta la stagione</p>
+        </div>
+
+        <div class="balance-bars">
+          {[
+            ['Stagione intera', balance.overall],
+            ['Girone', balance.girone],
+            ['Playoff', balance.playoff],
+          ].map(([label, split]) => (
+            <div class="bb">
+              <p class="bb-label mono">
+                <span>{label}</span>
+                <span class="dim">{pct(split.benchShare, 1)} panchina</span>
+              </p>
+              <div class="bb-track">
+                <span class="bb-start" style={`--w:${(1 - split.benchShare) * 100}%`}>
+                  <em class="mono">{split.starters}</em>
+                </span>
+                <span class="bb-bench" style={`--w:${split.benchShare * 100}%`}>
+                  <em class="mono">{split.bench}</em>
+                </span>
+              </div>
+            </div>
+          ))}
+          <p class="bb-legend mono dim">
+            <span class="sw sw-start"></span> quintetto
+            <span class="sw sw-bench"></span> panchina
+          </p>
+        </div>
+      </div>
+
+      <div class="readout">
+        <div>
+          <p class="r-k mono">Partite senza un dominatore</p>
+          <p class="r-v">{spread}<span class="of">/{balance.perGame.length}</span></p>
+          <p class="r-sub dim">
+            partite chiuse con al massimo un giocatore in doppia cifra — fra
+            queste la finale.
+          </p>
+        </div>
+        <div>
+          <p class="r-k mono">Attacco più corale</p>
+          <p class="r-v">{teamName(mostShared.opponent).split(' ')[0]}</p>
+          <p class="r-sub dim">
+            {shortDate(mostShared.date)} · {mostShared.scorers} marcatori, nessuno
+            oltre il {pct(mostShared.topShare, 0)} dei punti di squadra.
+          </p>
+        </div>
+        <div>
+          <p class="r-k mono">Più dipendente da uno</p>
+          <p class="r-v">{pct(mostConcentrated.topShare, 0)}</p>
+          <p class="r-sub dim">
+            la quota del miglior marcatore contro
+            {' '}{teamName(mostConcentrated.opponent)}, {shortDate(mostConcentrated.date)}.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="equilibrate">
+    <div class="wrap">
+      <MarginChart />
+
+      <div class="readout">
+        <div>
+          <p class="r-k mono">Partite entro 5 punti</p>
+          <p class="r-v">{clutch.wins}<span class="of">–{clutch.losses}</span></p>
+          <p class="r-sub dim">
+            Nove volte la partita si è decisa nell'ultimo possesso, e sei volte
+            è finita bene.
+          </p>
+        </div>
+        <div>
+          <p class="r-k mono">Vittorie attese</p>
+          <p class="r-v">{num(pyth.expectedWins, 1)}</p>
+          <p class="r-sub dim">
+            Dai punti segnati e subiti sul campo ({record.onCourt.scored} e
+            {' '}{record.onCourt.allowed}) la formula pitagorica stima
+            {' '}{num(pyth.expectedWins, 1)} vittorie sulle {quarters.pool}
+            {' '}giocate: ne sono arrivate {pyth.actualWins}. Una squadra che
+            vinceva meno comodamente di quanto giocasse.
+          </p>
+        </div>
+        <div>
+          <p class="r-k mono">Casa e trasferta</p>
+          <ul class="splitlist mono">
+            <li><span>Casa</span><span>{splits.home.wins}–{splits.home.losses}</span><span class="dim">{signed(splits.home.avgMargin, 1)}</span></li>
+            <li><span>Fuori</span><span>{splits.away.wins}–{splits.away.losses}</span><span class="dim">{signed(splits.away.avgMargin, 1)}</span></li>
+            <li><span>Girone</span><span>{splits.girone.wins}–{splits.girone.losses}</span><span class="dim">{signed(splits.girone.avgMargin, 1)}</span></li>
+            <li><span>Playoff</span><span>{splits.playoff.wins}–{splits.playoff.losses}</span><span class="dim">{signed(splits.playoff.avgMargin, 1)}</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub-title">Le nove in equilibrio</h3>
+      <ol class="closelist">
+        {clutch.list.map((g) => (
+          <li class:list={{ won: g.margin > 0 }}>
+            <span class="cl-phase mono faint">{PHASES[g.phase]}</span>
+            <span class="cl-opp">{teamName(g.opponent)}</span>
+            <span class="cl-score mono">{g.score[0]}–{g.score[1]}</span>
+            <span class:list={['cl-margin', 'mono', g.margin > 0 ? 'w' : 'l']}>
+              {signed(g.margin, 0)}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="percorso">
+    <div class="wrap">
+      <h2 class="section-title">La difficoltà del percorso</h2>
+      <p class="section-note dim">
+        Una testa di serie numero 8 incrocia la 9 al primo turno e poi, se
+        passa, la 1. Nessuna delle quattro serie è stata contro una squadra
+        peggio classificata di dodicesima.
+      </p>
+
+      <ol class="ladder">
+        {run.map((r) => (
+          <li>
+            <div class="ladder-seed">
+              <Seed n={r.opponentSeed} size="lg" />
+            </div>
+            <div class="ladder-body">
+              <p class="eyebrow"><span>{PHASES[r.phase]}</span></p>
+              <h3>{teamName(r.opponent)}</h3>
+              <p class="ladder-line mono">
+                serie {r.record[0]}–{r.record[1]} · {r.scored}–{r.allowed} complessivo
+                · {signed((r.scored - r.allowed) / r.games, 1)} a partita
+              </p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p class="section-note dim">
+        Il Pallacanestro Granarolo aveva chiuso il girone C con
+        {' '}<strong>13 vittorie su 14</strong> e il coefficiente più alto del
+        campionato. È stato eliminato in tre partite, l'ultima in casa sua, di
+        un punto.
+      </p>
+    </div>
+  </section>
+
+  <ChartTooltip />
+</Base>
+
+<style>
+  .sub-title { font-size: var(--step-1); margin: 2.6rem 0 1rem; }
+
+  .readout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+    margin-top: 1.8rem;
+  }
+  .readout > div { background: var(--ink-raised); padding: 1.2rem 1.1rem; }
+  .r-k {
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    margin-bottom: 0.6rem;
+  }
+  .r-v {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    line-height: 1;
+    color: var(--giallo);
+    margin: 0 0 0.6rem;
+  }
+  .r-v .of { color: var(--chalk-faint); font-size: 0.55em; }
+  .r-sub { font-size: var(--step--1); margin: 0; }
+
+  .netlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
+  .netlist li {
+    display: grid;
+    grid-template-columns: 2rem 3.6rem minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: center;
+    font-size: var(--step--1);
+  }
+  .netlist .net { color: var(--chalk); text-align: right; }
+  .netbar {
+    height: 4px;
+    width: var(--w);
+    background: var(--c-us);
+    border-radius: 2px;
+  }
+
+  .splitlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+  .splitlist li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 3.5rem 3.5rem;
+    gap: 0.5rem;
+    font-size: var(--step--1);
+  }
+  .splitlist li > span:nth-child(n + 2) { text-align: right; }
+
+  /* --- balance ----------------------------------------------------------- */
+  .balance {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.6fr);
+    gap: 2rem;
+    align-items: center;
+    border: 1px solid var(--ink-line);
+    background: var(--ink-raised);
+    padding: clamp(1.1rem, 3vw, 1.8rem);
+  }
+  .b-figure {
+    font-family: var(--font-display);
+    font-size: var(--step-4);
+    line-height: 0.9;
+    color: var(--giallo);
+    margin: 0;
+  }
+  .b-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0.6rem 0 0;
+    max-width: 22ch;
+  }
+
+  .balance-bars { display: grid; gap: 1rem; }
+  .bb-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.63rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+  .bb-track { display: flex; gap: 2px; height: 1.9rem; }
+  .bb-start, .bb-bench {
+    width: var(--w);
+    display: grid;
+    place-items: center;
+    border-radius: 3px;
+  }
+  .bb-start { background: var(--c-us); }
+  .bb-bench { background: var(--c-them); }
+  .bb-track em {
+    font-style: normal;
+    font-size: 0.7rem;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .bb-legend {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0.2rem 0 0;
+  }
+  .sw { width: 0.8rem; height: 0.8rem; border-radius: 2px; }
+  .sw-start { background: var(--c-us); }
+  .sw-bench { background: var(--c-them); margin-left: 0.9rem; }
+
+  /* --- close games ------------------------------------------------------- */
+  .closelist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .closelist li {
+    background: var(--ink-raised);
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr) 6rem 4rem;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.65rem 1rem;
+    font-size: var(--step--1);
+    border-left: 2px solid var(--c-loss);
+  }
+  .closelist li.won { border-left-color: var(--c-us); }
+  .cl-phase { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .cl-score, .cl-margin { text-align: right; }
+
+  /* --- ladder ------------------------------------------------------------ */
+  .ladder {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .ladder li {
+    background: var(--ink-raised);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1.2rem 1.1rem;
+  }
+  .ladder-body h3 { font-size: var(--step-2); margin-bottom: 0.5rem; }
+  .ladder-body .eyebrow { margin-bottom: 0.4rem; }
+  .ladder-line { font-size: 0.68rem; letter-spacing: 0.06em; color: var(--chalk-dim); margin: 0; }
+
+  @media (max-width: 800px) {
+    .balance { grid-template-columns: 1fr; gap: 1.4rem; }
+    .closelist li {
+      grid-template-columns: minmax(0, 1fr) 5.5rem 3.5rem;
+      row-gap: 0.2rem;
+    }
+    .cl-phase { grid-column: 1 / -1; }
+  }
+</style>

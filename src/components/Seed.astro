@@ -1,0 +1,70 @@
+---
+/**
+ * The seed chip — the signature mark of this site.
+ *
+ * The whole season turns on one number: the coefficient put this team eighth
+ * of sixteen, and they beat the ninth, the first, the twelfth and the third.
+ * So a seed is never plain text here; wherever a team appears in a playoff
+ * context it carries its "testa di serie" number in a box, and the box is
+ * filled only for us.
+ */
+const { n, us = false, size = 'sm', label = false } = Astro.props;
+---
+
+<span class:list={['seed', `seed-${size}`, { us }]}>
+  {label && <span class="seed-label">testa di serie</span>}
+  <span class="seed-n">{n}</span>
+</span>
+
+<style>
+  .seed {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    line-height: 1;
+    vertical-align: baseline;
+  }
+
+  .seed-n {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ink-line);
+    color: var(--chalk-dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .seed.us .seed-n {
+    background: var(--giallo);
+    border-color: var(--giallo);
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .seed-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+  }
+
+  .seed-sm .seed-n {
+    min-width: 1.55rem;
+    height: 1.55rem;
+    font-size: 0.7rem;
+  }
+
+  .seed-md .seed-n {
+    min-width: 2.1rem;
+    height: 2.1rem;
+    font-size: 0.95rem;
+  }
+
+  .seed-lg .seed-n {
+    min-width: 3.2rem;
+    height: 3.2rem;
+    font-size: 1.6rem;
+    border-width: 2px;
+  }
+</style>

@@ -1,0 +1,64 @@
+---
+/**
+ * Four cells of quarter scores, read as a scoreboard row.
+ * Quarters we won are marked; the data comes from csi.db and exists for 21
+ * of the 23 games, so the component has to handle a missing side.
+ */
+const { us, them, compact = false } = Astro.props;
+const cells = [0, 1, 2, 3];
+---
+
+<div class:list={['qstrip', { compact }]}>
+  <div class="qrow qhead" aria-hidden="true">
+    {cells.map((i) => <span>{`Q${i + 1}`}</span>)}
+  </div>
+  <div class="qrow qus">
+    {cells.map((i) => (
+      <span class:list={{ up: us && them && us[i] > them[i] }}>
+        {us ? us[i] : '–'}
+      </span>
+    ))}
+  </div>
+  <div class="qrow qthem">
+    {cells.map((i) => <span>{them ? them[i] : '–'}</span>)}
+  </div>
+</div>
+
+<style>
+  .qstrip {
+    display: inline-grid;
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .qrow {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(2.6rem, 1fr));
+    gap: 1px;
+  }
+
+  .qrow > span {
+    background: var(--ink-raised);
+    padding: 0.3rem 0.45rem;
+    text-align: center;
+    font-size: var(--step--1);
+  }
+
+  .qhead > span {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--chalk-faint);
+    background: var(--ink-panel);
+    padding-block: 0.22rem;
+  }
+
+  .qus > span { color: var(--chalk); }
+  .qus > span.up { color: var(--giallo); }
+  .qthem > span { color: var(--chalk-dim); }
+
+  .compact .qrow { grid-template-columns: repeat(4, minmax(2rem, 1fr)); }
+  .compact .qrow > span { padding: 0.2rem 0.3rem; font-size: var(--step--2); }
+</style>
