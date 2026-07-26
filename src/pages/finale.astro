@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import Seed from '../components/Seed.astro';
 import Referto from '../components/Referto.astro';
 import {
-  season, teamName, US, longDate, playerName, groupGames,
+  season, teamName, teamShort, US, longDate, playerName, groupGames,
 } from '../lib/season.js';
 
 import scoreboard from '../assets/3.jpg';
@@ -43,6 +43,15 @@ const topScorers = [...game.boxscore]
 const photo = (fileName) => final.photos.find((p) => p.file === fileName);
 const heroPhoto = photo('3.jpg');
 const gallery = final.photos.filter((p) => p.file !== '3.jpg');
+
+// The decisive (last-played) game of each series: gara 3 in both cases.
+const decider = (phase) => {
+  const legs = season.games.filter((g) => g.phase === phase);
+  return legs[legs.length - 1];
+};
+const quartiDecider = decider('quarti');
+const semiDecider = decider('semifinale');
+const sergioNumber = game.boxscore.find((l) => l.player === 'malavolti-sergio')?.number;
 
 // The opponent's own road to Loiano, read off the bracket.
 const theirRun = season.playoff.bracket
@@ -83,8 +92,7 @@ const theirRun = season.playoff.bracket
       </p>
 
       <h1>
-        <span class="line">Il tabellone</span>
-        <span class="line">dice</span>
+        <span class="line">La finale</span>
       </h1>
 
       <p class="hero-score mono">
@@ -134,7 +142,7 @@ const theirRun = season.playoff.bracket
   </section>
 
   <section class="section">
-    <div class="wrap-tight prose-block">
+    <div class="wrap prose-block">
       <h2>Terza volta</h2>
       <p>
         Nel girone il Birreria Amadeus aveva vinto tutte e due le partite: 60–58
@@ -195,28 +203,6 @@ const theirRun = season.playoff.bracket
 
   <section class="section">
     <div class="wrap">
-      <div class="mvp-block">
-        <div class="mvp-badge">
-          <span class="mvp-num mono">{final.mvp.number}</span>
-        </div>
-        <div>
-          <p class="eyebrow"><span>Miglior giocatore della finale</span></p>
-          <h2>{final.mvp.fullName}</h2>
-          <p class="dim">
-            Sei punti dalla panchina in finale e sessantasei in tredici partite
-            da gennaio in poi. È l'unico giocatore di cui le fonti registrino il
-            numero di maglia, ed è per questo premio che lo sappiamo.
-          </p>
-          <p class="mvp-source mono faint">
-            «{final.mvp.source}» — tabellone Super-League Promozione
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
       <div class="boxgrid">
         <Referto game={game} />
         <div class="topscorers">
@@ -246,7 +232,49 @@ const theirRun = season.playoff.bracket
 
   <section class="section">
     <div class="wrap">
+      <div class="mvp-block">
+        <div class="mvp-badge">
+          <span class="mvp-num mono">{final.mvp.number}</span>
+        </div>
+        <div>
+          <p class="eyebrow"><span>Miglior giocatore della finale</span></p>
+          <h2>{final.mvp.fullName}</h2>
+          <p class="dim">
+            Sei punti dalla panchina in finale, ma il contributo che si
+            ricorda è l'energia portata a partita in corso e le palle rubate
+            nei momenti più delicati della gara.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap prose-block">
+      <h2>Curiosità: la maglia numero {sergioNumber}</h2>
+      <p>
+        Nella tabella qui sopra <strong>{playerName('malavolti-sergio')}</strong>
+        {' '}gioca con la maglia numero {sergioNumber}, non la sua: gioca
+        abitualmente con la 6. Quel numero è di suo fratello Fabio, playmaker
+        come lui, in campo in tutte le otto partite dei playoff, dagli ottavi
+        alla bella di semifinale. Alla finale non c'era: aveva già prenotato un
+        viaggio in Grecia, convinto che la squadra non sarebbe arrivata così
+        lontano. Lo realizzò la notte appena dopo aver vinto gara 2 dei quarti in casa contro il Granarolo. Dopo la vittoria in gara 3 di
+        semifinale, non riuscì a trattenere le
+        lacrime. A chi gli chiedeva cosa fosse successo disse solo che alla
+        finale non ci sarebbe stato. Quel giorno a Loiano, per tenerlo comunque in campo, suo
+        fratello Sergio decise di indossare la sua maglia numero 8, rinunciando alla sua numero 6.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
       <h2 class="section-title">Anche loro venivano da lontano</h2>
+      <p class="section-note dim">
+        Il cammino del {teamName(opponent)}, l'avversario della finale, fino a
+        Loiano.
+      </p>
       <ul class="theirrun">
         {theirRun.map((r) => (
           <li>
@@ -261,14 +289,14 @@ const theirRun = season.playoff.bracket
 
   <section class="section gallery-section">
     <div class="wrap">
-      <h2 class="section-title">Cinque fotografie</h2>
+      <h2 class="section-title">Galleria fotografica</h2>
       <p class="section-note dim">
         Tutto il materiale fotografico sopravvissuto di questa stagione è di
         quel sabato mattina a Loiano.
       </p>
     </div>
 
-    <div class="gallery">
+    <div class="gallery wrap">
       {gallery.map((p) => (
         <figure>
           <Image
@@ -394,7 +422,7 @@ const theirRun = season.playoff.bracket
 
   /* --- prose ------------------------------------------------------------- */
   .prose-block h2 { font-size: var(--step-3); margin-bottom: 1rem; }
-  .prose-block p { color: var(--chalk-dim); }
+  .prose-block p { color: var(--chalk-dim); max-width: 65ch; }
 
   .h2h-list {
     list-style: none;

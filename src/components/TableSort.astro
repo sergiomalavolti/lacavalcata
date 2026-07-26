@@ -1,0 +1,128 @@
+---
+/**
+ * Column sorting, shared by any page that marks a table `data-sortable`.
+ *
+ * A `<th data-sort="text|num">` becomes a control: the script wraps its label
+ * in a button, so a page whose JavaScript never arrives keeps a plain readable
+ * table instead of dead affordances. `data-dir` sets the direction of the
+ * first click — numbers usually want the largest first, names the first name.
+ *
+ * A cell can carry `data-v` when what should be sorted differs from what is
+ * printed: the ISO date under a written-out one, the raw number under a
+ * formatted one. ISO dates sort correctly as text, so they need no own type.
+ *
+ * Every sort starts again from the server-rendered order, which keeps ties in
+ * that order rather than in whatever the last sort happened to leave behind.
+ */
+---
+
+<script>
+  for (const table of document.querySelectorAll('table[data-sortable]')) {
+    const tbody = table.tBodies[0];
+    const headers = [...table.querySelectorAll('thead th[data-sort]')];
+    if (!tbody || headers.length === 0) continue;
+
+    const initialOrder = [...tbody.rows];
+    const collator = new Intl.Collator('it');
+
+    const valueOf = (row, index, type) => {
+      const cell = row.cells[index];
+      if (!cell) return type === 'num' ? 0 : '';
+      const raw = (cell.dataset.v ?? cell.textContent).trim();
+      if (type !== 'num') return raw;
+      const n = Number(raw.replace(',', '.').replace(/[^0-9.-]/g, ''));
+      return Number.isFinite(n) ? n : 0;
+    };
+
+    // A rank column numbers rows the way they are shown, not the way the
+    // page was built, so it stays true after a sort.
+    const renumber = () => {
+      [...tbody.rows].forEach((row, i) => {
+        const rank = row.querySelector('[data-rank]');
+        if (rank) rank.textContent = String(i + 1);
+      });
+    };
+
+    const sortBy = (th, dir) => {
+      const index = th.cellIndex;
+      const type = th.dataset.sort;
+      const rows = [...initialOrder].sort((a, b) => {
+        const va = valueOf(a, index, type);
+        const vb = valueOf(b, index, type);
+        const cmp = type === 'num' ? va - vb : collator.compare(va, vb);
+        return dir === 'asc' ? cmp : -cmp;
+      });
+
+      const frag = document.createDocumentFragment();
+      rows.forEach((row) => frag.appendChild(row));
+      tbody.appendChild(frag);
+
+      headers.forEach((h) =>
+        h.setAttribute(
+          'aria-sort',
+          h === th ? (dir === 'asc' ? 'ascending' : 'descending') : 'none',
+        ),
+      );
+      renumber();
+    };
+
+    headers.forEach((th) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'th-sort';
+      button.append(document.createTextNode(th.textContent.trim()));
+
+      const arrow = document.createElement('span');
+      arrow.className = 'th-arrow';
+      arrow.setAttribute('aria-hidden', 'true');
+      button.append(arrow);
+
+      th.textContent = '';
+      th.append(button);
+      if (!th.hasAttribute('aria-sort')) th.setAttribute('aria-sort', 'none');
+
+      button.addEventListener('click', () => {
+        const current = th.getAttribute('aria-sort');
+        const first = th.dataset.dir ?? (th.dataset.sort === 'num' ? 'desc' : 'asc');
+        const dir =
+          current === 'none' ? first : current === 'ascending' ? 'desc' : 'asc';
+        sortBy(th, dir);
+      });
+    });
+  }
+</script>
+
+<style is:global>
+  /* The button takes the padding off the cell rather than adding its own, so
+     the header sits in exactly the same place before the script runs. */
+  .th-sort {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    width: calc(100% + 1.4rem);
+    margin: -0.5rem -0.7rem;
+    padding: 0.5rem 0.7rem;
+    transition: color 0.15s ease;
+  }
+  th.num .th-sort { justify-content: flex-end; }
+  .th-sort:hover { color: var(--giallo); }
+
+  .th-arrow::after {
+    content: '↕';
+    font-size: 0.85em;
+    color: var(--chalk-faint);
+  }
+  .th-sort:hover .th-arrow::after { color: inherit; }
+
+  th[aria-sort='ascending'] .th-sort,
+  th[aria-sort='descending'] .th-sort { color: var(--giallo); }
+  th[aria-sort='ascending'] .th-arrow::after { content: '↑'; color: inherit; }
+  th[aria-sort='descending'] .th-arrow::after { content: '↓'; color: inherit; }
+</style>

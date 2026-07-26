@@ -25,13 +25,21 @@ That module owns the Italian formatting helpers (`longDate`, `pct`, `num`,
 `signed` — all use a decimal comma) and the name/team lookups. Add accessors
 there rather than reaching into the data from a page.
 
+Three traps in the data, all of which bite. A player on the distinta who never
+entered is `{played: false, points: null}`, not `0` — filter on `played` before
+any aggregate. `playerStats[].average` divides by `played`, not `games`. And
+game `seq: 10` is a 30–0 forfeit with an empty boxscore that appears in no
+player's log, so per-game denominators are **22**, not 23.
+
 ## Layout
 
 ```
 src/pages/       one file per page; nav order lives in src/layouts/Base.astro
+                 squadra/[id].astro builds the 19 player pages at /squadra/<id>/
 src/components/  Seed, Bracket, Referto, BoxscoreModal, QuarterStrip, ChartTooltip,
-                 PageHead + three charts (Race, Margin, Quarter)
+                 TableSort, PageHead + four charts (Race, Margin, Quarter, PlayerSeason)
 src/lib/         season.js — the only door to the data
+                 player.js — per-player season analysis, built on season.js
 src/assets/      the five photographs, all from finals day, all lowercase .jpg
 src/styles/      tokens.css (design tokens) and global.css
 scripts/         validate-palette.sh

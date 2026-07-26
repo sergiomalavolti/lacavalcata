@@ -4,24 +4,26 @@
  * Quarters we won are marked; the data comes from csi.db and exists for 21
  * of the 23 games, so the component has to handle a missing side.
  */
-const { us, them, compact = false } = Astro.props;
+const {
+  us, them, compact = false, opponentFirst = false,
+} = Astro.props;
 const cells = [0, 1, 2, 3];
+const rows = opponentFirst ? [['qthem', them], ['qus', us]] : [['qus', us], ['qthem', them]];
 ---
 
 <div class:list={['qstrip', { compact }]}>
   <div class="qrow qhead" aria-hidden="true">
     {cells.map((i) => <span>{`Q${i + 1}`}</span>)}
   </div>
-  <div class="qrow qus">
-    {cells.map((i) => (
-      <span class:list={{ up: us && them && us[i] > them[i] }}>
-        {us ? us[i] : '–'}
-      </span>
-    ))}
-  </div>
-  <div class="qrow qthem">
-    {cells.map((i) => <span>{them ? them[i] : '–'}</span>)}
-  </div>
+  {rows.map(([cls, values]) => (
+    <div class:list={['qrow', cls]}>
+      {cells.map((i) => (
+        <span class:list={{ up: cls === 'qus' && us && them && us[i] > them[i] }}>
+          {values ? values[i] : '–'}
+        </span>
+      ))}
+    </div>
+  ))}
 </div>
 
 <style>

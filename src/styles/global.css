@@ -94,6 +94,11 @@ p:last-child { margin-bottom: 0; }
   color: var(--chalk-dim);
 }
 
+/* A note right under a title gets its gap from the title; one trailing a
+   table or list (a closing remark) needs space pulled away from it instead. */
+.section-note { margin-top: 1.6rem; }
+.section-title + .section-note { margin-top: 0; }
+
 /* Inside a .section-head the wrapper owns the trailing space. */
 .section-head .section-note,
 .chart figcaption p { margin-bottom: 0; }
@@ -247,6 +252,58 @@ tr.us:hover td { background: rgba(242, 197, 17, 0.14); }
 }
 .jump:hover { border-color: var(--giallo-deep); background: var(--giallo-wash); }
 .jump::after { content: '→'; }
+
+/* A player's name, wherever it appears. Deliberately quieter than .link: these
+   run nineteen to a table, and giallo on every row would be a wall of it. */
+.p-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink-line);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.p-link:hover,
+.p-link:focus-visible { color: var(--giallo); border-bottom-color: var(--giallo-deep); }
+
+/* --- at a glance --------------------------------------------------------- */
+
+/* A band of headline figures. Shared by the roster and the player pages. */
+.glance {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1px;
+  background: var(--ink-line-soft);
+  border: 1px solid var(--ink-line);
+}
+.glance li {
+  background: var(--ink-raised);
+  padding: 1.3rem 1.2rem;
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+.g-v {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  line-height: 1;
+  color: var(--giallo);
+}
+.g-u {
+  font-size: 0.4em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--chalk-faint);
+  margin-left: 0.4rem;
+}
+.g-k {
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chalk-dim);
+}
+.g-sub { font-size: 0.63rem; letter-spacing: 0.05em; }
 
 /* --- utility ------------------------------------------------------------- */
 

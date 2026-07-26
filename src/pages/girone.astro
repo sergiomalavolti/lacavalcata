@@ -52,8 +52,8 @@ const headToHead = (team) => {
   >
     <p>
       Quattordici giornate per stabilire chi andava ai playoff e, soprattutto,
-      con che numero. Il Caffè Matic chiude <strong>secondo a 33 punti</strong>,
-      appaiato al Ghironda e staccato di quattro dal Birreria Amadeus. Il
+      con che numero. La Caffè Matic chiude <strong>secondo a 33 punti</strong>,
+      appaiata al Ghironda e staccata di quattro dalla Birreria Amadeus. Il
       secondo posto arriva solo all'ultima giornata.
     </p>
   </PageHead>
@@ -131,7 +131,7 @@ const headToHead = (team) => {
         <h2>Il coefficiente che ha deciso tutto</h2>
         <p class="prose dim">
           La Super-League prendeva le prime due di ogni girone più le quattro
-          migliori terze — ventidue squadre per sedici posti, e servivano criteri.
+          migliori terze, per un totale di ventidue squadre per sedici posti, e servivano criteri.
           Il CSI ordinava le qualificate con un coefficiente:{' '}
           <strong>Q.P.</strong>{' '}sono i punti divisi per le partite,{' '}
           <strong>Q.C.</strong> è il rapporto
@@ -140,10 +140,10 @@ const headToHead = (team) => {
           sei seconde quelle da 7 a 12, le quattro terze le ultime quattro.
         </p>
         <p class="prose dim">
-          Il Caffè Matic era secondo nel girone con un Q.TOT. di
+          La Caffè Matic si è posizionata seconda nel girone con un Q.TOT. di
           {' '}<strong>{num(ourSeed.qtot, 3)}</strong>: il più alto fra le seconde
-          era l'Ozzano con {num(seeds.find((s) => s.seed === 7).qtot, 3)}, e questo
-          ha fissato la posizione.
+          è stato quello dell'Ozzano con {num(seeds.find((s) => s.seed === 7).qtot, 3)}, e questo
+          ha determinato la posizione.
         </p>
         <p class="seed-callout">
           <Seed n={8} us size="lg" label />
@@ -229,8 +229,8 @@ const headToHead = (team) => {
       <div class="section-head">
         <h2 class="section-title">Il girone completo</h2>
         <p class="section-note">
-          Tutte le {fixtures.length} partite del Girone A, giornata per giornata
-          — anche quelle che non ci riguardavano, perché è così che si muoveva
+          Tutte le {fixtures.length} partite del Girone A, giornata per giornata, 
+          anche quelle che non ci riguardavano, perché è così che si muoveva
           la classifica sopra e sotto di noi. Il tabellino si apre solo sulle
           nostre: delle altre esiste il risultato e nient'altro.
         </p>
