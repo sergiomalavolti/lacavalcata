@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Seed from '../components/Seed.astro';
+import BoxscoreModal from '../components/BoxscoreModal.astro';
 import { season, teamName, US, longDate, playoffGames } from '../lib/season.js';
 
 import heroImage from '../assets/final_game-2.jpg';
@@ -27,10 +28,10 @@ const steps = [
   },
   {
     id: 'seed',
-    kicker: 'Teste di serie',
-    title: 'Ottava di sedici',
+    kicker: 'Tabellone Playoff',
+    title: 'Ottava testa di serie',
     href: '/playoff/',
-    body: `Ventidue squadre per sedici posti, ordinate da un coefficiente. Il Caffè Matic entra ottavo: la 9 al primo turno e, subito dopo, la prima della classe.`,
+    body: `Ventidue squadre per sedici posti, ordinate da un coefficiente. La Caffè Matic entra ottava: la 9 al primo turno e, subito dopo, la prima della classe.`,
     seed: ourSeed,
     seedIsUs: true,
   },
@@ -52,7 +53,7 @@ const steps = [
       href: round.id === 'finale' ? '/finale/' : '/playoff/',
       seed: seedOf(opponent),
       figure: `${wins}–${games.length - wins}`,
-      figureLabel: games.map((g) => `${g.ourScore}–${g.theirScore}`).join(' · '),
+      games,
       body,
     };
   }),
@@ -89,10 +90,9 @@ const steps = [
       </h1>
 
       <p class="hero-lead">
-        Quarantotto squadre, sei gironi, sedici ai playoff. Il Caffè Matic –
-        Trottola Sport di Porretta Terme entra dall'ottava piazza e non perde
-        più una serie. Il 9 giugno 2012, a Loiano, batte 66–55 la squadra che
-        l'aveva già battuto due volte su due.
+        Quarantotto squadre, sei gironi, sedici ai playoff. La Caffè Matic –
+        Trottola Sport di Porretta Terme si qualifica ai playoff come ottava testa di serie e arriva fino in fondo. Il 9 giugno 2012, a Loiano, batte 66–55 la squadra che
+        l'aveva già battuta due volte su due.
       </p>
 
       <p class="hero-actions">
@@ -127,7 +127,7 @@ const steps = [
 
   <section class="section" id="cavalcata">
     <div class="wrap">
-      <h2 class="section-title lg">Sei passaggi</h2>
+      <h2 class="section-title lg">La cavalcata</h2>
       <p class="section-note dim">
         Dal 12 novembre 2011 al 9 giugno 2012. Ogni tappa porta alla pagina che
         la racconta per intero.
@@ -152,6 +152,21 @@ const steps = [
             <div class="step-figure">
               {step.figure && <p class="sf-v mono">{step.figure}</p>}
               {step.figureLabel && <p class="sf-k mono faint">{step.figureLabel}</p>}
+              {step.games && (
+                <p class="sf-k mono faint">
+                  {step.games.map((g, i) => (
+                    <>
+                      {i > 0 && ' · '}
+                      <button
+                        type="button"
+                        class="score-btn"
+                        data-game={g.seq}
+                        aria-label={`Tabellino di ${teamName(g.opponent)}, ${longDate(g.date)}`}
+                      >{g.ourScore}–{g.theirScore}</button>
+                    </>
+                  ))}
+                </p>
+              )}
             </div>
           </li>
         ))}
@@ -163,8 +178,13 @@ const steps = [
     <div class="wrap">
       <div class="closing panel">
         <p class="closing-score mono">
-          {final.game.theirScore}<span class="sep">–</span><span
-            class="ours">{final.game.ourScore}</span>
+          <button
+            type="button"
+            class="score-btn"
+            data-game={final.game.seq}
+            aria-label={`Tabellino della finale, ${longDate(final.game.date)}`}
+          >{final.game.theirScore}<span class="sep">–</span><span
+            class="ours">{final.game.ourScore}</span></button>
         </p>
         <div>
           <h2>{longDate(final.game.date)}</h2>
@@ -222,6 +242,8 @@ const steps = [
       items.forEach((el) => io.observe(el));
     }
   </script>
+
+  <BoxscoreModal />
 </Base>
 
 <style>

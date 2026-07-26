@@ -1,0 +1,762 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import TableSort from '../../components/TableSort.astro';
+import BoxscoreModal from '../../components/BoxscoreModal.astro';
+import ChartTooltip from '../../components/ChartTooltip.astro';
+import PlayerSeasonChart from '../../components/PlayerSeasonChart.astro';
+import {
+  season, playerName, playerHref, teamName, teamShort, longDate, shortDate,
+  num, pct, PHASES,
+} from '../../lib/season.js';
+import {
+  playerProfile, playerNeighbours, squadScoring, rosterSize,
+} from '../../lib/player.js';
+
+export function getStaticPaths() {
+  return season.roster.map((p) => ({ params: { id: p.id }, props: { id: p.id } }));
+}
+
+const { id } = Astro.props;
+const p = playerProfile(id);
+const person = p.person;
+const { prev, next } = playerNeighbours(id);
+
+const DASH = '—';
+const fmt = (v, d = 1) => (v === null || v === undefined ? DASH : num(v, d));
+const fpct = (v, d = 1) => (v === null || v === undefined ? DASH : pct(v, d));
+const ord = (n) => `${n}º`;
+const plural = (n, one, many) => (n === 1 ? one : many);
+
+const VENUE = { casa: 'In casa', trasferta: 'In trasferta', neutro: 'Campo neutro' };
+const RESULT = { vittorie: 'Nelle vittorie', sconfitte: 'Nelle sconfitte' };
+const ROLE = { titolare: 'Da titolare', panchina: 'Dalla panchina' };
+const CLUTCH = { equilibrate: 'Decise entro 5 punti', altre: 'Tutte le altre' };
+
+const splitCards = [
+  { title: 'Fase per fase', rows: p.splits.phase, label: (k) => PHASES[k] },
+  { title: 'Dove', rows: p.splits.venue, label: (k) => VENUE[k] },
+  { title: 'Come è finita', rows: p.splits.result, label: (k) => RESULT[k] },
+  { title: 'In campo', rows: p.splits.role, label: (k) => ROLE[k] },
+];
+
+const barOf = (rows) => {
+  const max = Math.max(...rows.map((r) => r.avg ?? 0));
+  return (v) => (v && max > 0 ? (v / max) * 100 : 0);
+};
+
+const squadMax = squadScoring[0].points;
+const bucketMax = Math.max(...p.buckets.map((b) => b.count));
+
+const [girone, playoff] = p.splits.stage;
+const clutch = p.splits.clutch.find((r) => r.key === 'equilibrate');
+const seasonClutch = season.advanced.clutch;
+
+const where = (e) => (e.neutral ? 'Neutro' : e.ourSide === 'home' ? 'Casa' : 'Trasferta');
+
+const title = `${person.surname} ${person.name}`;
+---
+
+<Base
+  title={`${title} · Caffè Matic – Trottola Sport 2011-2012`}
+  description={`La stagione 2011-2012 di ${title}: ${p.points} punti in ${p.entered} partite, statistiche complete e tabellini.`}
+  current="squadra"
+>
+  <nav class="crumbs" aria-label="Percorso">
+    <div class="wrap">
+      <a class="crumb" href="/squadra/">← La squadra</a>
+    </div>
+  </nav>
+
+  <PageHead
+    title={title}
+    facts={[
+      person.role,
+      `${p.points} punti`,
+      `${p.entered} ${plural(p.entered, 'partita', 'partite')}`,
+      ...(p.number !== null ? [`maglia n. ${p.number} in finale`] : []),
+    ]}
+  >
+    <p>
+      {p.dressed} {plural(p.dressed, 'partita', 'partite')} a referto su {p.teamGames}
+      {p.ne > 0
+        ? <>, {p.entered} con almeno un ingresso in campo</>
+        : p.dressed === 1
+          ? <>, giocata</>
+          : <>, tutte giocate</>}.
+      {' '}<strong>{p.points} punti</strong> in stagione — il {fpct(p.share, 1)} di
+      quanto ha segnato la squadra, {ord(p.rank.points)} dato della rosa.
+      {p.bestGame && (
+        <>
+          {' '}Il massimo, <strong>{p.high}</strong>, contro
+          {' '}{teamShort(p.bestGame.opponent)} il {shortDate(p.bestGame.date)}.
+        </>
+      )}
+    </p>
+  </PageHead>
+
+  <!-- Anagrafica: what the roster page holds, so this page stands on its own. -->
+  <section class="section">
+    <div class="wrap">
+      <dl class="bio">
+        <div>
+          <dt>Altezza</dt>
+          <dd class="mono">{person.height}<span class="unit">cm</span></dd>
+        </div>
+        <div>
+          <dt>Nato il</dt>
+          <dd class="mono">{longDate(person.birthdate)}</dd>
+        </div>
+        <div>
+          <dt>Età alla finale</dt>
+          <dd class="mono">{p.age} anni</dd>
+        </div>
+        <div>
+          <dt>Maglia</dt>
+          <dd class="mono">
+            {p.number !== null ? `n. ${p.number}` : <span class="faint">non registrata</span>}
+          </dd>
+        </div>
+      </dl>
+      <p class="section-note dim">
+        I numeri di maglia sono sul referto della sola finale: per le altre
+        ventidue partite la fonte non li riporta.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="section-title">La stagione in cifre</h2>
+      <ul class="glance">
+        <li>
+          <span class="g-v">{p.points}</span>
+          <span class="g-k mono">punti totali</span>
+          <span class="g-sub mono dim">{ord(p.rank.points)} su {rosterSize} in rosa</span>
+        </li>
+        <li>
+          <span class="g-v">{fmt(p.average, 1)}</span>
+          <span class="g-k mono">punti a partita</span>
+          <span class="g-sub mono dim">{ord(p.rank.average)} su {rosterSize} in rosa</span>
+        </li>
+        <li>
+          <span class="g-v">{p.high ?? DASH}</span>
+          <span class="g-k mono">il massimo</span>
+          <span class="g-sub mono dim">
+            {p.bestGame ? (
+              <button
+                type="button"
+                class="score-btn"
+                data-game={p.bestGame.seq}
+                aria-label={`Tabellino di ${teamName(p.bestGame.opponent)}, ${longDate(p.bestGame.date)}`}
+              >{teamShort(p.bestGame.opponent)}, {shortDate(p.bestGame.date)}</button>
+            ) : 'mai in campo'}
+          </span>
+        </li>
+        <li>
+          <span class="g-v">{p.entered}<span class="g-u">di {p.teamGames}</span></span>
+          <span class="g-k mono">partite giocate</span>
+          <span class="g-sub mono dim">
+            {p.dressed} a referto{p.ne > 0 && `, ${p.ne} senza entrare`}
+          </span>
+        </li>
+        <li>
+          <span class="g-v">{p.starts}</span>
+          <span class="g-k mono">da titolare</span>
+          <span class="g-sub mono dim">
+            {p.entered - p.starts} {plural(p.entered - p.starts, 'volta', 'volte')} dalla panchina
+          </span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <PlayerSeasonChart profile={p} />
+      <ul class="legend mono">
+        <li><span class="key win" aria-hidden="true"></span>vittoria</li>
+        <li><span class="key loss" aria-hidden="true"></span>sconfitta</li>
+        <li><span class="key best" aria-hidden="true"></span>miglior marcatore di squadra</li>
+        {p.ne > 0 && <li><span class="key ne" aria-hidden="true"></span>a referto, non entrato</li>}
+        {p.absent > 0 && <li><span class="key out" aria-hidden="true"></span>non a referto</li>}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Come si è distribuita</h2>
+        <p class="section-note">
+          Le stesse partite tagliate in quattro modi. Le medie contano solo le
+          gare in cui è entrato in campo: un taglio senza partite resta vuoto
+          invece di leggere zero.
+          {girone.games > 0 && playoff.games > 0 && (
+            <>
+              {' '}Fra girone e playoff la media passa da
+              {' '}<strong>{fmt(girone.avg, 1)}</strong> a
+              {' '}<strong>{fmt(playoff.avg, 1)}</strong>.
+            </>
+          )}
+        </p>
+      </div>
+
+      <div class="splits">
+        {splitCards.map((card) => {
+          const scale = barOf(card.rows);
+          return (
+            <section class="split-card">
+              <h3>{card.title}</h3>
+              <table class="split">
+                <thead>
+                  <tr>
+                    <th scope="col">{card.title}</th>
+                    <th scope="col" class="num">G</th>
+                    <th scope="col" class="num">Punti</th>
+                    <th scope="col" class="num">Media</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {card.rows.map((r) => (
+                    <tr class:list={{ empty: r.games === 0 }}>
+                      <th scope="row">{card.label(r.key)}</th>
+                      <td class="num">{r.games || DASH}</td>
+                      <td class="num">{r.games ? r.points : DASH}</td>
+                      <td class="num media">
+                        <span class="m-v">{fmt(r.avg, 1)}</span>
+                        <span class="m-track" aria-hidden="true">
+                          <span class="m-bar" style={`--w:${scale(r.avg)}%`}></span>
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Peso offensivo</h2>
+        <p class="section-note">
+          Quanto della produzione di squadra passava da lui. La quota è sui
+          {' '}{num(season.advanced.record.onCourt.scored, 0)} punti segnati in campo:
+          la vittoria a tavolino non ne assegna a nessuno.
+        </p>
+      </div>
+
+      <div class="weight">
+        <ul class="readout">
+          <li>
+            <span class="r-v mono">{fpct(p.share, 1)}</span>
+            <span class="r-k mono dim">dei punti di squadra</span>
+          </li>
+          <li>
+            <span class="r-v mono">{p.topScorerGames}</span>
+            <span class="r-k mono dim">
+              {plural(p.topScorerGames, 'partita', 'partite')} da miglior marcatore
+            </span>
+          </li>
+          <li>
+            <span class="r-v mono">{fpct(p.bestShare, 1)}</span>
+            <span class="r-k mono dim">la sua quota più alta in una gara</span>
+          </li>
+          <li>
+            <span class="r-v mono">{fpct(p.avgShare, 1)}</span>
+            <span class="r-k mono dim">quota media nelle gare giocate</span>
+          </li>
+        </ul>
+
+        <div class="ranking">
+          <h3 class="rank-title mono">Tutta la rosa, per punti</h3>
+          <ol class="squadbars">
+            {squadScoring.map((row) => (
+              <li class:list={{ me: row.id === p.id }}>
+                <span class="q-name">
+                  {row.id === p.id
+                    ? playerName(row.id)
+                    : <a class="p-link" href={playerHref(row.id)}>{playerName(row.id)}</a>}
+                </span>
+                <span class="q-track" aria-hidden="true">
+                  <span class="q-bar" style={`--w:${(row.points / squadMax) * 100}%`}></span>
+                </span>
+                <span class="q-v mono">{row.points}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Regolarità</h2>
+        <p class="section-note">
+          Non quanto ha segnato, ma quanto spesso segnava la stessa cifra. La
+          deviazione standard misura di quanto una serata tipo si scostava
+          dalla sua media.
+        </p>
+      </div>
+
+      <div class="regular">
+        <div class="hist">
+          <h3 class="rank-title mono">Partite per fascia di punti</h3>
+          <ul>
+            {p.buckets.map((b) => (
+              <li>
+                <span class="h-k mono">{b.label}</span>
+                <span class="h-track" aria-hidden="true">
+                  <span
+                    class="h-bar"
+                    style={`--w:${bucketMax ? (b.count / bucketMax) * 100 : 0}%`}
+                  ></span>
+                </span>
+                <span class="h-v mono">{b.count || ''}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <ul class="readout">
+          <li>
+            <span class="r-v mono">{p.high ?? DASH}</span>
+            <span class="r-k mono dim">massimo</span>
+          </li>
+          <li>
+            <span class="r-v mono">{p.low ?? DASH}</span>
+            <span class="r-k mono dim">minimo</span>
+          </li>
+          <li>
+            <span class="r-v mono">{fmt(p.median, 1)}</span>
+            <span class="r-k mono dim">mediana</span>
+          </li>
+          <li>
+            <span class="r-v mono">{p.stdev === null ? DASH : `±${num(p.stdev, 1)}`}</span>
+            <span class="r-k mono dim">deviazione standard</span>
+          </li>
+          <li>
+            <span class="r-v mono">{p.doubleFigures}</span>
+            <span class="r-k mono dim">
+              in doppia cifra{p.doubleFigureRate !== null && ` · ${fpct(p.doubleFigureRate, 0)}`}
+            </span>
+          </li>
+          <li>
+            <span class="r-v mono">{p.doubleFigureStreak}</span>
+            <span class="r-k mono dim">la striscia più lunga in doppia cifra</span>
+          </li>
+          <li>
+            <span class="r-v mono">{p.scoreless}</span>
+            <span class="r-k mono dim">
+              {plural(p.scoreless, 'gara chiusa', 'gare chiuse')} senza segnare
+            </span>
+          </li>
+          <li>
+            <span class="r-v mono">{p.scoringStreak}</span>
+            <span class="r-k mono dim">gare consecutive andando a segno</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Quando si decideva poco</h2>
+        <p class="section-note">
+          Nove partite si sono chiuse entro cinque punti di scarto, e la squadra
+          le ha vinte {seasonClutch.wins} volte su {seasonClutch.games}.
+        </p>
+      </div>
+      <div class="panel clutch">
+        {clutch.games > 0 ? (
+          <p>
+            In quelle partite ne ha giocate <strong>{clutch.games}</strong>,
+            segnando <strong>{clutch.points} punti</strong>:
+            {' '}<strong>{fmt(clutch.avg, 1)}</strong> di media, contro i
+            {' '}{fmt(p.average, 1)} di tutta la stagione.
+            {clutch.avg !== null && p.average > 0 && (
+              <>
+                {' '}{clutch.avg >= p.average
+                  ? 'Nelle gare in bilico segnava quanto o più del suo standard.'
+                  : 'Nelle gare in bilico il suo contributo calava.'}
+              </>
+            )}
+          </p>
+        ) : (
+          <p class="dim">Non è mai sceso in campo in una gara decisa entro cinque punti.</p>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {p.opponents.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 class="section-title">Contro chi</h2>
+          <p class="section-note">
+            Solo le squadre che ha affrontato entrando in campo.
+            {' '}<strong>Clicca un'intestazione</strong> per riordinare.
+          </p>
+        </div>
+        <div class="table-scroll">
+          <table class="versus" data-sortable>
+            <caption class="visually-hidden">Punti per avversario</caption>
+            <thead>
+              <tr>
+                <th scope="col" class="name" data-sort="text">Avversario</th>
+                <th scope="col" class="num" data-sort="num">Partite</th>
+                <th scope="col" class="num" data-sort="num" aria-sort="descending">Punti</th>
+                <th scope="col" class="num" data-sort="num">Media</th>
+                <th scope="col" class="num" data-sort="num">Massimo</th>
+              </tr>
+            </thead>
+            <tbody>
+              {p.opponents.map((o) => (
+                <tr>
+                  <td class="name">{teamName(o.opponent)}</td>
+                  <td class="num">{o.games}</td>
+                  <td class="num">{o.points}</td>
+                  <td class="num" data-v={o.avg}>{fmt(o.avg, 1)}</td>
+                  <td class="num">{o.high}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-title">Tutte le partite</h2>
+        <p class="section-note">
+          Le ventidue gare della stagione, comprese quelle in cui era a referto
+          senza entrare e quelle in cui non era a referto.
+          {' '}<strong>Clicca un risultato</strong> per il tabellino completo.
+        </p>
+      </div>
+
+      <div class="table-scroll">
+        <table class="log" data-sortable>
+          <caption class="visually-hidden">
+            Il rendimento partita per partita di {title}
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col" data-sort="text">Fase</th>
+              <th scope="col" data-sort="text" data-dir="asc" aria-sort="ascending">Data</th>
+              <th scope="col" class="name" data-sort="text">Avversario</th>
+              <th scope="col" data-sort="text">Campo</th>
+              <th scope="col" class="num" data-sort="num">Risultato</th>
+              <th scope="col" class="mid" data-sort="text">Quintetto</th>
+              <th scope="col" class="num" data-sort="num">Punti</th>
+              <th scope="col" class="num" data-sort="num">Quota</th>
+            </tr>
+          </thead>
+          <tbody>
+            {p.timeline.map((e) => (
+              <tr class:list={{ dnp: e.status !== 'played' }}>
+                <td class="mono faint">{PHASES[e.phase]}</td>
+                <td class="mono" data-v={e.date}>{shortDate(e.date)}</td>
+                <td class="name">{teamName(e.opponent)}</td>
+                <td class="mono faint">{where(e)}</td>
+                <td class="num" data-v={e.margin}>
+                  <button
+                    type="button"
+                    class="score-btn"
+                    data-game={e.seq}
+                    aria-label={`Tabellino di ${teamName(e.opponent)}, ${longDate(e.date)}`}
+                  >{e.ourScore}–{e.theirScore}</button>
+                  <span class:list={['verdict mono', e.won ? 'w' : 'l']}>
+                    {e.won ? 'V' : 'P'}
+                  </span>
+                </td>
+                <td class="mid mono">{e.starter ? 'X' : ''}</td>
+                <td
+                  class="num pts"
+                  data-v={e.status === 'played' ? e.points : e.status === 'ne' ? -1 : -2}
+                >
+                  {e.status === 'played'
+                    ? e.points
+                    : <span class="tag mono">{e.status === 'ne' ? 'NE' : 'fuori'}</span>}
+                </td>
+                <td class="num dim" data-v={e.share ?? -1}>
+                  {e.share === null ? '' : fpct(e.share, 1)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="section-note dim">
+        <strong>NE</strong> è a referto senza entrare, <strong>fuori</strong>
+        {' '}non a referto. <strong>Quota</strong> è la percentuale dei punti di
+        squadra in quella gara. La vittoria a tavolino del
+        {' '}{shortDate('2012-02-11')} non compare: non fu giocata.
+      </p>
+    </div>
+  </section>
+
+  <nav class="section walk" aria-label="Altri giocatori">
+    <div class="wrap">
+      <a class="walk-link prev" href={playerHref(prev)}>
+        <span class="w-k mono dim">Precedente</span>
+        <span class="w-n">{playerName(prev)}</span>
+      </a>
+      <a class="walk-link mid" href="/squadra/">
+        <span class="w-k mono dim">Torna a</span>
+        <span class="w-n">La squadra</span>
+      </a>
+      <a class="walk-link next" href={playerHref(next)}>
+        <span class="w-k mono dim">Successivo</span>
+        <span class="w-n">{playerName(next)}</span>
+      </a>
+    </div>
+  </nav>
+
+  <ChartTooltip />
+  <TableSort />
+  <BoxscoreModal />
+</Base>
+
+<style>
+  /* --- breadcrumb --------------------------------------------------------- */
+  .crumbs { padding-top: 1.6rem; }
+  .crumb {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .crumb:hover { color: var(--giallo); }
+
+  /* --- anagrafica --------------------------------------------------------- */
+  .bio {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .bio > div { background: var(--ink-raised); padding: 1rem 1.1rem; display: grid; gap: 0.4rem; }
+  .bio dt {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+  }
+  .bio dd { margin: 0; font-size: var(--step-0); color: var(--chalk); }
+  .bio .unit {
+    font-size: 0.62em;
+    color: var(--chalk-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-left: 0.2rem;
+  }
+
+  /* --- chart legend ------------------------------------------------------- */
+  .legend {
+    list-style: none;
+    margin: 0.9rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+  }
+  .legend li { display: flex; align-items: center; gap: 0.5rem; }
+  .key { width: 14px; height: 10px; display: inline-block; }
+  .key.win { background: var(--c-us); }
+  .key.loss { background: var(--c-loss); }
+  .key.best { background: var(--c-us); box-shadow: 0 0 0 1.25px var(--chalk); }
+  .key.ne { height: 5px; border: 1px solid var(--chalk-faint); }
+  .key.out { height: 2px; background: var(--c-context); }
+
+  /* Five tiles, so they need a narrower minimum than the roster's two. */
+  .glance { grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr)); }
+
+  /* --- splits ------------------------------------------------------------- */
+  /* Four cards: two even rows beat three-and-a-lonely-one. */
+  .splits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .split-card { background: var(--ink-raised); padding: 1.1rem 1.2rem 1.3rem; }
+  .split-card h3 {
+    font-size: var(--step-0);
+    color: var(--chalk-dim);
+    margin-bottom: 0.7rem;
+  }
+  .split { font-size: var(--step--1); width: 100%; }
+  /* These sit inside cards, so the sticky header the site uses on full-width
+     tables would only get in the way. */
+  .split thead th { position: static; background: transparent; }
+  .split th, .split td { padding: 0.42rem 0.4rem; }
+  .split thead th:first-child { color: transparent; }
+  .split tbody th {
+    text-align: left;
+    font-weight: 400;
+    color: var(--chalk);
+    white-space: nowrap;
+  }
+  .split tbody tr.empty th, .split tbody tr.empty td { color: var(--chalk-faint); }
+  .split .media { min-width: 5.5rem; }
+  .m-v { font-family: var(--font-mono); }
+  .m-track {
+    display: block;
+    width: 100%;
+    height: 2px;
+    margin-top: 0.35rem;
+    background: var(--ink-line);
+  }
+  .m-bar { display: block; height: 100%; width: var(--w); background: var(--giallo-deep); }
+  .split tbody tr:hover .m-bar { background: var(--giallo); }
+
+  /* --- readouts ----------------------------------------------------------- */
+  .readout {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .readout li { background: var(--ink-raised); padding: 1rem 1.1rem; display: grid; gap: 0.35rem; }
+  .r-v { font-size: var(--step-2); color: var(--giallo); line-height: 1.1; }
+  .r-k { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .weight { display: grid; gap: 1.6rem; }
+  .rank-title {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+    margin-bottom: 0.8rem;
+  }
+
+  /* --- squad ranking ------------------------------------------------------ */
+  .squadbars { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+  .squadbars li {
+    display: grid;
+    grid-template-columns: minmax(8rem, 13rem) 1fr 3rem;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: var(--step--1);
+    color: var(--chalk-dim);
+  }
+  .q-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .q-track { height: 8px; background: var(--ink-line-soft); }
+  .q-bar { display: block; height: 100%; width: var(--w); background: var(--c-context); }
+  .q-v { text-align: right; font-size: var(--step--1); }
+  .squadbars li.me { color: var(--chalk); }
+  .squadbars li.me .q-bar { background: var(--giallo); }
+  .squadbars li.me .q-v { color: var(--giallo); }
+  .squadbars li.me .q-name { font-weight: 600; }
+
+  /* --- distribution ------------------------------------------------------- */
+  .regular { display: grid; gap: 1.6rem; }
+  .hist ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+  .hist li {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr 2rem;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .h-k { font-size: 0.68rem; color: var(--chalk-dim); text-align: right; }
+  .h-track { height: 12px; background: var(--ink-line-soft); }
+  .h-bar { display: block; height: 100%; width: var(--w); background: var(--giallo-deep); }
+  .h-v { font-size: 0.7rem; color: var(--chalk); }
+
+  .clutch p { margin: 0; max-width: 62ch; }
+  .clutch :global(strong) { color: var(--chalk); }
+
+  /* --- tables ------------------------------------------------------------- */
+  .versus, .log { font-size: var(--step--1); }
+  .log .mid { text-align: center; color: var(--giallo); }
+  .log tbody tr.dnp td { color: var(--chalk-faint); }
+  .log .verdict { margin-left: 0.5rem; font-size: 0.62rem; }
+  .log .tag {
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+  }
+
+  /* --- walk --------------------------------------------------------------- */
+  .walk .wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .walk-link {
+    background: var(--ink-raised);
+    padding: 1.1rem 1.2rem;
+    display: grid;
+    gap: 0.4rem;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+  .walk-link:hover { background: var(--ink-panel); }
+  .w-k { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; }
+  .w-n {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    text-transform: uppercase;
+    color: var(--chalk);
+  }
+  .walk-link:hover .w-n { color: var(--giallo); }
+  .walk-link.next { text-align: right; }
+
+  @media (min-width: 60rem) {
+    .splits { grid-template-columns: repeat(2, 1fr); }
+    .weight { grid-template-columns: 1fr 1.1fr; gap: 2rem; align-items: start; }
+    .regular { grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+    .readout { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Once these scroll sideways the opponent stays put — a row of numbers is
+     worth nothing without knowing which game it belongs to. The header sticks
+     with it, or the wrong label ends up over the pinned column. */
+  @media (max-width: 820px) {
+    .log .name, .versus .name {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: var(--ink);
+      box-shadow: 1px 0 0 var(--ink-line);
+    }
+    .log thead th.name, .versus thead th.name { z-index: 3; }
+    .log tbody tr:hover td.name, .versus tbody tr:hover td.name {
+      background: var(--ink-raised);
+    }
+  }
+</style>

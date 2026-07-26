@@ -114,7 +114,9 @@
     "group": "C",
     "groupPos": 1,
     "venue": "Palazzetto",
-    "address": "Via Roma, 32 – Granarolo"
+    "threePointLine": "6.75",
+    "address": "Via Roma, 32 – Granarolo",
+    "slot": "VENERDI - 21,45"
    },
    "vis_trebbo": {
     "name": "Bortolotti Impianti – Vis Trebbo",
@@ -152,7 +154,9 @@
     "group": "D",
     "groupPos": 2,
     "venue": "Scuole ITIS Belluzzi",
-    "address": "Via Cassini, 3 – Bologna"
+    "threePointLine": "6.75",
+    "address": "Via Cassini, 3 – Bologna",
+    "slot": "MARTEDI - 21,45"
    },
    "towers": {
     "name": "Towers Basket Bologna",
@@ -172,7 +176,9 @@
     "group": "F",
     "groupPos": 2,
     "venue": "Palestra Deserti",
-    "address": "Via dell'Abbazzia - Zola Predosa"
+    "threePointLine": "6.75",
+    "address": "Via dell'Abbazzia - Zola Predosa",
+    "slot": "MERCOLEDI - 22,00"
    },
    "budrio": {
     "name": "Pub Vecchie Mura Budrio",
@@ -2851,72 +2857,84 @@
    "boxscore": [
     {
      "player": "scardovi-nicola",
+     "number": 9,
      "starter": true,
      "played": true,
      "points": 2
     },
     {
      "player": "marconi-tiberio",
+     "number": 18,
      "starter": true,
      "played": true,
      "points": 10
     },
     {
      "player": "malavolti-sergio",
+     "number": 8,
      "starter": true,
      "played": true,
      "points": 7
     },
     {
      "player": "maranelli-roberto",
+     "number": 10,
      "starter": true,
      "played": true,
      "points": 14
     },
     {
      "player": "monari-michele",
+     "number": 13,
      "starter": true,
      "played": true,
      "points": 5
     },
     {
      "player": "gentilini-nicola",
+     "number": 17,
      "starter": false,
      "played": true,
      "points": 2
     },
     {
      "player": "ugolini-riccardo",
+     "number": 15,
      "starter": false,
      "played": true,
      "points": 3
     },
     {
      "player": "torracchi-matteo",
+     "number": 5,
      "starter": false,
      "played": true,
      "points": 3
     },
     {
      "player": "mellini-valerio",
+     "number": 4,
      "starter": false,
      "played": true,
      "points": 3
     },
     {
      "player": "greco-paride",
+     "number": 16,
      "starter": false,
      "played": true,
      "points": 6
     },
     {
      "player": "bruni-kristian",
+     "number": 7,
      "starter": false,
      "played": true,
      "points": 10
     },
     {
      "player": "bartoletti-alberto",
+     "number": 14,
      "starter": false,
      "played": true,
      "points": 1
@@ -7650,72 +7668,84 @@
    "boxscore": [
     {
      "player": "scardovi-nicola",
+     "number": 9,
      "starter": true,
      "played": true,
      "points": 2
     },
     {
      "player": "marconi-tiberio",
+     "number": 18,
      "starter": true,
      "played": true,
      "points": 10
     },
     {
      "player": "malavolti-sergio",
+     "number": 8,
      "starter": true,
      "played": true,
      "points": 7
     },
     {
      "player": "maranelli-roberto",
+     "number": 10,
      "starter": true,
      "played": true,
      "points": 14
     },
     {
      "player": "monari-michele",
+     "number": 13,
      "starter": true,
      "played": true,
      "points": 5
     },
     {
      "player": "gentilini-nicola",
+     "number": 17,
      "starter": false,
      "played": true,
      "points": 2
     },
     {
      "player": "ugolini-riccardo",
+     "number": 15,
      "starter": false,
      "played": true,
      "points": 3
     },
     {
      "player": "torracchi-matteo",
+     "number": 5,
      "starter": false,
      "played": true,
      "points": 3
     },
     {
      "player": "mellini-valerio",
+     "number": 4,
      "starter": false,
      "played": true,
      "points": 3
     },
     {
      "player": "greco-paride",
+     "number": 16,
      "starter": false,
      "played": true,
      "points": 6
     },
     {
      "player": "bruni-kristian",
+     "number": 7,
      "starter": false,
      "played": true,
      "points": 10
     },
     {
      "player": "bartoletti-alberto",
+     "number": 14,
      "starter": false,
      "played": true,
      "points": 1
@@ -7778,22 +7808,22 @@
    {
     "file": "2.jpg",
     "slot": "warmup",
-    "alt": "Un giocatore sorride a bordo campo prima della palla a due",
-    "caption": "Prima della palla a due.",
+    "alt": "Sergio Malavolti sorride a bordo campo prima della palla a due",
+    "caption": "Sergio Malavolti durante il riscaldamento pre partita.",
     "credit": "Palasport di Loiano, 9 giugno 2012"
    },
    {
     "file": "final_game.jpg",
     "slot": "team",
-    "alt": "Foto di squadra: quattordici persone in maglia gialla Caffè Matic posano sul campo attorno a due palloni",
-    "caption": "La squadra al completo sul parquet di Loiano.",
+    "alt": "La squadra al completo sul parquet di Loiano.",
+    "caption": "Foto di squadra: la formazione Caffè Matic pronta per la finale di Loiano, con il supporto di Fabio Malavolti direttamente dalla Grecia.",
     "credit": "Palasport di Loiano, 9 giugno 2012"
    },
    {
     "file": "final_game-2.jpg",
     "slot": "team-wide",
-    "alt": "La stessa foto di squadra ripresa più larga, con il campo e i canestri visibili attorno al gruppo",
-    "caption": "Lo stesso scatto, più largo, prima della palla a due: il campo che di lì a poco avrebbe deciso la stagione.",
+    "alt": "La stessa foto di squadra ripresa più larga",
+    "caption": "Un altro scatto, più largo, prima della palla a due: il campo che di lì a poco avrebbe deciso la stagione.",
     "credit": "Palasport di Loiano, 9 giugno 2012"
    }
   ]
@@ -8394,12 +8424,20 @@
     "avgMargin": 11.1
    },
    "away": {
-    "games": 12,
-    "wins": 9,
+    "games": 11,
+    "wins": 8,
     "losses": 3,
-    "scored": 757,
-    "allowed": 688,
-    "avgMargin": 5.75
+    "scored": 691,
+    "allowed": 633,
+    "avgMargin": 5.2727272727272725
+   },
+   "neutral": {
+    "games": 1,
+    "wins": 1,
+    "losses": 0,
+    "scored": 66,
+    "allowed": 55,
+    "avgMargin": 11.0
    },
    "girone": {
     "games": 13,

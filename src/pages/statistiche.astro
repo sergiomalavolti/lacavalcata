@@ -2,7 +2,8 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import Referto from '../components/Referto.astro';
-import { season, playerName, num, PHASES } from '../lib/season.js';
+import TableSort from '../components/TableSort.astro';
+import { season, playerName, playerHref, num, PHASES } from '../lib/season.js';
 
 const { playerStats, roster, games, advanced } = season;
 const record = advanced.record;
@@ -16,6 +17,10 @@ const scorers = playerStats.filter((p) => p.played > 0);
 const totalPoints = onCourt.scored;
 
 const roleOf = (id) => roster.find((r) => r.id === id)?.role ?? '';
+
+// Every scoring line is drawn against the season's top scorer, so the column
+// reads as a hierarchy at a glance and not as nineteen loose numbers.
+const topScorer = Math.max(...playerStats.map((p) => p.points));
 
 // Single-game highs across the season.
 const bestGames = games
@@ -36,7 +41,7 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
   current="statistiche"
 >
   <PageHead
-    title="Il conto"
+    title="Statistiche"
     facts={[
       `${record.games} partite`,
       `${record.scored} punti fatti`,
@@ -45,9 +50,9 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
     ]}
   >
     <p>
-      Il campionato registrava una cosa sola oltre al punteggio: chi partiva in
-      quintetto e quanti punti segnava. Tutto quello che segue è ricostruito da
-      lì — nessun rimbalzo, nessun assist, nessun minuto. Bastano per capire
+      Le statistiche di questa stagione sono basate esclusivamente sui referti in nostro possesso.
+      Tutto quello che segue è ricostruito da
+      lì, sfortunatamente non sono presenti minuti, rimbalzi, assists, palle recuperate stoppate e percentuali di tiro. Ma sono sufficienti per capire
       parecchio. Dei {record.scored} punti di squadra,
       {' '}<strong>{onCourt.scored}</strong> sono stati segnati sul campo: gli
       altri {record.scored - onCourt.scored} sono quelli assegnati per la
@@ -90,45 +95,64 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
 
   <section class="section">
     <div class="wrap">
-      <h2 class="section-title">Stagione individuale</h2>
-      <p class="section-note dim">
-        <strong>Presenze</strong> è quante volte un giocatore è andato a referto,{' '}
-        <strong>Entrato</strong> quante volte è effettivamente entrato: la
-        differenza sono le <span class="mono giallo">NE</span>.{' '}
-        <strong>Quota</strong> è la percentuale dei punti di squadra.
-      </p>
+      <div class="section-head">
+        <h2 class="section-title">Stagione individuale</h2>
+        <p class="section-note">
+          <strong>Presenze</strong> è quante volte un giocatore è andato a
+          referto, <strong>Entrato</strong> quante volte è effettivamente
+          entrato: la differenza sono le <span class="mono giallo">NE</span>.{' '}
+          <strong>Quota</strong> è la percentuale dei punti di squadra.
+          Ordinata per punti: <strong>clicca un'intestazione</strong> per
+          cambiare criterio, <strong>clicca un nome</strong> per la stagione
+          completa di quel giocatore.
+        </p>
+      </div>
 
       <div class="table-scroll">
-        <table>
+        <table class="individuale" data-sortable>
           <thead>
             <tr>
-              <th scope="col" class="num">#</th>
-              <th scope="col">Giocatore</th>
-              <th scope="col">Ruolo</th>
-              <th scope="col" class="num">Punti</th>
-              <th scope="col" class="num">Media</th>
-              <th scope="col" class="num">Presenze</th>
-              <th scope="col" class="num">Entrato</th>
-              <th scope="col" class="num">Quintetto</th>
-              <th scope="col" class="num">High</th>
-              <th scope="col" class="num">10+</th>
-              <th scope="col" class="num">Quota</th>
+              <th scope="col" class="num rank">#</th>
+              <th scope="col" class="name" data-sort="text">Giocatore</th>
+              <th scope="col" data-sort="text">Ruolo</th>
+              <th scope="col" class="num" data-sort="num" aria-sort="descending">Punti</th>
+              <th scope="col" class="num" data-sort="num">Media</th>
+              <th scope="col" class="num" data-sort="num">Presenze</th>
+              <th scope="col" class="num" data-sort="num">Entrato</th>
+              <th scope="col" class="num" data-sort="num">Quintetto</th>
+              <th scope="col" class="num" data-sort="num">High</th>
+              <th scope="col" class="num" data-sort="num">10+</th>
+              <th scope="col" class="num" data-sort="num">Quota</th>
             </tr>
           </thead>
           <tbody>
             {playerStats.map((p, i) => (
               <tr>
-                <td class="num faint">{i + 1}</td>
-                <td class="name">{playerName(p.player)}</td>
-                <td class="dim">{roleOf(p.player)}</td>
-                <td class="num strong">{p.points}</td>
+                <td class="num rank faint"><span data-rank>{i + 1}</span></td>
+                <td class="name">
+                  <a class="p-link" href={playerHref(p.player)}>{playerName(p.player)}</a>
+                </td>
+                <td><span class="role mono">{roleOf(p.player)}</span></td>
+                <td class="num pts" data-v={p.points}>
+                  <span class="pts-v">{p.points}</span>
+                  <span class="pts-track" aria-hidden="true">
+                    <span class="pts-bar" style={`--w:${(p.points / topScorer) * 100}%`}></span>
+                  </span>
+                </td>
                 <td class="num">{num(p.average, 1)}</td>
                 <td class="num dim">{p.games}</td>
-                <td class="num">{p.played}</td>
+                <td class="num" data-v={p.played}>
+                  {p.played}
+                  {p.games > p.played && (
+                    <span class="ne mono">{p.games - p.played} NE</span>
+                  )}
+                </td>
                 <td class="num">{p.starts}</td>
                 <td class="num">{p.high}</td>
                 <td class="num">{p.doubleFigures}</td>
-                <td class="num dim">{num((p.points / totalPoints) * 100, 1)}%</td>
+                <td class="num dim" data-v={p.points}>
+                  {num((p.points / totalPoints) * 100, 1)}%
+                </td>
               </tr>
             ))}
           </tbody>
@@ -193,6 +217,8 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
       })}
     </div>
   </section>
+
+  <TableSort />
 </Base>
 
 <style>
@@ -223,6 +249,57 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
   .t-sub { font-size: 0.63rem; letter-spacing: 0.06em; margin: 0.55rem 0 0; }
 
   td.strong { color: var(--chalk); font-weight: 700; }
+
+  /* --- individual season -------------------------------------------------- */
+  .individuale td { padding-block: 0.6rem; }
+  .individuale th.rank, .individuale td.rank { width: 3rem; }
+  .individuale td.name { color: var(--chalk); }
+
+  .role {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+  }
+
+  /* Points carry a bar drawn against the season's top scorer: the column is
+     the one place where the shape of the scoring is visible at a glance. */
+  .pts-v { font-family: var(--font-mono); color: var(--chalk); font-weight: 700; }
+  .pts-track {
+    display: block;
+    width: 3.5rem;
+    height: 2px;
+    margin: 0.35rem 0 0 auto;
+    background: var(--ink-line);
+  }
+  .pts-bar { display: block; height: 100%; width: var(--w); background: var(--giallo-deep); }
+  tbody tr:hover .pts-bar { background: var(--giallo); }
+
+  /* The games a player dressed for but never entered, named on the row that
+     would otherwise only say he was there. Inline, so the rows that carry one
+     keep the same height as the rows that don't. */
+  .ne {
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: var(--giallo-deep);
+    margin-left: 0.45rem;
+  }
+
+  /* Below the width where eleven columns fit, the name stays put while the
+     numbers scroll under it — a row is unreadable without knowing whose. */
+  @media (max-width: 980px) {
+    .individuale th.rank, .individuale td.rank { display: none; }
+    .individuale th.name, .individuale td.name {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: var(--ink);
+      box-shadow: 1px 0 0 var(--ink-line);
+    }
+    .individuale thead th.name { z-index: 3; }
+    .individuale tbody tr:hover td.name { background: var(--ink-raised); }
+  }
+
   tfoot td {
     border-bottom: 0;
     border-top: 1px solid var(--ink-line);

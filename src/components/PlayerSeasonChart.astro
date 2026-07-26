@@ -1,0 +1,201 @@
+---
+import { PHASES, teamShort, shortDate, num, isOpponentFirst } from '../lib/season.js';
+
+/**
+ * One player's twenty-two games, in order.
+ *
+ * Scoring and availability share an axis on purpose. A bar is a game he
+ * played, drawn in the colour of the result; a hollow mark on the baseline is
+ * a game he was on the sheet for and never entered; a faint dash below it is a
+ * game he was not on the sheet for at all. Read left to right, the gaps say as
+ * much as the bars — which is the whole difference between "he scored nothing"
+ * and "he wasn't there".
+ *
+ * Each slot is also a boxscore trigger, so a bar answers "what happened in
+ * that game?" without leaving the page.
+ */
+const { profile } = Astro.props;
+const { timeline } = profile;
+
+const W = 920;
+const H = 300;
+const PAD = { top: 26, right: 16, bottom: 56, left: 40 };
+
+// The scale is the player's own ceiling, rounded out to a readable tick.
+const high = profile.high ?? 0;
+const top = Math.max(5, Math.ceil(high / 5) * 5);
+const step = top > 20 ? 10 : 5;
+const ticks = Array.from({ length: Math.floor(top / step) + 1 }, (_, i) => i * step);
+
+const plotH = H - PAD.top - PAD.bottom;
+const slot = (W - PAD.left - PAD.right) / timeline.length;
+const barW = Math.min(24, slot - 6);
+
+const yOf = (v) => PAD.top + (1 - v / top) * plotH;
+const base = yOf(0);
+const xOf = (i) => PAD.left + i * slot + (slot - barW) / 2;
+
+// Consecutive games of the same phase become one labelled band underneath.
+const bands = [];
+timeline.forEach((e, i) => {
+  const last = bands[bands.length - 1];
+  if (last && last.phase === e.phase) last.end = i;
+  else bands.push({ phase: e.phase, start: i, end: i });
+});
+
+const tipFor = (e) => {
+  const score = isOpponentFirst(e.game)
+    ? `${e.theirScore}–${e.ourScore}`
+    : `${e.ourScore}–${e.theirScore}`;
+  const verdict = e.won ? 'vittoria' : 'sconfitta';
+  const line =
+    e.status === 'played'
+      ? `${e.points} punt${e.points === 1 ? 'o' : 'i'}${e.starter ? ' · quintetto' : ''}`
+      : e.status === 'ne'
+        ? 'a referto, non entrato'
+        : 'non a referto';
+  return `${PHASES[e.phase]} · ${shortDate(e.date)}\n${teamShort(e.opponent)} ${score} ${verdict}\n${line}`;
+};
+---
+
+<figure class="chart">
+  <figcaption>
+    <h3>Partita per partita</h3>
+    <p class="dim">
+      Le ventidue partite giocate, in ordine di data — la vittoria a tavolino è
+      esclusa. L'altezza è quanto ha segnato, il colore com'è finita.{' '}
+      {profile.ne > 0 || profile.absent > 0 ? (
+        <>Le tacche sulla linea di base sono le partite in cui era a referto senza
+        entrare, i trattini sotto quelle in cui non era a referto.</>
+      ) : null}
+      {' '}Passa sopra una colonna per il dettaglio, cliccala per il tabellino.
+    </p>
+  </figcaption>
+
+  <div class="chart-plot" data-chart>
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="ps-desc">
+      <desc id="ps-desc">
+        {profile.points} punti in {profile.entered} partite giocate su {profile.teamGames},
+        con un massimo di {profile.high ?? 0}.
+      </desc>
+
+      {ticks.map((v) => (
+        <>
+          <line x1={PAD.left} x2={W - PAD.right} y1={yOf(v)} y2={yOf(v)} class="grid" />
+          <text x={PAD.left - 9} y={yOf(v)} class="axis-y">{v}</text>
+        </>
+      ))}
+
+      {/* His own average, so every bar reads as above or below his normal night. */}
+      {profile.average > 0 && (
+        <>
+          <line
+            x1={PAD.left} x2={W - PAD.right}
+            y1={yOf(profile.average)} y2={yOf(profile.average)}
+            class="avg"
+          />
+          <text x={W - PAD.right - 4} y={yOf(profile.average) - 6} class="avg-label">
+            media {num(profile.average, 1)}
+          </text>
+        </>
+      )}
+
+      {timeline.map((e, i) => (
+        <>
+          {e.status === 'played' && (
+            <rect
+              x={xOf(i)}
+              y={e.points > 0 ? yOf(e.points) : base - 2}
+              width={barW}
+              height={e.points > 0 ? Math.max(2, base - yOf(e.points)) : 2}
+              class:list={['bar', e.won ? 'win' : 'loss', { high: e.teamHigh }]}
+            />
+          )}
+          {e.status === 'ne' && (
+            <rect x={xOf(i)} y={base - 5} width={barW} height={5} class="ne" />
+          )}
+          {e.status === 'out' && (
+            <line
+              x1={xOf(i)} x2={xOf(i) + barW}
+              y1={base + 7} y2={base + 7}
+              class="out"
+            />
+          )}
+          <rect
+            x={PAD.left + i * slot} y={PAD.top - 10}
+            width={slot} height={plotH + 22}
+            class="hit"
+            data-tip={tipFor(e)}
+            data-game={e.seq}
+          />
+        </>
+      ))}
+
+      <line x1={PAD.left} x2={W - PAD.right} y1={base} y2={base} class="zero" />
+
+      {bands.map((b) => {
+        const x1 = PAD.left + b.start * slot;
+        const x2 = PAD.left + (b.end + 1) * slot;
+        return (
+          <>
+            {b.start > 0 && (
+              <line x1={x1} x2={x1} y1={PAD.top - 6} y2={base + 14} class="divider" />
+            )}
+            <text x={(x1 + x2) / 2} y={H - 16} class="band-label">
+              {PHASES[b.phase]}
+            </text>
+          </>
+        );
+      })}
+    </svg>
+  </div>
+</figure>
+
+<style>
+  .chart-plot {
+    background: var(--ink-raised);
+    border: 1px solid var(--ink-line);
+    padding: 0.8rem 0.6rem 0.3rem;
+  }
+  svg { width: 100%; height: auto; display: block; }
+
+  .grid { stroke: var(--c-grid); stroke-width: 1; }
+  .zero { stroke: var(--chalk-faint); stroke-width: 1.5; }
+  .divider { stroke: var(--c-context); stroke-width: 1; stroke-dasharray: 2 4; }
+
+  .bar.win { fill: var(--c-us); }
+  .bar.loss { fill: var(--c-loss); }
+  /* A game he led the team in scoring gets an edge rather than a fourth hue. */
+  .bar.high { stroke: var(--chalk); stroke-width: 1.25; }
+
+  .ne { fill: none; stroke: var(--chalk-faint); stroke-width: 1; }
+  .out { stroke: var(--c-context); stroke-width: 2; }
+
+  .avg { stroke: var(--giallo-deep); stroke-width: 1; stroke-dasharray: 4 4; }
+  .avg-label {
+    fill: var(--giallo-deep);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-anchor: end;
+    letter-spacing: 0.08em;
+  }
+
+  .hit { fill: transparent; cursor: pointer; }
+  .hit:hover { fill: rgba(233, 231, 226, 0.05); }
+
+  .axis-y {
+    fill: var(--chalk-faint);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-anchor: end;
+    dominant-baseline: middle;
+  }
+  .band-label {
+    fill: var(--chalk-faint);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    text-anchor: middle;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+</style>

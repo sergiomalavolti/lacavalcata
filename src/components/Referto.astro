@@ -1,5 +1,7 @@
 ---
-import { playerName, teamName, longDate, PHASES } from '../lib/season.js';
+import {
+  playerName, playerHref, teamName, longDate, PHASES, isOpponentFirst,
+} from '../lib/season.js';
 import QuarterStrip from './QuarterStrip.astro';
 
 /**
@@ -10,6 +12,8 @@ import QuarterStrip from './QuarterStrip.astro';
  */
 const { game } = Astro.props;
 const total = game.boxscore.reduce((sum, l) => sum + (l.points ?? 0), 0);
+const hasNumbers = game.boxscore.some((l) => l.number !== undefined);
+const opponentFirst = isOpponentFirst(game);
 ---
 
 <article class="referto" id={`g${game.seq}`}>
@@ -28,9 +32,19 @@ const total = game.boxscore.reduce((sum, l) => sum + (l.points ?? 0), 0);
     </h3>
 
     <p class:list={['referto-score', game.won ? 'won' : 'lost']}>
-      <span class="ours">{game.ourScore}</span>
-      <span class="sep">–</span>
-      <span class="theirs">{game.theirScore}</span>
+      {opponentFirst ? (
+        <>
+          <span class="theirs">{game.theirScore}</span>
+          <span class="sep">–</span>
+          <span class="ours">{game.ourScore}</span>
+        </>
+      ) : (
+        <>
+          <span class="ours">{game.ourScore}</span>
+          <span class="sep">–</span>
+          <span class="theirs">{game.theirScore}</span>
+        </>
+      )}
       <span class="verdict">{game.won ? 'vittoria' : 'sconfitta'}</span>
     </p>
   </header>
@@ -45,6 +59,7 @@ const total = game.boxscore.reduce((sum, l) => sum + (l.points ?? 0), 0);
         </caption>
         <thead>
           <tr>
+            {hasNumbers && <th scope="col" class="mid">N.</th>}
             <th scope="col">Giocatore</th>
             <th scope="col" class="mid">Quintetto</th>
             <th scope="col" class="num">Punti</th>
@@ -53,7 +68,10 @@ const total = game.boxscore.reduce((sum, l) => sum + (l.points ?? 0), 0);
         <tbody>
           {game.boxscore.map((line) => (
             <tr class:list={{ dnp: !line.played }}>
-              <td class="name">{playerName(line.player)}</td>
+              {hasNumbers && <td class="mid">{line.number ?? ''}</td>}
+              <td class="name">
+                <a class="p-link" href={playerHref(line.player)}>{playerName(line.player)}</a>
+              </td>
               <td class="mid">{line.starter ? 'X' : ''}</td>
               <td class="num">{line.played ? line.points : 'NE'}</td>
             </tr>
@@ -61,6 +79,7 @@ const total = game.boxscore.reduce((sum, l) => sum + (l.points ?? 0), 0);
         </tbody>
         <tfoot>
           <tr>
+            {hasNumbers && <td class="mid"></td>}
             <td>Totale punti</td>
             <td class="mid"></td>
             <td class="num">{total}</td>
@@ -70,7 +89,12 @@ const total = game.boxscore.reduce((sum, l) => sum + (l.points ?? 0), 0);
 
       {game.quarters && (
         <div class="referto-quarters">
-          <QuarterStrip us={game.quarters.us} them={game.quarters.them} compact />
+          <QuarterStrip
+            us={game.quarters.us}
+            them={game.quarters.them}
+            compact
+            opponentFirst={opponentFirst}
+          />
           {!game.quarters.them && (
             <p class="qnote mono">
               Parziali avversari non ricostruibili

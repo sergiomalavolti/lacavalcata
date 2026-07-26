@@ -59,17 +59,41 @@ export function signed(value, digits = 0) {
   return `${value > 0 ? '+' : value < 0 ? '−' : '±'}${body}`;
 }
 
+/** Roster indexed by id — every boxscore line and stat row joins through it. */
+const PLAYERS = new Map(season.roster.map((p) => [p.id, p]));
+
+export const player = (id) => PLAYERS.get(id);
+
 export const playerName = (id) => {
-  const p = season.roster.find((r) => r.id === id);
+  const p = PLAYERS.get(id);
   return p ? `${p.surname} ${p.name}` : id;
 };
 
 export const playerShort = (id) => {
-  const p = season.roster.find((r) => r.id === id);
+  const p = PLAYERS.get(id);
   return p ? `${p.surname} ${p.name.charAt(0)}.` : id;
 };
 
+/**
+ * Player pages live under the roster, which is their index. The trailing
+ * slash matches build.format: 'directory' and every other internal link.
+ */
+export const playerHref = (id) => `/squadra/${id}/`;
+
 /** Our games, in the order they were played. */
 export const games = season.games;
+
+/** Log entries and boxscore rows carry a seq; this is how they find their game. */
+const GAMES_BY_SEQ = new Map(games.map((g) => [g.seq, g]));
+
+export const gameBySeq = (seq) => GAMES_BY_SEQ.get(seq);
 export const playoffGames = games.filter((g) => g.phase !== 'girone');
 export const groupGames = games.filter((g) => g.phase === 'girone');
+
+/**
+ * True when the record names the opponent before us — only the final, played
+ * on neutral ground with Birreria Amadeus still listed as nominal home. Score
+ * and quarters should read opponent-first wherever this is true, so a boxscore
+ * never reads two ways round on the same page.
+ */
+export const isOpponentFirst = (g) => g.neutral && g.home === g.opponent;

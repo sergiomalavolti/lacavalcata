@@ -5,8 +5,9 @@ import QuarterChart from '../components/QuarterChart.astro';
 import MarginChart from '../components/MarginChart.astro';
 import ChartTooltip from '../components/ChartTooltip.astro';
 import Seed from '../components/Seed.astro';
+import BoxscoreModal from '../components/BoxscoreModal.astro';
 import {
-  season, teamName, num, pct, signed, shortDate, PHASES, playerName,
+  season, teamName, num, pct, signed, shortDate, longDate, PHASES, playerName,
 } from '../lib/season.js';
 
 const { advanced } = season;
@@ -15,10 +16,14 @@ const { quarters, balance, clutch, splits, run, record } = advanced;
 const pyth = clutch.pythagorean;
 const benchShare = balance.overall.benchShare;
 
-// Games where nobody reached ten points — a proxy for "everyone contributed".
-const spread = balance.perGame.filter((g) => g.doubleFigures <= 1).length;
+// Games with at most one player in double figures.
+const spreadGames = balance.perGame.filter((g) => g.doubleFigures <= 1);
+const spread = spreadGames.length;
 const mostShared = [...balance.perGame].sort((a, b) => a.hhi - b.hhi)[0];
 const mostConcentrated = [...balance.perGame].sort((a, b) => b.hhi - a.hhi)[0];
+// The final: everyone who dressed scored, the only game all season where
+// that was true with a full twelve-man boxscore.
+const finalBalance = balance.perGame.find((g) => g.phase === 'finale');
 
 const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
 ---
@@ -29,12 +34,10 @@ const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
   current="avanzate"
 >
   <PageHead
-    title="Sotto i numeri"
+    title="Avanzate"
     facts={[
       `${record.games} partite di stagione`,
       `${quarters.pool} giocate sul campo`,
-      `${quarters.sample} con parziali per quarto`,
-      'nessun rimbalzo registrato',
     ]}
   >
     <p>
@@ -43,8 +46,7 @@ const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
       plus-minus: solo cose che i dati sostengono davvero. Tutto quello che
       segue è calcolato sulle <strong>{quarters.pool} partite giocate sul
       campo</strong>: la vittoria a tavolino conta nel bilancio della stagione
-      ma non ha un tabellino da analizzare. Dove il campione è più piccolo
-      ancora, è scritto quanto.
+      ma non ha un tabellino da analizzare.
     </p>
   </PageHead>
 
@@ -134,16 +136,44 @@ const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
           <p class="r-k mono">Partite senza un dominatore</p>
           <p class="r-v">{spread}<span class="of">/{balance.perGame.length}</span></p>
           <p class="r-sub dim">
-            partite chiuse con al massimo un giocatore in doppia cifra — fra
-            queste la finale.
+            partite chiuse con al massimo un giocatore in doppia cifra: contro
+            {' '}{spreadGames.map((g, i) => (
+              <>
+                {i > 0 && ' e contro '}
+                {teamName(g.opponent)}{' '}
+                (<button
+                  type="button"
+                  class="score-btn"
+                  data-game={g.seq}
+                  aria-label={`Tabellino di ${teamName(g.opponent)}, ${longDate(g.date)}`}
+                >{shortDate(g.date)}</button>)
+              </>
+            ))}.
           </p>
         </div>
         <div>
           <p class="r-k mono">Attacco più corale</p>
           <p class="r-v">{teamName(mostShared.opponent).split(' ')[0]}</p>
           <p class="r-sub dim">
-            {shortDate(mostShared.date)} · {mostShared.scorers} marcatori, nessuno
-            oltre il {pct(mostShared.topShare, 0)} dei punti di squadra.
+            <button
+              type="button"
+              class="score-btn"
+              data-game={mostShared.seq}
+              aria-label={`Tabellino di ${teamName(mostShared.opponent)}, ${longDate(mostShared.date)}`}
+            >{shortDate(mostShared.date)}</button>
+            {' '}· {mostShared.scorers} marcatori, nessuno oltre il
+            {' '}{pct(mostShared.topShare, 0)} dei punti di squadra.
+          </p>
+          <p class="r-sub dim">
+            <button
+              type="button"
+              class="score-btn"
+              data-game={finalBalance.seq}
+              aria-label={`Tabellino di ${teamName(finalBalance.opponent)}, ${longDate(finalBalance.date)}`}
+            >{shortDate(finalBalance.date)}</button>
+            {' '}· {finalBalance.scorers} marcatori, nessuno oltre il
+            {' '}{pct(finalBalance.topShare, 0)} dei punti di squadra, la
+            finale, unica partita della stagione con tutti e dodici a segno.
           </p>
         </div>
         <div>
@@ -151,7 +181,13 @@ const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
           <p class="r-v">{pct(mostConcentrated.topShare, 0)}</p>
           <p class="r-sub dim">
             la quota del miglior marcatore contro
-            {' '}{teamName(mostConcentrated.opponent)}, {shortDate(mostConcentrated.date)}.
+            {' '}{teamName(mostConcentrated.opponent)},{' '}
+            <button
+              type="button"
+              class="score-btn"
+              data-game={mostConcentrated.seq}
+              aria-label={`Tabellino di ${teamName(mostConcentrated.opponent)}, ${longDate(mostConcentrated.date)}`}
+            >{shortDate(mostConcentrated.date)}</button>.
           </p>
         </div>
       </div>
@@ -167,7 +203,7 @@ const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
           <p class="r-k mono">Partite entro 5 punti</p>
           <p class="r-v">{clutch.wins}<span class="of">–{clutch.losses}</span></p>
           <p class="r-sub dim">
-            Nove volte la partita si è decisa nell'ultimo possesso, e sei volte
+            Nove volte la partita si è decisa agli ultimi possessi, e sei volte
             è finita bene.
           </p>
         </div>
@@ -175,18 +211,21 @@ const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
           <p class="r-k mono">Vittorie attese</p>
           <p class="r-v">{num(pyth.expectedWins, 1)}</p>
           <p class="r-sub dim">
-            Dai punti segnati e subiti sul campo ({record.onCourt.scored} e
-            {' '}{record.onCourt.allowed}) la formula pitagorica stima
-            {' '}{num(pyth.expectedWins, 1)} vittorie sulle {quarters.pool}
-            {' '}giocate: ne sono arrivate {pyth.actualWins}. Una squadra che
-            vinceva meno comodamente di quanto giocasse.
+            La formula pitagorica stima, dai punti segnati e subiti sul campo
+            {' '}({record.onCourt.scored} contro {record.onCourt.allowed}),
+            quante partite ci si aspetterebbe di vincere con questo scarto:
+            {' '}{num(pyth.expectedWins, 1)} sulle {quarters.pool} giocate. Le
+            vittorie arrivate sono state {pyth.actualWins}, lo scarto punti
+            racconta una squadra più forte di quanto dica il bilancio
+            vittorie/sconfitte.
           </p>
         </div>
         <div>
-          <p class="r-k mono">Casa e trasferta</p>
+          <p class="r-k mono">Bilancio per contesto</p>
           <ul class="splitlist mono">
             <li><span>Casa</span><span>{splits.home.wins}–{splits.home.losses}</span><span class="dim">{signed(splits.home.avgMargin, 1)}</span></li>
             <li><span>Fuori</span><span>{splits.away.wins}–{splits.away.losses}</span><span class="dim">{signed(splits.away.avgMargin, 1)}</span></li>
+            <li><span>Campo neutro</span><span>{splits.neutral.wins}–{splits.neutral.losses}</span><span class="dim">{signed(splits.neutral.avgMargin, 1)}</span></li>
             <li><span>Girone</span><span>{splits.girone.wins}–{splits.girone.losses}</span><span class="dim">{signed(splits.girone.avgMargin, 1)}</span></li>
             <li><span>Playoff</span><span>{splits.playoff.wins}–{splits.playoff.losses}</span><span class="dim">{signed(splits.playoff.avgMargin, 1)}</span></li>
           </ul>
@@ -199,7 +238,14 @@ const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
           <li class:list={{ won: g.margin > 0 }}>
             <span class="cl-phase mono faint">{PHASES[g.phase]}</span>
             <span class="cl-opp">{teamName(g.opponent)}</span>
-            <span class="cl-score mono">{g.score[0]}–{g.score[1]}</span>
+            <span class="cl-score mono">
+              <button
+                type="button"
+                class="score-btn"
+                data-game={g.seq}
+                aria-label={`Tabellino di ${teamName(g.opponent)}, ${longDate(g.date)}`}
+              >{g.score[0]}–{g.score[1]}</button>
+            </span>
             <span class:list={['cl-margin', 'mono', g.margin > 0 ? 'w' : 'l']}>
               {signed(g.margin, 0)}
             </span>
@@ -213,9 +259,8 @@ const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
     <div class="wrap">
       <h2 class="section-title">La difficoltà del percorso</h2>
       <p class="section-note dim">
-        Una testa di serie numero 8 incrocia la 9 al primo turno e poi, se
-        passa, la 1. Nessuna delle quattro serie è stata contro una squadra
-        peggio classificata di dodicesima.
+        La testa di serie numero 8 incrocia la 9 al primo turno e poi, se
+        passa, la 1.
       </p>
 
       <ol class="ladder">
@@ -237,15 +282,16 @@ const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
       </ol>
 
       <p class="section-note dim">
-        Il Pallacanestro Granarolo aveva chiuso il girone C con
+        La Pallacanestro Granarolo aveva chiuso il girone C con
         {' '}<strong>13 vittorie su 14</strong> e il coefficiente più alto del
-        campionato. È stato eliminato in tre partite, l'ultima in casa sua, di
+        campionato. È stata eliminata in tre partite, l'ultima a casa loro, di
         un punto.
       </p>
     </div>
   </section>
 
   <ChartTooltip />
+  <BoxscoreModal />
 </Base>
 
 <style>

@@ -1,5 +1,7 @@
 ---
-import { season, playerName, teamName, longDate, PHASES } from '../lib/season.js';
+import {
+  season, playerName, playerHref, teamName, longDate, PHASES, isOpponentFirst,
+} from '../lib/season.js';
 
 /**
  * One dialog, shared by every page that lists results.
@@ -22,17 +24,15 @@ const payload = season.games.map((g) => ({
   won: g.won,
   forfeit: g.forfeit,
   where: g.neutral ? 'campo neutro' : g.ourSide === 'home' ? 'in casa' : 'in trasferta',
-  // On neutral ground neither club hosted, but the referto still names one of
-  // them first — for the final that is Birreria Amadeus. Where the record puts
-  // the opponent first the score follows it, so the modal reads the same way
-  // as the bracket card. Our 22 other games were played somewhere, so this is
-  // false for all of them and their score stays ours-first.
-  opponentFirst: g.neutral && g.home === g.opponent,
+  opponentFirst: isOpponentFirst(g),
   quarters: g.quarters && g.quarters.usable
     ? { us: g.quarters.us, them: g.quarters.them }
     : null,
   lines: g.boxscore.map((l) => ({
     name: playerName(l.player),
+    // The row links to the player's season; the script has no data access of
+    // its own, so the href is carried in the payload rather than built there.
+    href: playerHref(l.player),
     starter: l.starter,
     played: l.played,
     points: l.points,
@@ -137,7 +137,11 @@ const payload = season.games.map((g) => ({
       const tbody = el('tbody');
       for (const line of game.lines) {
         const tr = el('tr', line.played ? '' : 'dnp');
-        tr.appendChild(el('td', 'name', line.name));
+        const nameCell = el('td', 'name');
+        const link = el('a', 'p-link', line.name);
+        link.href = line.href;
+        nameCell.appendChild(link);
+        tr.appendChild(nameCell);
         tr.appendChild(el('td', 'mid', line.starter ? 'X' : ''));
         tr.appendChild(el('td', 'num', line.played ? String(line.points) : 'NE'));
         tbody.appendChild(tr);
