@@ -10,15 +10,34 @@ Node 18.20+, 20.3+ or 22+ is required. On this machine node lives under nvm, so
 either `source ~/.nvm/nvm.sh` first or call the binaries by path.
 
 ```bash
-cd site
 npm install
 npm run build     # writes dist/
-npm run preview   # serves dist/ at http://localhost:4321
+npm run preview   # serves dist/ at http://localhost:4321/lacavalcata/
 npm run dev       # dev server with hot reload
 ```
 
+Both servers mount the site at `/lacavalcata/` rather than `/`, matching where
+GitHub Pages serves it — see *Publishing* below.
+
 The site is fully self-contained: fonts are bundled, photographs are optimised
 at build time, and no page makes an external network request.
+
+## Publishing
+
+Live at **https://sergiomalavolti.github.io/lacavalcata/**. Every push to `main`
+runs `.github/workflows/deploy.yml`, which builds the site and publishes it to
+GitHub Pages; `dist/` is never committed. To publish a change, commit and push —
+there is no other step. The Actions tab shows the run, and `workflow_dispatch`
+lets you re-publish by hand without a new commit.
+
+Because Pages serves the site from a sub-path, `base` in `astro.config.mjs` is
+`/lacavalcata`, and **every internal link goes through `u()` from
+`src/lib/url.js`** — a hand-written `href="/finale/"` would build cleanly and
+then 404 in production. Write `href={u('/finale/')}`. Moving the site to a
+domain root means changing `base` to `/` and nothing else.
+
+The pages carry `<meta name="robots" content="noindex">`: anyone with the link
+can read the site, but it stays out of search results.
 
 ## The data
 

@@ -6,6 +6,7 @@ import Referto from '../components/Referto.astro';
 import {
   season, teamName, teamShort, US, longDate, playerName, groupGames,
 } from '../lib/season.js';
+import { u } from '../lib/url.js';
 
 import scoreboard from '../assets/3.jpg';
 import huddle from '../assets/1.jpg';
@@ -196,7 +197,7 @@ const theirRun = season.playoff.bracket
         Tredici a quattro dopo dieci minuti, poi l'Amadeus rientra e all'ultimo
         intervallo il vantaggio è di cinque punti. L'ultimo quarto finisce
         {' '}{q.us[3]}–{q.them[3]}: è il quarto quarto la firma di questa squadra,
-        e non solo qui. <a class="link" href="/avanzate/#quarti">I numeri →</a>
+        e non solo qui. <a class="link" href={u('/avanzate/#quarti')}>I numeri →</a>
       </p>
     </div>
   </section>

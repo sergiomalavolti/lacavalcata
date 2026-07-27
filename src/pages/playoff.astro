@@ -5,6 +5,7 @@ import Seed from '../components/Seed.astro';
 import Bracket from '../components/Bracket.astro';
 import BoxscoreModal from '../components/BoxscoreModal.astro';
 import { season, teamName, US, longDate, shortDate, num, playoffGames } from '../lib/season.js';
+import { u } from '../lib/url.js';
 
 const { seeds, bracket } = season.playoff;
 const formula = season.meta.formula;
@@ -143,7 +144,7 @@ const ourRun = bracket.map((round) => {
         La gara 3 dei quarti a Granarolo, vinta 52–51 in casa della squadra che
         aveva chiuso la stagione regolare con tredici vittorie su quattordici, è
         il punto in cui questa stagione ha smesso di essere una stagione
-        normale.{' '}<a class="link" href="/finale/">La finale, dieci giorni dopo →</a>
+        normale.{' '}<a class="link" href={u('/finale/')}>La finale, dieci giorni dopo →</a>
       </p>
     </div>
   </section>

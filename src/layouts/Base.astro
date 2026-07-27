@@ -3,6 +3,7 @@ import '@fontsource/league-gothic';
 import '@fontsource-variable/archivo';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
+import { u } from '../lib/url.js';
 
 const { title, description, current } = Astro.props;
 
@@ -26,7 +27,7 @@ const nav = [
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content="noindex" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
     <meta name="theme-color" content="#0a0a0b" />
   </head>
   <body>
@@ -34,7 +35,7 @@ const nav = [
 
     <header class="masthead">
       <div class="wrap masthead-inner">
-        <a class="wordmark" href="/">
+        <a class="wordmark" href={u('/')}>
           <span class="wordmark-team">Caffè Matic</span>
           <span class="wordmark-sub">Trottola Sport · 2011-2012</span>
         </a>
@@ -43,7 +44,7 @@ const nav = [
             {nav.map((item) => (
               <li>
                 <a
-                  href={item.href}
+                  href={u(item.href)}
                   aria-current={current === item.key ? 'page' : undefined}
                 >{item.label}</a>
               </li>

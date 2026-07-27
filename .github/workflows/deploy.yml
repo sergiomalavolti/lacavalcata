@@ -1,0 +1,59 @@
+# Builds the site and publishes it to GitHub Pages on every push to main.
+#
+# dist/ is not committed — it is built here from source, so the repository
+# stays the source and the published site is always what the source produces.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Lets you re-publish by hand from the Actions tab without a new commit.
+  workflow_dispatch:
+
+# The permissions the Pages deployment needs, and nothing more.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time. Queued runs wait rather than cancel, so a slow build
+# can never overwrite a newer one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # Astro 7 requires Node >=22.12; 22 is the current LTS line.
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the site
+        run: npm run build
+
+      - name: Upload dist/ as the Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
