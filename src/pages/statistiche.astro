@@ -109,7 +109,7 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
       </div>
 
       <div class="table-scroll">
-        <table class="individuale" data-sortable data-stack>
+        <table class="individuale" data-sortable data-stack data-dense>
           <thead>
             <tr>
               <th scope="col" class="num rank">#</th>
@@ -252,16 +252,21 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
 
   /* --- individual season -------------------------------------------------- */
   .individuale td { padding-block: 0.6rem; }
+  .individuale th.rank, .individuale td.rank { width: 3rem; }
+  .individuale td.name { color: var(--chalk); }
+
   /* Card mode sets its own spacing on the row; per-cell padding would stack
-     eleven times down one card. */
+     eleven times down one card. This has to sit after the 3rem rank column,
+     which is no more specific and would otherwise win on source order. */
   @media (max-width: 799px) {
     .individuale td { padding-block: 0; }
     /* Wide enough for two digits, so the names still line up under each
        other; the desktop column would leave a hole beside a single one. */
     .individuale td.rank { width: 1.5rem; }
+    /* The one word among ten figures. Faint is the labels' colour, so at that
+       weight the role read as a second label rather than as its value. */
+    .individuale .role { color: var(--chalk-dim); letter-spacing: 0.04em; }
   }
-  .individuale th.rank, .individuale td.rank { width: 3rem; }
-  .individuale td.name { color: var(--chalk); }
 
   .role {
     font-size: 0.6rem;

@@ -269,9 +269,9 @@ tr.us:hover td { background: rgba(242, 197, 17, 0.14); }
   table[data-stack] tr {
     display: flex;
     flex-wrap: wrap;
-    column-gap: 0.7rem;
-    row-gap: 0.15rem;
-    padding: 0.7rem 0.2rem;
+    column-gap: 0.6rem;
+    row-gap: 0.55rem;
+    padding: 0.8rem 0.2rem;
     border-bottom: 1px solid var(--ink-line-soft);
     /* The mark on our own row moves here from the first cell so it runs the
        height of the card. A border rather than an inset shadow: cell
@@ -289,35 +289,65 @@ tr.us:hover td { background: rgba(242, 197, 17, 0.14); }
   table[data-stack] td.name { min-width: 0; }
 
   /* The headline, unlabelled, in the order the columns already stand. */
-  table[data-stack] td[data-head] { order: -1; flex: 0 0 auto; }
+  table[data-stack] td[data-head] { order: -1; flex: 0 0 auto; padding-bottom: 0.4rem; }
   table[data-stack] td[data-head].name { flex: 1 1 auto; }
 
   /* A zero-height item the full width of the card, ordered between the two
      groups: the line break after the headline. */
   table[data-stack] tr::before { content: ''; order: 0; flex: 0 0 100%; height: 0; }
 
-  table[data-stack] td[data-label] { order: 1; flex: 1 1 40%; }
-  table[data-stack] td[data-label][data-wide] { flex-basis: 100%; }
+  /* The figure reads first and its column name sits underneath, small and
+     quiet: a label above its value puts the least interesting half on top and
+     spends two full lines on one number. The label is a flex item like any
+     other, so ordering it last is enough — column-reverse would do it too, but
+     it also reverses the cell's real children, and four of these hold two (a
+     height and its bar, a date and an age, a score and its verdict). */
+  table[data-stack] td[data-label] {
+    order: 1;
+    flex: 1 1 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+  }
+  table[data-stack] td[data-label]::before { order: 1; }
+  /* Where every value is a short figure they pack four to a line. Tables with
+     a word in a cell — a gym, "Trasferta", a date — stay two, which is the
+     narrowest column those still sit on one line in. */
+  table[data-stack][data-dense] td[data-label] { flex-basis: 20%; }
+  table[data-stack] td[data-label][data-wide] { display: block; flex-basis: 100%; }
   table[data-stack] td[data-label]::before {
     content: attr(data-label);
     display: block;
     font-family: var(--font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.1em;
+    font-size: 0.53rem;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--chalk-faint);
   }
   /* A label over a blank says less than nothing. */
   table[data-stack] td:empty { display: none; }
 
-  /* Both of these grow their hit area with padding cancelled by an equal
-     negative margin, which the cell's own padding used to absorb. There is
-     none left to absorb it, so the bottom of the enlargement — and the
-     underline drawn at its edge — lands on the line below. Only the top half
-     is taken back out of the layout now; the bottom half stays in it, and
-     the hit area is the same size either way. */
+  /* .score-btn grows its hit area with padding cancelled by an equal negative
+     margin, which the cell's own padding used to absorb. There is none left to
+     absorb it, so the bottom of the enlargement — and the underline drawn at
+     its edge — lands on the line below. Only the top half is taken back out of
+     the layout; the bottom half stays in it, and the hit area is the same size
+     either way. */
   table[data-stack] .score-btn { margin-inline: 0; margin-block: -0.6rem 0; }
-  table[data-stack] .p-link { margin-block: -0.5rem 0; }
+
+  /* .p-link is the same shape of problem, solved from the other end: its rule
+     is a border on the box, which lands at the edge of that enlargement a
+     dozen pixels clear of the name and reads as a stray divider. An underline
+     follows the text instead, so the box is free to stay out of the layout. */
+  table[data-stack] .p-link {
+    border-bottom: 0;
+    text-decoration: underline;
+    text-decoration-color: var(--ink-line);
+    text-underline-offset: 3px;
+  }
+  table[data-stack] .p-link:hover,
+  table[data-stack] .p-link:focus-visible { text-decoration-color: var(--giallo-deep); }
 
   /* One wash on the card rather than one per cell: cell-level fills leave the
      gaps between them unpainted and the row reads as stripes. */
@@ -334,9 +364,22 @@ tr.us:hover td { background: rgba(242, 197, 17, 0.14); }
      row of sort chips above the cards. */
   table[data-stack] thead { display: none; }
   table[data-stack][data-sortable] thead { display: block; }
+  /* A row of bordered words with no column head left above them does not say
+     what it is for. On the phone the page's "clicca un'intestazione" has
+     nothing to point at, so the block names itself. */
+  table[data-stack][data-sortable] thead::before {
+    content: 'Ordina per';
+    display: block;
+    padding: 0 0.2rem 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+  }
   table[data-stack] thead tr {
-    column-gap: 0.4rem;
-    row-gap: 0.4rem;
+    column-gap: 0.3rem;
+    row-gap: 0.3rem;
     padding: 0 0.2rem 0.7rem;
     border-bottom: 0;
   }
@@ -348,12 +391,21 @@ tr.us:hover td { background: rgba(242, 197, 17, 0.14); }
   }
   table[data-stack] thead th:not([data-sort]) { display: none; }
   /* .th-sort cancels the cell's padding with a negative margin; in card mode
-     there is no cell padding left to cancel. */
+     there is no cell padding left to cancel. The chips narrow so ten of them
+     take three rows instead of four; --tap still holds their height. */
   table[data-stack] thead .th-sort {
     width: auto;
     margin: 0;
-    padding: 0.5rem 0.7rem;
+    padding: 0.4rem 0.5rem;
+    gap: 0.25rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.04em;
     border: 1px solid var(--ink-line);
+  }
+  /* The arrow is the current sort, not an invitation: on nine chips out of ten
+     it is width spent saying "sortable", which the row already says. */
+  table[data-stack] thead th:not([aria-sort='ascending']):not([aria-sort='descending']) .th-arrow {
+    display: none;
   }
 }
 
