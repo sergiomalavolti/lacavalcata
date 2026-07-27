@@ -4,7 +4,8 @@ import Base from '../layouts/Base.astro';
 import Seed from '../components/Seed.astro';
 import Referto from '../components/Referto.astro';
 import {
-  season, teamName, teamShort, US, longDate, playerName, groupGames,
+  season, teamName, teamShort, US, longDate, playerName, groupGames, scoreLine,
+  isOpponentFirst,
 } from '../lib/season.js';
 import { u } from '../lib/url.js';
 
@@ -29,11 +30,16 @@ const seeds = season.playoff.seeds;
 const seedOf = (t) => seeds.find((s) => s.team === t)?.seed;
 
 const q = game.quarters;
-// Running score at the end of each quarter.
-const running = q.us.map((_, i) => [
-  q.us.slice(0, i + 1).reduce((a, b) => a + b, 0),
-  q.them.slice(0, i + 1).reduce((a, b) => a + b, 0),
-]);
+// The referto lists Amadeus first, so every score on this page reads that way
+// — including the quarters, whose running total has to land on the same 55–66
+// the scoreboard above it shows.
+const opponentFirst = isOpponentFirst(game);
+// Running score at the end of each quarter, in the order the result reads.
+const running = q.us.map((_, i) => {
+  const ours = q.us.slice(0, i + 1).reduce((a, b) => a + b, 0);
+  const theirs = q.them.slice(0, i + 1).reduce((a, b) => a + b, 0);
+  return opponentFirst ? [theirs, ours] : [ours, theirs];
+});
 
 const vsAmadeus = groupGames.filter((g) => g.opponent === opponent);
 const topScorers = [...game.boxscore]
@@ -70,7 +76,7 @@ const theirRun = season.playoff.bracket
 
 <Base
   title="La finale · 9 giugno 2012, Palasport di Loiano"
-  description="Caffè Matic – Trottola Sport batte Birreria Amadeus 66-55 e vince la Super-League Promozione CSI 2011-2012."
+  description="Il Caffè Matic – Trottola Sport vince la Super-League Promozione CSI 2011-2012: la finale con la Birreria Amadeus finisce 55-66."
   current="finale"
 >
   <section class="hero">
@@ -146,7 +152,7 @@ const theirRun = season.playoff.bracket
     <div class="wrap prose-block">
       <h2>Terza volta</h2>
       <p>
-        Nel girone La Birreria Amadeus aveva vinto tutte e due le partite: 60–58
+        Nel girone La Birreria Amadeus aveva vinto tutte e due le partite: 58–60
         a Porretta alla prima giornata, 54–42 a Bologna al ritorno. Aveva chiuso
         il girone al primo posto con 37 punti, quattro in più del Caffè Matic, ed era arrivata alla
         finale da testa di serie numero {seedOf(opponent)}.
@@ -155,13 +161,13 @@ const theirRun = season.playoff.bracket
         {vsAmadeus.map((g) => (
           <li>
             <span class="faint">{longDate(g.date)}</span>
-            <span>{g.ourScore}–{g.theirScore}</span>
+            <span>{scoreLine(g)}</span>
             <span class="l">sconfitta</span>
           </li>
         ))}
         <li class="win">
           <span class="faint">{longDate(game.date)}</span>
-          <span>{game.ourScore}–{game.theirScore}</span>
+          <span>{scoreLine(game)}</span>
           <span class="w">vittoria</span>
         </li>
       </ul>
@@ -179,10 +185,21 @@ const theirRun = season.playoff.bracket
           return (
             <div class:list={['qcard', { up: us > them }]}>
               <p class="qcard-n mono">Q{i + 1}</p>
+              {/* Our number keeps its weight and colour whichever side it sits on. */}
               <p class="qcard-score mono">
-                <span class="qs-us">{us}</span>
-                <span class="qs-sep">–</span>
-                <span class="qs-them">{them}</span>
+                {opponentFirst ? (
+                  <>
+                    <span class="qs-them">{them}</span>
+                    <span class="qs-sep">–</span>
+                    <span class="qs-us">{us}</span>
+                  </>
+                ) : (
+                  <>
+                    <span class="qs-us">{us}</span>
+                    <span class="qs-sep">–</span>
+                    <span class="qs-them">{them}</span>
+                  </>
+                )}
               </p>
               <p class="qcard-run mono dim">
                 {running[i][0]}–{running[i][1]}
@@ -195,7 +212,7 @@ const theirRun = season.playoff.bracket
       <p class="section-note dim">
         Tredici a quattro dopo dieci minuti, poi la Birreria rientra e all'ultimo
         intervallo il vantaggio è di solo cinque punti. L'ultimo quarto finisce
-        {' '}{q.us[3]}–{q.them[3]}: è quello che decide la partita e la vittoria del campionato. <a class="link" href={u('/avanzate/#quarti')}>I nostri quarti quarti in stagione →</a>
+        {' '}{opponentFirst ? `${q.them[3]}–${q.us[3]}` : `${q.us[3]}–${q.them[3]}`}: è quello che decide la partita e la vittoria del campionato. <a class="link" href={u('/avanzate/#quarti')}>I nostri quarti quarti in stagione →</a>
       </p>
     </div>
   </section>

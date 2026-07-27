@@ -2,7 +2,8 @@
 
 A static Astro site telling the story of one basketball season: Caffè Matic –
 Trottola Sport, CSI Promozione Bologna 2011-2012. Second in Girone A, eighth
-seed of sixteen, won the Super-League final 66–55 at Loiano on 9 June 2012.
+seed of sixteen, won the Super-League final at Loiano on 9 June 2012, 66 points
+to 55. (The site prints that result 55–66 — see the home-first rule below.)
 
 This directory is the whole project and the git root. There is nothing above it
 but a wrapper folder.
@@ -88,7 +89,20 @@ so the desktop layout is untouched. Standalone controls take the full `--tap`;
 controls inside dense tables grow their hit area with padding cancelled by an
 equal negative margin, so row height does not move.
 
-## Four rules that are easy to break
+## Five rules that are easy to break
+
+**A result is written home team first.** Always — whoever won, on every page,
+in tables, boxscores, the Tabellone, chart tooltips and prose alike. The game 3
+win at Granarolo is **51–52**, never 52–51. Never print
+`{g.ourScore}–{g.theirScore}`; go through `scoreLine(game)` in
+`src/lib/season.js`, or `scoreSides(game)` when the markup needs to know which
+number is ours (several pages give ours weight or colour, and it has to keep
+that wherever in the pair it lands). Two traps: `advanced.clutch.list[].score`
+is baked into the JSON as `[nostri, loro]`, so render those from the game
+record instead; and the Tabellone's `legs[].scoreA/scoreB` are in *series*
+order, which is fixed for a whole tie while home ground alternates leg by leg —
+order those by `leg.hostedBy`. The final is the one game with no host, played
+at Loiano, and the referto lists Amadeus first, so it reads 55–66.
 
 **Chart colours.** `--c-us`, `--c-them`, `--c-loss` in `src/styles/tokens.css`
 are a *separate*, validated palette — deliberately not `--giallo`, which is

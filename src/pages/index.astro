@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Seed from '../components/Seed.astro';
 import BoxscoreModal from '../components/BoxscoreModal.astro';
-import { season, teamName, US, longDate, playoffGames } from '../lib/season.js';
+import { season, teamName, US, longDate, playoffGames, scoreLine } from '../lib/season.js';
 import { u } from '../lib/url.js';
 
 import heroImage from '../assets/final_game-2.jpg';
@@ -92,7 +92,7 @@ const steps = [
 
       <p class="hero-lead">
         Quarantotto squadre, sei gironi, sedici ai playoff. La Caffè Matic –
-        Trottola Sport di Porretta Terme si qualifica ai playoff come ottava testa di serie e arriva fino in fondo. Il 9 giugno 2012, a Loiano, batte 66–55 la squadra che
+        Trottola Sport di Porretta Terme si qualifica ai playoff come ottava testa di serie e arriva fino in fondo. Il 9 giugno 2012, a Loiano, la finale finisce 55–66 contro la squadra che
         l'aveva già battuta due volte su due.
       </p>
 
@@ -163,7 +163,7 @@ const steps = [
                         class="score-btn"
                         data-game={g.seq}
                         aria-label={`Tabellino di ${teamName(g.opponent)}, ${longDate(g.date)}`}
-                      >{g.ourScore}–{g.theirScore}</button>
+                      >{scoreLine(g)}</button>
                     </>
                   ))}
                 </p>

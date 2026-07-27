@@ -4,7 +4,9 @@ import PageHead from '../components/PageHead.astro';
 import Seed from '../components/Seed.astro';
 import Bracket from '../components/Bracket.astro';
 import BoxscoreModal from '../components/BoxscoreModal.astro';
-import { season, teamName, US, longDate, shortDate, num, playoffGames } from '../lib/season.js';
+import {
+  season, teamName, US, longDate, shortDate, num, playoffGames, scoreSides,
+} from '../lib/season.js';
 import { u } from '../lib/url.js';
 
 const { seeds, bracket } = season.playoff;
@@ -127,7 +129,12 @@ const ourRun = bracket.map((round) => {
                         class="score-btn"
                         data-game={g.seq}
                         aria-label={`Tabellino di ${teamName(g.opponent)}, ${longDate(g.date)}`}
-                      ><strong>{g.ourScore}</strong>–{g.theirScore}</button>
+                      >{/* Home team first, so our own number is bolded wherever it lands. */}
+                        {scoreSides(g).oursFirst ? (
+                          <><strong>{g.ourScore}</strong>–{g.theirScore}</>
+                        ) : (
+                          <>{g.theirScore}–<strong>{g.ourScore}</strong></>
+                        )}</button>
                     </span>
                     <span class:list={['rg-margin', 'mono', g.won ? 'w' : 'l']}>
                       {g.margin > 0 ? `+${g.margin}` : g.margin}
@@ -141,7 +148,7 @@ const ourRun = bracket.map((round) => {
       </ol>
 
       <p class="section-note dim">
-        La gara 3 dei quarti a Granarolo, vinta 52–51 in casa della squadra che
+        La gara 3 dei quarti a Granarolo, vinta 51–52 in casa della squadra che
         aveva chiuso la stagione regolare con tredici vittorie su quattordici, è
         il punto in cui questa stagione ha smesso di essere una stagione
         normale.{' '}<a class="link" href={u('/finale/')}>La finale, dieci giorni dopo →</a>

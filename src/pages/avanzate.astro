@@ -8,6 +8,7 @@ import Seed from '../components/Seed.astro';
 import BoxscoreModal from '../components/BoxscoreModal.astro';
 import {
   season, teamName, num, pct, signed, shortDate, longDate, PHASES, playerName,
+  gameBySeq, scoreLine,
 } from '../lib/season.js';
 
 const { advanced } = season;
@@ -244,7 +245,9 @@ const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
                 class="score-btn"
                 data-game={g.seq}
                 aria-label={`Tabellino di ${teamName(g.opponent)}, ${longDate(g.date)}`}
-              >{g.score[0]}–{g.score[1]}</button>
+              >{/* clutch.list bakes the pair as [nostri, loro]; the game record
+                     is what knows who was at home, and that sets the order. */}
+                {scoreLine(gameBySeq(g.seq))}</button>
             </span>
             <span class:list={['cl-margin', 'mono', g.margin > 0 ? 'w' : 'l']}>
               {signed(g.margin, 0)}

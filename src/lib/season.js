@@ -92,9 +92,35 @@ export const playoffGames = games.filter((g) => g.phase !== 'girone');
 export const groupGames = games.filter((g) => g.phase === 'girone');
 
 /**
- * True when the record names the opponent before us — only the final, played
- * on neutral ground with Birreria Amadeus still listed as nominal home. Score
- * and quarters should read opponent-first wherever this is true, so a boxscore
- * never reads two ways round on the same page.
+ * True when the record names the opponent before us — every game they hosted,
+ * plus the final, played on neutral ground with Birreria Amadeus still listed
+ * as nominal home. Score and quarters read opponent-first wherever this is
+ * true, so a boxscore never reads two ways round on the same page.
  */
-export const isOpponentFirst = (g) => g.neutral && g.home === g.opponent;
+export const isOpponentFirst = (g) => g.home === g.opponent;
+
+/**
+ * A result is written the way the fixture reads: the home team's score first,
+ * the visitor's second, whoever won. So the game 3 win at Granarolo is 51–52,
+ * never 52–51 — the number that comes first says where the game was played,
+ * not who we are.
+ *
+ * `ours` and `theirs` come back labelled as well as ordered, because several
+ * pages give our own number weight or colour and it has to keep that wherever
+ * in the pair it lands.
+ */
+export function scoreSides(g) {
+  const opponentFirst = isOpponentFirst(g);
+  return {
+    opponentFirst,
+    first: opponentFirst ? g.theirScore : g.ourScore,
+    second: opponentFirst ? g.ourScore : g.theirScore,
+    oursFirst: !opponentFirst,
+  };
+}
+
+/** A result as one string, home team first: `51–52`. */
+export function scoreLine(g) {
+  const { first, second } = scoreSides(g);
+  return `${first}–${second}`;
+}

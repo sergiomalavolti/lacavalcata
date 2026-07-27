@@ -4,7 +4,7 @@ import PageHead from '../components/PageHead.astro';
 import Seed from '../components/Seed.astro';
 import BoxscoreModal from '../components/BoxscoreModal.astro';
 import {
-  season, teamName, team, US, longDate, shortDate, signed, PHASES,
+  season, teamName, team, US, longDate, shortDate, signed, PHASES, scoreLine,
 } from '../lib/season.js';
 
 const { games, group, playoff, meta } = season;
@@ -132,7 +132,7 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
                       class="score-btn"
                       data-game={g.seq}
                       aria-label={`Tabellino di ${teamName(g.opponent)}, ${longDate(g.date)}`}
-                    >{g.ourScore}–{g.theirScore}</button>
+                    >{scoreLine(g)}</button>
                     <span class:list={['og-margin', g.won ? 'w' : 'l']}>
                       {signed(g.margin, 0)}
                     </span>
@@ -203,7 +203,7 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
                       class="score-btn"
                       data-game={g.seq}
                       aria-label={`Tabellino di ${teamName(g.opponent)}, ${longDate(g.date)}`}
-                    >{g.ourScore}–{g.theirScore}</button>
+                    >{scoreLine(g)}</button>
                     <span class:list={['og-margin', g.won ? 'w' : 'l']}>
                       {signed(g.margin, 0)}
                     </span>
