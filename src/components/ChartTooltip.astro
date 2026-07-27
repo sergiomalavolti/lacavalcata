@@ -5,6 +5,14 @@
  * Any SVG element carrying data-tip inside a [data-chart] container gets a
  * tooltip on hover and on keyboard focus. Newlines in the attribute become
  * separate lines.
+ *
+ * On a touch screen there is no hover: a tap fires pointerover and pointerout
+ * within the same gesture, so the panel was created and destroyed inside one
+ * frame and the charts were unreadable. Where the pointer is coarse the panel
+ * is pinned by a tap instead, and dismissed by tapping away or pressing
+ * Escape. That matters because most of these charts carry their numbers
+ * nowhere else: RaceChart's standings and PlayerSeasonChart's per-game points
+ * exist only here.
  */
 ---
 
@@ -13,22 +21,49 @@
 <script>
   const tip = document.querySelector('.tip');
   if (tip) {
+    // Feature detection rather than a user-agent guess, and re-read on every
+    // use so a device that gains a mouse is handled without a reload.
+    const coarse = window.matchMedia('(hover: none)');
+    let pinned = null;
+
     const show = (target) => {
       const text = target.getAttribute('data-tip');
       if (!text) return;
+
       tip.textContent = '';
       for (const line of text.split('\n')) {
         const row = document.createElement('span');
         row.textContent = line;
         tip.appendChild(row);
       }
+
+      // Some marks are also boxscore triggers. On a mouse that is a click; on
+      // a tap the click is spent pinning this panel, so the way through has to
+      // be an explicit control. data-game is all BoxscoreModal needs.
+      if (coarse.matches && target.dataset.game) {
+        const action = document.createElement('button');
+        action.type = 'button';
+        action.className = 'tip-action';
+        action.dataset.game = target.dataset.game;
+        action.textContent = 'Tabellino →';
+        tip.appendChild(action);
+      }
+
       tip.hidden = false;
+      place(target);
+    };
+
+    const place = (target) => {
       const box = target.getBoundingClientRect();
       const width = tip.offsetWidth;
-      const left = Math.min(
-        Math.max(8, box.left + box.width / 2 - width / 2),
-        window.innerWidth - width - 8,
-      );
+
+      // The right-hand clamp has to win when the panel is wider than the space
+      // available, otherwise the tooltip itself scrolls the page sideways.
+      const rightMost = window.innerWidth - width - 8;
+      const left = rightMost < 8
+        ? 8
+        : Math.min(Math.max(8, box.left + box.width / 2 - width / 2), rightMost);
+
       const above = box.top > tip.offsetHeight + 16;
       tip.style.left = `${left + window.scrollX}px`;
       tip.style.top = `${
@@ -36,21 +71,69 @@
       }px`;
     };
 
-    const hide = () => { tip.hidden = true; };
+    const hide = () => {
+      tip.hidden = true;
+      tip.classList.remove('pinned');
+      pinned = null;
+    };
 
+    const markOf = (node) => {
+      const target = node?.closest?.('[data-tip]');
+      return target && target.closest('[data-chart]') ? target : null;
+    };
+
+    // --- touch: tap to pin, tap away to dismiss ---------------------------
+    //
+    // Capture phase on purpose. PlayerSeasonChart's hit areas carry both
+    // data-tip and data-game, and BoxscoreModal listens for data-game on
+    // document; without stopping the event here a single tap would pin the
+    // panel and open the modal on top of it.
+    document.addEventListener('click', (event) => {
+      if (!coarse.matches) return;
+
+      const mark = markOf(event.target);
+      if (mark) {
+        event.stopPropagation();
+        event.preventDefault();
+        if (pinned === mark) {
+          hide();
+        } else {
+          pinned = mark;
+          show(mark);
+          tip.classList.add('pinned');
+        }
+        return;
+      }
+
+      // A tap on the panel's own action falls through to the modal.
+      if (event.target.closest('.tip')) {
+        if (event.target.closest('.tip-action')) hide();
+        return;
+      }
+
+      if (pinned) hide();
+    }, true);
+
+    // --- pointer and keyboard ---------------------------------------------
     for (const event of ['pointerover', 'focusin']) {
       document.addEventListener(event, (e) => {
-        const target = e.target.closest?.('[data-tip]');
-        if (target && target.closest('[data-chart]')) show(target);
+        if (coarse.matches) return;
+        const mark = markOf(e.target);
+        if (mark) show(mark);
       });
     }
     for (const event of ['pointerout', 'focusout']) {
       document.addEventListener(event, (e) => {
+        if (coarse.matches) return;
         if (e.target.closest?.('[data-tip]')) hide();
       });
     }
+
     document.addEventListener('keydown', (e) => e.key === 'Escape' && hide());
-    window.addEventListener('scroll', hide, { passive: true });
+
+    // A pinned panel is positioned in document coordinates, so it travels with
+    // the page; only the hover panel needs dismissing on scroll.
+    window.addEventListener('scroll', () => { if (!pinned) hide(); }, { passive: true });
   }
 </script>
 
@@ -74,6 +157,14 @@
     max-width: min(92vw, 30rem);
   }
   .tip[hidden] { display: none; }
+
+  /* A pinned panel is a thing you can touch; a hover one must never intercept
+     the pointer it is following. */
+  .tip.pinned {
+    pointer-events: auto;
+    border-color: var(--giallo-deep);
+  }
+
   .tip > span:first-child {
     color: var(--giallo);
     letter-spacing: 0.1em;
@@ -82,5 +173,27 @@
     padding-bottom: 0.25rem;
     margin-bottom: 0.2rem;
     border-bottom: 1px solid var(--ink-line);
+  }
+
+  .tip-action {
+    margin-top: 0.5rem;
+    min-height: var(--tap);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font: inherit;
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--giallo);
+    background: none;
+    border: 1px solid var(--ink-line);
+    cursor: pointer;
+  }
+
+  /* nowrap cannot be clipped by max-width, so a long line would run past the
+     panel edge on a narrow screen. */
+  @media (max-width: 34rem) {
+    .tip { white-space: normal; }
   }
 </style>

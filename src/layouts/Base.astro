@@ -39,7 +39,25 @@ const nav = [
           <span class="wordmark-team">Caffè Matic</span>
           <span class="wordmark-sub">Trottola Sport · 2011-2012</span>
         </a>
-        <nav aria-label="Sezioni">
+        <button
+          class="nav-toggle"
+          type="button"
+          hidden
+          aria-expanded="false"
+          aria-controls="site-nav"
+        >
+          <span class="nav-bars" aria-hidden="true"></span>
+          <span class="visually-hidden">Sezioni</span>
+        </button>
+
+        <nav id="site-nav" class="nav-panel" aria-label="Sezioni">
+          <p class="nav-head">
+            <span>Sezioni</span>
+            <button class="nav-close" type="button" data-nav-close>
+              <span aria-hidden="true">×</span>
+              <span class="visually-hidden">Chiudi</span>
+            </button>
+          </p>
           <ul>
             {nav.map((item) => (
               <li>
@@ -51,6 +69,8 @@ const nav = [
             ))}
           </ul>
         </nav>
+
+        <div class="nav-scrim" data-nav-close></div>
       </div>
     </header>
 
@@ -69,6 +89,130 @@ const nav = [
         </p>
       </div>
     </footer>
+
+    <script>
+      /**
+       * The mobile drawer.
+       *
+       * The toggle ships with `hidden` and this script removes it, so a page
+       * whose JavaScript never arrives keeps the plain wrapped nav rather than
+       * a menu button that does nothing. `aria-expanded` is the single source
+       * of truth: the CSS opens the panel and the scrim off that attribute, so
+       * state cannot drift between what is announced and what is drawn.
+       */
+      const toggle = document.querySelector('.nav-toggle');
+      const panel = document.getElementById('site-nav');
+
+      if (toggle && panel) {
+        toggle.hidden = false;
+
+        const FOCUSABLE = 'a[href], button:not([disabled])';
+        const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
+        let lastFocus = null;
+
+        const open = () => {
+          lastFocus = document.activeElement;
+          toggle.setAttribute('aria-expanded', 'true');
+          document.body.classList.add('nav-open');
+          // The panel is visibility:hidden until the attribute above is
+          // applied, and a hidden element refuses focus. Reading a layout
+          // property forces that style change to flush first.
+          void panel.offsetWidth;
+          panel.querySelector(FOCUSABLE)?.focus();
+        };
+
+        const close = ({ restore = true } = {}) => {
+          if (!isOpen()) return;
+          toggle.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('nav-open');
+          if (restore) {
+            // Back to whatever opened the drawer, and to the toggle itself
+            // when that was nothing in particular — never to <body>, which
+            // would drop a keyboard user back at the top of the document.
+            const back =
+              lastFocus instanceof HTMLElement && lastFocus !== document.body
+                ? lastFocus
+                : toggle;
+            back.focus();
+          }
+          lastFocus = null;
+        };
+
+        toggle.addEventListener('click', () => (isOpen() ? close() : open()));
+
+        // Both the close button and the scrim carry data-nav-close.
+        document.addEventListener('click', (event) => {
+          if (event.target.closest('[data-nav-close]')) close();
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (!isOpen()) return;
+
+          if (event.key === 'Escape') {
+            event.preventDefault();
+            close();
+            return;
+          }
+
+          // Hold focus inside the drawer while it is open.
+          if (event.key !== 'Tab') return;
+          const items = [...panel.querySelectorAll(FOCUSABLE)];
+          if (items.length === 0) return;
+          const first = items[0];
+          const last = items[items.length - 1];
+
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        });
+
+        // Rotating to landscape can cross the breakpoint with the drawer open,
+        // which would leave the body locked against a nav that is now inline.
+        window.matchMedia('(min-width: 800px)').addEventListener('change', (e) => {
+          if (e.matches) close({ restore: false });
+        });
+      }
+
+      /**
+       * Scroll affordances.
+       *
+       * The wide tables and the charts have always scrolled themselves — that
+       * is what keeps the page from scrolling sideways — but only the bracket
+       * said so. Charts are the worst case: their SVGs have a 32rem floor, so
+       * on a phone every one of them is cut off with nothing to suggest it.
+       *
+       * The hint is added only where content really does overflow, and the
+       * pane is made focusable at the same time so it can be scrolled from the
+       * keyboard as well.
+       */
+      const panes = [...document.querySelectorAll('.table-scroll, .chart-plot')];
+
+      const syncHints = () => {
+        for (const pane of panes) {
+          const scrollable = pane.scrollWidth > pane.clientWidth + 1;
+          let hint = pane.nextElementSibling;
+          if (!hint?.classList.contains('scroll-hint')) hint = null;
+
+          if (scrollable && !hint) {
+            hint = document.createElement('p');
+            hint.className = 'scroll-hint mono';
+            hint.textContent = 'Scorri in orizzontale →';
+            pane.after(hint);
+            pane.tabIndex = 0;
+          } else if (!scrollable && hint) {
+            hint.remove();
+            pane.removeAttribute('tabindex');
+          }
+        }
+      };
+
+      syncHints();
+      window.addEventListener('resize', syncHints, { passive: true });
+    </script>
 
     <style>
       .skip {
@@ -147,6 +291,180 @@ const nav = [
       nav a[aria-current='page'] {
         color: var(--giallo);
         border-bottom-color: var(--giallo);
+      }
+
+      /* The drawer furniture exists only inside the drawer: the toggle is
+         hidden by default and switched on inside the breakpoint below, so
+         removing [hidden] never reveals it on a desktop. */
+      .nav-toggle,
+      .nav-head,
+      .nav-scrim { display: none; }
+
+      /* --- the drawer, below 800px -----------------------------------------
+       *
+       * 800px is measured, not chosen: it is the width at which the eight nav
+       * items still fit on one row. Below it they wrapped to two and then three
+       * rows, and the sticky masthead grew to 146px — a fifth of a small phone
+       * screen, permanently.
+       *
+       * Everything here is scoped to `.nav-toggle:not([hidden])`, and the
+       * script is what removes that attribute. With no JavaScript the toggle
+       * never appears and the nav stays the plain wrapped list it is today,
+       * rather than becoming a menu that cannot be opened.
+       */
+      @media (max-width: 799px) {
+        /* backdrop-filter makes .masthead a containing block for fixed-position
+           descendants, which would position the drawer against the bar instead
+           of the viewport. Solid background below the breakpoint instead — one
+           less per-frame blur on the weakest devices, too. */
+        .masthead:has(.nav-toggle:not([hidden])) {
+          backdrop-filter: none;
+          background: var(--ink);
+        }
+
+        .masthead-inner {
+          flex-wrap: nowrap;
+          align-items: center;
+          gap: 1rem;
+          padding-block: 0.55rem;
+        }
+
+        .nav-toggle:not([hidden]) {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: var(--tap);
+          height: var(--tap);
+          flex: none;
+          /* Optical alignment: the bar's gutter already pads the right edge. */
+          margin-right: -0.6rem;
+          padding: 0;
+          background: none;
+          border: 0;
+          color: var(--chalk);
+          cursor: pointer;
+        }
+
+        .nav-bars,
+        .nav-bars::before,
+        .nav-bars::after {
+          display: block;
+          width: 1.25rem;
+          height: 2px;
+          background: currentColor;
+          transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .nav-bars { position: relative; }
+        .nav-bars::before,
+        .nav-bars::after { content: ''; position: absolute; left: 0; }
+        .nav-bars::before { top: -6px; }
+        .nav-bars::after { top: 6px; }
+
+        .nav-toggle[aria-expanded='true'] .nav-bars { background: transparent; }
+        .nav-toggle[aria-expanded='true'] .nav-bars::before {
+          transform: translateY(6px) rotate(45deg);
+        }
+        .nav-toggle[aria-expanded='true'] .nav-bars::after {
+          transform: translateY(-6px) rotate(-45deg);
+        }
+
+        .nav-toggle:not([hidden]) ~ .nav-panel {
+          position: fixed;
+          inset: 0 0 0 auto;
+          z-index: 2;
+          width: min(20rem, 82vw);
+          display: flex;
+          flex-direction: column;
+          padding: 0.55rem 1.25rem 2rem;
+          background: var(--ink-raised);
+          border-left: 1px solid var(--ink-line);
+          overflow-y: auto;
+          overscroll-behavior: contain;
+          transform: translateX(100%);
+          visibility: hidden;
+          /* visibility is stepped, not eased: on the way out it holds until
+             the slide finishes, and on the way in (below) it flips at once.
+             Transitioning it over the full 0.24s would leave the panel
+             computed-hidden on the frame it opens, and a hidden element
+             refuses focus — which is where focus was being dropped. */
+          transition: transform 0.24s ease, visibility 0s linear 0.24s;
+        }
+        .nav-toggle[aria-expanded='true'] ~ .nav-panel {
+          transform: none;
+          visibility: visible;
+          transition: transform 0.24s ease, visibility 0s;
+        }
+
+        .nav-toggle:not([hidden]) ~ .nav-panel .nav-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+          margin: 0 0 0.6rem;
+          font-family: var(--font-mono);
+          font-size: 0.63rem;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: var(--chalk-faint);
+          border-bottom: 1px solid var(--ink-line);
+        }
+
+        .nav-close {
+          width: var(--tap);
+          height: var(--tap);
+          margin-right: -0.7rem;
+          flex: none;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+          line-height: 1;
+          background: none;
+          border: 0;
+          color: var(--chalk-dim);
+          cursor: pointer;
+        }
+        .nav-close:hover { color: var(--chalk); }
+
+        .nav-toggle:not([hidden]) ~ .nav-panel ul {
+          flex-direction: column;
+          flex-wrap: nowrap;
+          gap: 0;
+        }
+
+        .nav-toggle:not([hidden]) ~ .nav-panel a {
+          display: flex;
+          align-items: center;
+          min-height: var(--tap);
+          font-size: 0.78rem;
+          padding-block: 0.35rem;
+          border-bottom: 1px solid var(--ink-line-soft);
+        }
+        /* The current page is marked down the leading edge here: a bottom rule
+           would read as a row divider once the items are stacked. */
+        .nav-toggle:not([hidden]) ~ .nav-panel a[aria-current='page'] {
+          border-bottom-color: var(--ink-line-soft);
+          box-shadow: inset 3px 0 0 var(--giallo);
+          padding-left: 0.9rem;
+        }
+
+        .nav-toggle:not([hidden]) ~ .nav-scrim {
+          display: block;
+          position: fixed;
+          inset: 0;
+          z-index: 1;
+          background: rgba(0, 0, 0, 0.62);
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.24s ease, visibility 0.24s;
+        }
+        .nav-toggle[aria-expanded='true'] ~ .nav-scrim {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        /* The page behind the drawer must not scroll with it. */
+        body.nav-open { overflow: hidden; }
       }
 
       .foot {

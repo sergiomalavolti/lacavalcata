@@ -60,7 +60,26 @@
   --gutter: clamp(1.15rem, 4vw, 3rem);
   --rhythm: clamp(3rem, 7vw, 6rem);
 
+  /* The masthead is sticky, so every in-page anchor has to clear it. Measured
+     per breakpoint rather than guessed: below 800px the nav collapses into the
+     drawer and the bar is a single row. Read by scroll-padding-top in
+     global.css and by the sticky table headers. */
+  --masthead-h: 4rem;
+
+  /* Minimum comfortable touch target. Standalone controls meet it outright;
+     links inside dense tables grow their hit area to fill their row instead,
+     which keeps the stat tables at their intended density. */
+  --tap: 44px;
+
   color-scheme: dark;
+}
+
+/* Two rows above 800px (wordmark, then nav beneath it), one from 1040px. */
+@media (min-width: 800px) {
+  :root { --masthead-h: 6rem; }
+}
+@media (min-width: 1040px) {
+  :root { --masthead-h: 4rem; }
 }
 
 /* The site commits to a single dark treatment: it is a night-gym, an archive

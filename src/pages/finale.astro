@@ -442,6 +442,18 @@ const theirRun = season.playoff.bracket
   .h2h-list li.win { background: var(--giallo-wash); box-shadow: inset 3px 0 0 var(--giallo); }
   .h2h-list li > span:nth-child(2) { text-align: right; }
 
+  /* 13rem of fixed track leaves the date column at ~37px on a small phone,
+     against a 62px word ("novembre"). Date on its own line below 26rem. */
+  @media (max-width: 26rem) {
+    .h2h-list li {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.15rem 0.9rem;
+      padding-block: 0.7rem;
+    }
+    .h2h-list li > span:first-child { grid-column: 1 / -1; order: -1; }
+    .h2h-list li > span:nth-child(2) { text-align: left; }
+  }
+
   /* --- quarters ---------------------------------------------------------- */
 
   .quarters {
@@ -573,7 +585,9 @@ const theirRun = season.playoff.bracket
   }
 
   @media (max-width: 860px) {
-    .boxgrid { grid-template-columns: 1fr; }
+    /* minmax(0, 1fr), not 1fr: a bare 1fr is minmax(auto, 1fr) and inherits
+       the referto's min-content width, which dragged .topscorers out with it. */
+    .boxgrid { grid-template-columns: minmax(0, 1fr); }
     .quarters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .mvp-block { grid-template-columns: 1fr; gap: 1.2rem; }
   }

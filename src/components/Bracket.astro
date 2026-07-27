@@ -402,6 +402,20 @@ const windows = [
     text-align: center;
   }
 
+  /* The bracket's own triggers are the smallest on the site — 17px for the
+     one that opens the final's boxscore — and they sit inside a horizontally
+     scrolling container, where a tap that drifts becomes a pan. */
+  @media (max-width: 799px), (hover: none) {
+    .legs li { min-height: 2rem; }
+    .legs .score-btn,
+    .one-off .score-btn {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2rem;
+    }
+    .one-off { padding-block: 0.5rem 0.35rem; }
+  }
+
   /* Hangs below the final rather than sitting inside it, so the card stays
      centred on the two semifinals. There is half a column of clear space. */
   .champ {
