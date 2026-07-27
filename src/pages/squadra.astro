@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import TableSort from '../components/TableSort.astro';
 import { season, longDate, num, playerHref } from '../lib/season.js';
+import { u } from '../lib/url.js';
 
 const { roster } = season;
 
@@ -139,7 +140,7 @@ const bar = (h) => ((h - floor) / (maxHeight - floor)) * 100;
       <p class="section-note dim">
         L'età è quella del giorno della finale. Punti, presenze e tabellini di
         ogni giocatore sono nelle{' '}
-        <a class="link" href="/statistiche/">statistiche</a>.
+        <a class="link" href={u('/statistiche/')}>statistiche</a>.
       </p>
     </div>
   </section>

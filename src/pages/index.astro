@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Seed from '../components/Seed.astro';
 import BoxscoreModal from '../components/BoxscoreModal.astro';
 import { season, teamName, US, longDate, playoffGames } from '../lib/season.js';
+import { u } from '../lib/url.js';
 
 import heroImage from '../assets/final_game-2.jpg';
 
@@ -97,7 +98,7 @@ const steps = [
 
       <p class="hero-actions">
         <a class="jump" href="#cavalcata">La cavalcata</a>
-        <a class="jump ghost" href="/finale/">La finale</a>
+        <a class="jump ghost" href={u('/finale/')}>La finale</a>
       </p>
     </div>
   </section>
@@ -145,7 +146,7 @@ const steps = [
 
             <div class="step-body">
               <p class="eyebrow"><span>{step.kicker}</span></p>
-              <h3><a href={step.href}>{step.title}</a></h3>
+              <h3><a href={u(step.href)}>{step.title}</a></h3>
               <p class="step-text dim">{step.body}</p>
             </div>
 
@@ -193,7 +194,7 @@ const steps = [
             nera. Miglior giocatore della finale:
             {' '}<strong>{final.mvp.fullName}</strong>, numero {final.mvp.number}.
           </p>
-          <p><a class="jump" href="/finale/">Come è andata</a></p>
+          <p><a class="jump" href={u('/finale/')}>Come è andata</a></p>
         </div>
       </div>
     </div>
@@ -211,7 +212,7 @@ const steps = [
           ['/avanzate/', 'Avanzate', 'quarti, panchina, equilibrio'],
           ['/avversari/', 'Avversari', 'palestre, colori e confronti diretti'],
         ].map(([href, label, note]) => (
-          <a href={href}>
+          <a href={u(href)}>
             <span class="ix-label">{label}</span>
             <span class="ix-note mono dim">{note}</span>
           </a>

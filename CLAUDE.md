@@ -40,6 +40,7 @@ src/components/  Seed, Bracket, Referto, BoxscoreModal, QuarterStrip, ChartToolt
                  TableSort, PageHead + four charts (Race, Margin, Quarter, PlayerSeason)
 src/lib/         season.js — the only door to the data
                  player.js — per-player season analysis, built on season.js
+                 url.js — u(), which every internal link goes through
 src/assets/      the five photographs, all from finals day, all lowercase .jpg
 src/styles/      tokens.css (design tokens) and global.css
 scripts/         validate-palette.sh
@@ -59,7 +60,15 @@ shells. Call the binary by absolute path:
 ~/.nvm/versions/node/v25.9.0/bin/npm run preview   # localhost:4321
 ```
 
-## Two rules that are easy to break
+## Publishing
+
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds and
+publishes to GitHub Pages at **https://sergiomalavolti.github.io/lacavalcata/**.
+`dist/` stays gitignored — CI builds it from source. The site carries
+`<meta name="robots" content="noindex">` on purpose: reachable by link, absent
+from search results.
+
+## Three rules that are easy to break
 
 **Chart colours.** `--c-us`, `--c-them`, `--c-loss` in `src/styles/tokens.css`
 are a *separate*, validated palette — deliberately not `--giallo`, which is
@@ -68,6 +77,13 @@ needs. Change any of the three and run `npm run palette` before shipping.
 
 **Dark only.** The site commits to one dark treatment on purpose; a light
 variant would undo the photographs. Don't add a theme toggle.
+
+**Internal links go through `u()`.** GitHub Pages serves this site from
+`/lacavalcata/`, not from a root, and Astro does not rewrite hand-written hrefs.
+A literal `href="/finale/"` builds fine and 404s in production. Write
+`href={u('/finale/')}` instead — importing `u` from `src/lib/url.js` — and the
+sub-path stays named in exactly one place, `base` in `astro.config.mjs`.
+Anchors and external URLs pass through `u()` untouched, so it is safe anywhere.
 
 ## Style
 

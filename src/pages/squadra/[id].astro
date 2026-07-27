@@ -9,6 +9,7 @@ import {
   season, playerName, playerHref, teamName, teamShort, longDate, shortDate,
   num, pct, PHASES,
 } from '../../lib/season.js';
+import { u } from '../../lib/url.js';
 import {
   playerProfile, playerNeighbours, squadScoring, rosterSize,
 } from '../../lib/player.js';
@@ -64,7 +65,7 @@ const title = `${person.surname} ${person.name}`;
 >
   <nav class="crumbs" aria-label="Percorso">
     <div class="wrap">
-      <a class="crumb" href="/squadra/">← La squadra</a>
+      <a class="crumb" href={u('/squadra/')}>← La squadra</a>
     </div>
   </nav>
 
@@ -516,7 +517,7 @@ const title = `${person.surname} ${person.name}`;
         <span class="w-k mono dim">Precedente</span>
         <span class="w-n">{playerName(prev)}</span>
       </a>
-      <a class="walk-link mid" href="/squadra/">
+      <a class="walk-link mid" href={u('/squadra/')}>
         <span class="w-k mono dim">Torna a</span>
         <span class="w-n">La squadra</span>
       </a>

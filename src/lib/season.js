@@ -1,4 +1,5 @@
 import data from '../data/season-2011-2012.json';
+import { u } from './url.js';
 
 export const season = data;
 export const US = data.meta.us;
@@ -78,7 +79,7 @@ export const playerShort = (id) => {
  * Player pages live under the roster, which is their index. The trailing
  * slash matches build.format: 'directory' and every other internal link.
  */
-export const playerHref = (id) => `/squadra/${id}/`;
+export const playerHref = (id) => u(`/squadra/${id}/`);
 
 /** Our games, in the order they were played. */
 export const games = season.games;

@@ -8,6 +8,7 @@ import Seed from '../components/Seed.astro';
 import {
   season, teamName, teamShort, US, longDate, shortDate, num, groupGames,
 } from '../lib/season.js';
+import { u } from '../lib/url.js';
 
 const { table, fixtures } = season.group;
 const seeds = season.playoff.seeds;
@@ -219,7 +220,7 @@ const headToHead = (team) => {
       </div>
 
       <p class="section-note dim">
-        <a class="link" href="/statistiche/#tabellini">Tutti i tabellini partita per partita →</a>
+        <a class="link" href={u('/statistiche/#tabellini')}>Tutti i tabellini partita per partita →</a>
       </p>
     </div>
   </section>
@@ -308,7 +309,7 @@ const headToHead = (team) => {
       <p class="section-note dim">
         Due sconfitte su due contro il Birreria Amadeus nel girone. La terza
         volta si sono incontrati il 9 giugno a Loiano.{' '}
-        <a class="link" href="/finale/">Com'è finita →</a>
+        <a class="link" href={u('/finale/')}>Com'è finita →</a>
       </p>
     </div>
   </section>
