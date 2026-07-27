@@ -210,6 +210,47 @@ bearing between 800px and their old ceilings; they now read
 `@media (min-width: 800px) and (max-width: …)`. Deleting the roster's outright
 was a measured regression at 820px, caught by a pixel diff.
 
+## Revision — the card as first built was a wall
+
+Sergio looked at the card on `/statistiche/` and said the UI was not good. He
+was right, and two of the three reasons were defects rather than taste.
+
+**`.p-link`'s underline was a border on the box.** The touch rule enlarges the
+link with padding, so the border landed at the bottom of the enlargement, a
+dozen pixels clear of the name, where it read as a broken divider. It is a
+`text-decoration` now, which follows the text and leaves the box free to stay
+out of the layout.
+
+**The rank column never narrowed.** `.individuale td.rank { width: 1.5rem }`
+was written inside the card media query but sat *before* the 3rem rule of equal
+specificity, which therefore won on source order. 48px held one digit. The
+media query moved below it.
+
+**The label went above its value.** That spends two full lines on one number
+and puts the quiet half on top; at 320px a card ran 208px and three players
+fitted on a screen. The label is a flex item, so ordering it last turns the
+cell around — `column-reverse` would too, but it also reverses the cell's real
+children, and four of these hold two (a height and its bar, a date and an age,
+a score and its verdict, an appearance count and its NE tag).
+
+**Four to a line where the values are figures.** `data-dense` on Classifica,
+Stagione individuale and Punti per avversario. Tables with a word in a cell —
+Calendario, Dove si giocava, Tutte le partite — stay two across, the narrowest
+column "Trasferta" or a gym name still sits on one line in. The card is 153px
+now against 208px, five and a half players to a screen instead of three.
+
+**The sort chips name themselves.** Ten chips took 206px at 320px above any
+data, and the page's "clicca un'intestazione" pointed at nothing a phone shows.
+`thead::before` prints "Ordina per", the chips lose a little padding and
+letter-spacing, and the ↕ shows only on the active one — three rows, 174px,
+with `--tap` still holding each chip at 44px.
+
+Measured after: no table scrolls sideways and no cell falls outside the
+viewport at 320/360/390/414 across nine routes; all 51 boxscore buttons open
+their own game with no modal overflow; sorting still reorders and renumbers;
+the cards render with scripting disabled; and all 36 desktop screenshots at
+800/820/900/1280 are byte-identical to the build before it.
+
 ## Out of scope
 
 - The bracket on `/playoff/` ("Il Tabellone"). It is a seven-column CSS grid
