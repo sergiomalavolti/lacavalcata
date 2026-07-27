@@ -465,4 +465,15 @@ const seedOf = (t) => season.playoff.seeds.find((s) => s.team === t)?.seed;
     }
     .cl-phase { grid-column: 1 / -1; }
   }
+
+  /* The opponent column falls to ~75px here, under the width of one team
+     name. Give it the full row and put score and margin beneath. */
+  @media (max-width: 26rem) {
+    .closelist li {
+      grid-template-columns: minmax(0, 1fr) 3.5rem;
+      row-gap: 0.15rem;
+    }
+    .cl-opp { grid-column: 1 / -1; }
+    .cl-score { text-align: left; }
+  }
 </style>

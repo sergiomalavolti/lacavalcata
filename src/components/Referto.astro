@@ -53,6 +53,10 @@ const opponentFirst = isOpponentFirst(game);
     <p class="tavolino mono">Vinta a tavolino. Nessun tabellino.</p>
   ) : (
     <>
+      {/* The finale is the one game with jersey numbers, which gives this
+          sheet a second fixed-width column and a 321px min-content — wider
+          than a small phone. Scrolls itself, like every other table here. */}
+      <div class="table-scroll" tabindex="0">
       <table class="sheet">
         <caption class="visually-hidden">
           Tabellino di {teamName(game.opponent)}, {longDate(game.date)}
@@ -86,6 +90,7 @@ const opponentFirst = isOpponentFirst(game);
           </tr>
         </tfoot>
       </table>
+      </div>
 
       {game.quarters && (
         <div class="referto-quarters">
@@ -114,7 +119,6 @@ const opponentFirst = isOpponentFirst(game);
     display: flex;
     flex-direction: column;
     gap: 0.9rem;
-    scroll-margin-top: 6rem;
   }
 
   .referto-meta {

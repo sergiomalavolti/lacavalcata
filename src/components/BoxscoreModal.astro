@@ -205,6 +205,17 @@ const payload = season.games.map((g) => ({
     background: var(--giallo-wash);
   }
 
+  /* These are the site's most numerous control — up to 28 on a page — and its
+     smallest, at 17-25px. The padding grows the hit area and the matching
+     negative margin keeps it out of the layout, so table rows and the running
+     prose these sit inside do not move. */
+  @media (max-width: 799px), (hover: none) {
+    .score-btn {
+      padding-block: 0.6rem;
+      margin-block: -0.6rem;
+    }
+  }
+
   /* --- dialog ------------------------------------------------------------- */
   .bx {
     border: 1px solid var(--ink-line);
@@ -228,8 +239,8 @@ const payload = season.games.map((g) => ({
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    width: 2.2rem;
-    height: 2.2rem;
+    width: var(--tap);
+    height: var(--tap);
     display: grid;
     place-items: center;
     font-size: 1.4rem;
@@ -251,7 +262,8 @@ const payload = season.games.map((g) => ({
     text-transform: uppercase;
     color: var(--chalk-faint);
     margin: 0 0 0.6rem;
-    padding-right: 2rem;
+    /* Clears the close button, which is now a full 44px tap target. */
+    padding-right: 3.4rem;
   }
   .bx-meta span:first-child { color: var(--giallo-deep); }
 

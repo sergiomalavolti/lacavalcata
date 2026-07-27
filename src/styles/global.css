@@ -4,7 +4,14 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* The masthead is sticky, so an anchor that scrolls to the top of the
+     viewport lands underneath it. Declared once here rather than as
+     scroll-margin on each target, so every #id on the site clears the bar. */
+  scroll-padding-top: calc(var(--masthead-h) + 1rem);
+}
 
 body {
   margin: 0;
@@ -15,6 +22,11 @@ body {
   line-height: 1.6;
   font-variant-numeric: tabular-nums;
   text-rendering: optimizeLegibility;
+  /* A backstop, not a substitute for fixing what overflows: every known cause
+     is fixed at its source. `clip` rather than `hidden` on purpose — `hidden`
+     would make the body a scroll container and silently kill position: sticky
+     on the masthead and on every table header. */
+  overflow-x: clip;
 }
 
 img { max-width: 100%; height: auto; display: block; }
@@ -182,6 +194,17 @@ p:last-child { margin-bottom: 0; }
   scrollbar-color: var(--ink-line) transparent;
 }
 
+/* Added by the script in Base.astro, and only to panes that actually overflow.
+   Matches .draw-hint under the bracket, which was the site's one existing
+   scroll affordance. */
+.scroll-hint {
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chalk-faint);
+  margin: 0.5rem 0 0;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -319,3 +342,48 @@ tr.us:hover td { background: rgba(242, 197, 17, 0.14); }
 
 .w { color: var(--giallo); }
 .l { color: var(--brick); }
+
+/* --- long names ---------------------------------------------------------- */
+
+/* Club names here run long — "Endurance Web Solutions – PP on Fire" — and the
+   grids holding them get narrow on a phone. `anywhere` rather than
+   `break-word` on purpose: only `anywhere` also lowers min-content, which is
+   what stops a single long word from forcing its grid track wider. */
+.fx-team,
+.cl-opp,
+.h2h-team,
+.rg-score,
+td.name,
+.split tbody th { overflow-wrap: anywhere; }
+
+/* --- touch targets ------------------------------------------------------- */
+
+/* Scoped to touch and to phone widths, so the desktop layout is untouched.
+   Standalone controls take the full --tap; controls that live inside a dense
+   table row instead grow their hit area to fill the row they are already in,
+   using padding cancelled by an equal negative margin — the same trick
+   .score-btn already uses — so row height and table density do not move. */
+@media (max-width: 799px), (hover: none) {
+  .jump {
+    min-height: var(--tap);
+    padding-block: 0.8rem;
+  }
+
+  .p-link,
+  .link,
+  .b-link {
+    display: inline-block;
+    padding-block: 0.5rem;
+    margin-block: -0.5rem;
+  }
+
+  /* Inside a table the row already supplies most of the height; outside one
+     these are the small standalone links, so they get the rest. */
+  .b-link { padding-block: 0.7rem; margin-block: -0.7rem; }
+
+  /* .score-btn is enlarged in BoxscoreModal.astro instead: its base rule uses
+     the `padding` shorthand and is bundled after this file, so a padding-block
+     override here would lose. */
+
+  .th-sort { min-height: var(--tap); }
+}

@@ -68,7 +68,27 @@ publishes to GitHub Pages at **https://sergiomalavolti.github.io/lacavalcata/**.
 `<meta name="robots" content="noindex">` on purpose: reachable by link, absent
 from search results.
 
-## Three rules that are easy to break
+## Mobile
+
+The site is built to work down to 320px. Two tokens carry it: `--masthead-h`
+(the sticky bar's height, per breakpoint — `scroll-padding-top` on `html` reads
+it so in-page anchors clear the bar) and `--tap` (44px).
+
+**800px is the nav breakpoint**, and it is measured, not chosen: it is the width
+at which the eight nav items still fit on one row. Below it `Base.astro` swaps
+them for a slide-in drawer. The toggle ships with `hidden` and the script
+removes it, so with no JavaScript the nav degrades to the old wrapped list
+instead of a button that does nothing — keep that property if you touch it.
+Note that `.masthead` drops its `backdrop-filter` below 800px on purpose:
+`backdrop-filter` makes an element the containing block for `position: fixed`
+descendants, which would position the drawer against the bar, not the viewport.
+
+Touch enlargements are guarded by `@media (max-width: 799px), (hover: none)`
+so the desktop layout is untouched. Standalone controls take the full `--tap`;
+controls inside dense tables grow their hit area with padding cancelled by an
+equal negative margin, so row height does not move.
+
+## Four rules that are easy to break
 
 **Chart colours.** `--c-us`, `--c-them`, `--c-loss` in `src/styles/tokens.css`
 are a *separate*, validated palette — deliberately not `--giallo`, which is
@@ -77,6 +97,15 @@ needs. Change any of the three and run `npm run palette` before shipping.
 
 **Dark only.** The site commits to one dark treatment on purpose; a light
 variant would undo the photographs. Don't add a theme toggle.
+
+**Nothing may scroll the page sideways.** Two habits keep it that way, and both
+have already been violated once. A `<table>` always goes inside
+`<div class="table-scroll">` — no exceptions; the two that were missed
+(`Referto`'s sheet, the player page's split cards) overflowed a phone. And an
+`auto-fit`/`auto-fill` track never shrinks below its `minmax()` floor, so write
+`minmax(min(100%, 20rem), 1fr)`, never a bare `minmax(20rem, 1fr)`. Related:
+`1fr` is `minmax(auto, 1fr)` and inherits its content's min-width — use
+`minmax(0, 1fr)` when a grid holds something wide.
 
 **Internal links go through `u()`.** GitHub Pages serves this site from
 `/lacavalcata/`, not from a root, and Astro does not rewrite hand-written hrefs.

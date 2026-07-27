@@ -209,6 +209,7 @@ const title = `${person.surname} ${person.name}`;
           return (
             <section class="split-card">
               <h3>{card.title}</h3>
+              <div class="table-scroll" tabindex="0">
               <table class="split">
                 <thead>
                   <tr>
@@ -234,6 +235,7 @@ const title = `${person.surname} ${person.name}`;
                   ))}
                 </tbody>
               </table>
+              </div>
             </section>
           );
         })}
@@ -547,6 +549,16 @@ const title = `${person.surname} ${person.name}`;
   }
   .crumb:hover { color: var(--giallo); }
 
+  /* The only way back to the roster, and 14px tall before this. */
+  @media (max-width: 799px), (hover: none) {
+    .crumb {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--tap);
+    }
+    .crumbs { padding-top: 1rem; }
+  }
+
   /* --- anagrafica --------------------------------------------------------- */
   .bio {
     margin: 0;
@@ -601,7 +613,7 @@ const title = `${person.surname} ${person.name}`;
   /* Four cards: two even rows beat three-and-a-lonely-one. */
   .splits {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
     gap: 1px;
     background: var(--ink-line-soft);
     border: 1px solid var(--ink-line);

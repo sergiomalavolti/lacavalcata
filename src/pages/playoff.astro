@@ -160,7 +160,9 @@ const ourRun = bracket.map((round) => {
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    /* min() guards the floor: an auto-fill track never shrinks below its
+       minmax() minimum, so a bare 20rem overflows a phone by 19px. */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
     gap: 1px;
     background: var(--ink-line-soft);
     border: 1px solid var(--ink-line);
@@ -237,5 +239,19 @@ const ourRun = bracket.map((round) => {
   @media (max-width: 760px) {
     .run-step { grid-template-columns: 1fr; }
     .run-games li { grid-template-columns: 4.5rem 4rem minmax(0, 1fr) 3rem; }
+  }
+
+  /* Four tracks in ~250px leaves the score column at ~20px. Date and venue
+     move to their own line and the score gets the width it needs. */
+  @media (max-width: 26rem) {
+    .run-games li {
+      grid-template-columns: minmax(0, 1fr) 3rem;
+      row-gap: 0.1rem;
+      padding-block: 0.45rem;
+    }
+    .rg-date { grid-column: 1; }
+    .rg-where { grid-column: 2; text-align: right; }
+    .rg-score { grid-column: 1; }
+    .rg-margin { grid-column: 2; }
   }
 </style>
