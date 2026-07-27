@@ -1,5 +1,5 @@
 ---
-import { PHASES, teamShort, shortDate, num, isOpponentFirst } from '../lib/season.js';
+import { PHASES, teamShort, shortDate, num, scoreLine } from '../lib/season.js';
 
 /**
  * One player's twenty-two games, in order.
@@ -44,9 +44,7 @@ timeline.forEach((e, i) => {
 });
 
 const tipFor = (e) => {
-  const score = isOpponentFirst(e.game)
-    ? `${e.theirScore}–${e.ourScore}`
-    : `${e.ourScore}–${e.theirScore}`;
+  const score = scoreLine(e.game);
   const verdict = e.won ? 'vittoria' : 'sconfitta';
   const line =
     e.status === 'played'

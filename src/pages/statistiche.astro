@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import Referto from '../components/Referto.astro';
 import TableSort from '../components/TableSort.astro';
-import { season, playerName, playerHref, num, PHASES } from '../lib/season.js';
+import { season, playerName, playerHref, num, PHASES, scoreLine } from '../lib/season.js';
 
 const { playerStats, roster, games, advanced } = season;
 const record = advanced.record;
@@ -180,7 +180,7 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
             <span class="b-pts mono">{b.points}</span>
             <span class="b-name">{playerName(b.player)}</span>
             <span class="b-ctx mono dim">
-              {PHASES[b.game.phase]} · {b.game.ourScore}–{b.game.theirScore}
+              {PHASES[b.game.phase]} · {scoreLine(b.game)}
             </span>
             <a class="b-link mono" href={`#g${b.game.seq}`}>tabellino</a>
           </li>

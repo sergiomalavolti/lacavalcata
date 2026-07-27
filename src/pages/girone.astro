@@ -6,7 +6,7 @@ import ChartTooltip from '../components/ChartTooltip.astro';
 import BoxscoreModal from '../components/BoxscoreModal.astro';
 import Seed from '../components/Seed.astro';
 import {
-  season, teamName, teamShort, US, longDate, shortDate, num, groupGames,
+  season, teamName, teamShort, US, longDate, shortDate, num, groupGames, scoreLine,
 } from '../lib/season.js';
 import { u } from '../lib/url.js';
 
@@ -205,7 +205,7 @@ const headToHead = (team) => {
                       class="score-btn"
                       data-game={game.seq}
                       aria-label={`Tabellino di ${teamName(game.opponent)}, ${longDate(game.date)}`}
-                    >{game.ourScore}–{game.theirScore}</button>
+                    >{scoreLine(game)}</button>
                     {game.forfeit && <span class="tav mono">a tavolino</span>}
                   </td>
                   <td class:list={['num', game.won ? 'w' : 'l']} data-label="Scarto">

@@ -67,7 +67,20 @@ function legsOf(round, s) {
         );
       }
     }
-    return { ...leg, game };
+    /*
+     * scoreA/scoreB are in series order, which is fixed for the whole tie —
+     * but home ground alternates leg by leg, so printing them in that order
+     * gets every leg the visitor won backwards. A result reads the way the
+     * fixture reads: the host's score first. The final has no host, having
+     * been played at Loiano, and prints no leg score at all.
+     */
+    const hostIsB = leg.hostedBy === s.teamB;
+    return {
+      ...leg,
+      game,
+      homeScore: hostIsB ? leg.scoreB : leg.scoreA,
+      awayScore: hostIsB ? leg.scoreA : leg.scoreB,
+    };
   });
 }
 
@@ -193,9 +206,9 @@ const windows = [
                               class="score-btn"
                               data-game={leg.game.seq}
                               aria-label={`Tabellino di ${teamName(leg.game.opponent)}, gara ${leg.leg}`}
-                            >{leg.scoreA}–{leg.scoreB}</button>
+                            >{leg.homeScore}–{leg.awayScore}</button>
                           ) : (
-                            <>{leg.scoreA}–{leg.scoreB}</>
+                            <>{leg.homeScore}–{leg.awayScore}</>
                           )}
                           {leg.overtime && <em class="ot"> dts</em>}
                         </span>

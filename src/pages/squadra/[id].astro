@@ -7,7 +7,7 @@ import ChartTooltip from '../../components/ChartTooltip.astro';
 import PlayerSeasonChart from '../../components/PlayerSeasonChart.astro';
 import {
   season, playerName, playerHref, teamName, teamShort, longDate, shortDate,
-  num, pct, PHASES,
+  num, pct, PHASES, scoreLine,
 } from '../../lib/season.js';
 import { u } from '../../lib/url.js';
 import {
@@ -481,7 +481,7 @@ const title = `${person.surname} ${person.name}`;
                     class="score-btn"
                     data-game={e.seq}
                     aria-label={`Tabellino di ${teamName(e.opponent)}, ${longDate(e.date)}`}
-                  >{e.ourScore}–{e.theirScore}</button>
+                  >{scoreLine(e.game)}</button>
                   <span class:list={['verdict mono', e.won ? 'w' : 'l']}>
                     {e.won ? 'V' : 'P'}
                   </span>
