@@ -1,7 +1,7 @@
 # Tables that fit a phone
 
 **Date:** 2026-07-27
-**Status:** approved, not yet implemented
+**Status:** implemented — see "As built" at the end for where it differs
 
 ## The problem
 
@@ -178,6 +178,37 @@ Rebuild, then re-run the CDP harness that produced the numbers above.
 7. **The three unstacked tables** fit at 320px after the wrap fix.
 
 No colour tokens change, so `npm run palette` is not required.
+
+## As built
+
+Five things the design did not anticipate.
+
+**Enlarged tap areas leak.** `.score-btn` and `.p-link` grow their hit area with
+padding cancelled by an equal negative margin, and the cell's own padding used
+to absorb it. Card mode takes that padding away, so the bottom of the
+enlargement — and the underline drawn at its edge — landed on the line below.
+Both now cancel only the top half (`margin-block: -0.6rem 0`), which keeps the
+hit area the same size and puts the underline back under its own text.
+
+**`tr.us` needed the whole card, not just the mark.** Painting the wash per
+cell left the gaps between cells unpainted and the row read as stripes. The
+wash and the yellow edge both sit on the `<tr>` now, and the edge is a
+`border-left` rather than an inset shadow, which cell backgrounds paint over.
+
+**`<thead>` disappears entirely on the four tables that aren't sortable.**
+Every column name is on its own cell in card mode, so a head with no controls
+left in it is an empty row.
+
+**Referto was not a `white-space` problem.** `td.name` already wrapped; what
+made the sheet too wide was `min-width: 12ch` under the name and the 6.5rem
+centre columns. It also needed `overflow-wrap: normal` — `anywhere`, inherited
+from the long-club-name rule, was cutting MALAVOLTI in half.
+
+**Three page-level media queries needed a floor, not deletion.** The sticky-name
+blocks on `/squadra/`, `/statistiche/` and the player pages are still load
+bearing between 800px and their old ceilings; they now read
+`@media (min-width: 800px) and (max-width: …)`. Deleting the roster's outright
+was a measured regression at 820px, caught by a pixel diff.
 
 ## Out of scope
 

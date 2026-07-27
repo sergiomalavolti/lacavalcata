@@ -109,7 +109,7 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
       </div>
 
       <div class="table-scroll">
-        <table class="individuale" data-sortable>
+        <table class="individuale" data-sortable data-stack>
           <thead>
             <tr>
               <th scope="col" class="num rank">#</th>
@@ -128,29 +128,29 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
           <tbody>
             {playerStats.map((p, i) => (
               <tr>
-                <td class="num rank faint"><span data-rank>{i + 1}</span></td>
-                <td class="name">
+                <td class="num rank faint" data-head><span data-rank>{i + 1}</span></td>
+                <td class="name" data-head>
                   <a class="p-link" href={playerHref(p.player)}>{playerName(p.player)}</a>
                 </td>
-                <td><span class="role mono">{roleOf(p.player)}</span></td>
-                <td class="num pts" data-v={p.points}>
+                <td data-label="Ruolo"><span class="role mono">{roleOf(p.player)}</span></td>
+                <td class="num pts" data-v={p.points} data-head>
                   <span class="pts-v">{p.points}</span>
                   <span class="pts-track" aria-hidden="true">
                     <span class="pts-bar" style={`--w:${(p.points / topScorer) * 100}%`}></span>
                   </span>
                 </td>
-                <td class="num">{num(p.average, 1)}</td>
-                <td class="num dim">{p.games}</td>
-                <td class="num" data-v={p.played}>
+                <td class="num" data-label="Media">{num(p.average, 1)}</td>
+                <td class="num dim" data-label="Presenze">{p.games}</td>
+                <td class="num" data-v={p.played} data-label="Entrato">
                   {p.played}
                   {p.games > p.played && (
                     <span class="ne mono">{p.games - p.played} NE</span>
                   )}
                 </td>
-                <td class="num">{p.starts}</td>
-                <td class="num">{p.high}</td>
-                <td class="num">{p.doubleFigures}</td>
-                <td class="num dim" data-v={p.points}>
+                <td class="num" data-label="Quintetto">{p.starts}</td>
+                <td class="num" data-label="High">{p.high}</td>
+                <td class="num" data-label="10+">{p.doubleFigures}</td>
+                <td class="num dim" data-v={p.points} data-label="Quota">
                   {num((p.points / totalPoints) * 100, 1)}%
                 </td>
               </tr>
@@ -159,10 +159,10 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
           <tfoot>
             <tr>
               <td></td>
-              <td>Squadra</td>
+              <td data-head>Squadra</td>
               <td></td>
-              <td class="num strong">{totalPoints}</td>
-              <td class="num">{num(onCourt.avgFor, 1)}</td>
+              <td class="num strong" data-head>{totalPoints}</td>
+              <td class="num" data-label="Media">{num(onCourt.avgFor, 1)}</td>
               <td class="num" colspan="6"></td>
             </tr>
           </tfoot>
@@ -252,6 +252,14 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
 
   /* --- individual season -------------------------------------------------- */
   .individuale td { padding-block: 0.6rem; }
+  /* Card mode sets its own spacing on the row; per-cell padding would stack
+     eleven times down one card. */
+  @media (max-width: 799px) {
+    .individuale td { padding-block: 0; }
+    /* Wide enough for two digits, so the names still line up under each
+       other; the desktop column would leave a hole beside a single one. */
+    .individuale td.rank { width: 1.5rem; }
+  }
   .individuale th.rank, .individuale td.rank { width: 3rem; }
   .individuale td.name { color: var(--chalk); }
 
@@ -286,8 +294,10 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
   }
 
   /* Below the width where eleven columns fit, the name stays put while the
-     numbers scroll under it — a row is unreadable without knowing whose. */
-  @media (max-width: 980px) {
+     numbers scroll under it — a row is unreadable without knowing whose. The
+     floor is the card breakpoint: below it the table does not scroll at all,
+     and the rank belongs in the headline rather than hidden. */
+  @media (min-width: 800px) and (max-width: 980px) {
     .individuale th.rank, .individuale td.rank { display: none; }
     .individuale th.name, .individuale td.name {
       position: sticky;

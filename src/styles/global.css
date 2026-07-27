@@ -249,6 +249,114 @@ tr.us td:first-child { box-shadow: inset 3px 0 0 var(--giallo); }
 tr.us td { background: var(--giallo-wash); color: var(--chalk); }
 tr.us:hover td { background: rgba(242, 197, 17, 0.14); }
 
+/* --- tables on a phone --------------------------------------------------- */
+
+/* A pane that scrolls sideways keeps a wide table off the page, but it does
+   not make it readable: at 320px five of Classifica's twelve columns are on
+   screen and the other seven are behind a scroll nobody finds. So below the
+   nav breakpoint a table marked `data-stack` stops being a grid of columns and
+   becomes one card per row — a headline line carrying the row's identity and
+   its primary figure, then the rest two across, each printed under its own
+   column name. Nothing is hidden and nothing scrolls.
+   The markup only says which cell is which; the transform itself is CSS, so
+   unlike a script it cannot fail to arrive. */
+@media (max-width: 799px) {
+  table[data-stack],
+  table[data-stack] thead,
+  table[data-stack] tbody,
+  table[data-stack] tfoot { display: block; }
+
+  table[data-stack] tr {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.7rem;
+    row-gap: 0.15rem;
+    padding: 0.7rem 0.2rem;
+    border-bottom: 1px solid var(--ink-line-soft);
+    /* The mark on our own row moves here from the first cell so it runs the
+       height of the card. A border rather than an inset shadow: cell
+       backgrounds paint over a shadow, never over a border. */
+    border-left: 3px solid transparent;
+  }
+
+  table[data-stack] th,
+  table[data-stack] td {
+    padding: 0;
+    border-bottom: 0;
+    white-space: normal;
+    text-align: left;
+  }
+  table[data-stack] td.name { min-width: 0; }
+
+  /* The headline, unlabelled, in the order the columns already stand. */
+  table[data-stack] td[data-head] { order: -1; flex: 0 0 auto; }
+  table[data-stack] td[data-head].name { flex: 1 1 auto; }
+
+  /* A zero-height item the full width of the card, ordered between the two
+     groups: the line break after the headline. */
+  table[data-stack] tr::before { content: ''; order: 0; flex: 0 0 100%; height: 0; }
+
+  table[data-stack] td[data-label] { order: 1; flex: 1 1 40%; }
+  table[data-stack] td[data-label][data-wide] { flex-basis: 100%; }
+  table[data-stack] td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--chalk-faint);
+  }
+  /* A label over a blank says less than nothing. */
+  table[data-stack] td:empty { display: none; }
+
+  /* Both of these grow their hit area with padding cancelled by an equal
+     negative margin, which the cell's own padding used to absorb. There is
+     none left to absorb it, so the bottom of the enlargement — and the
+     underline drawn at its edge — lands on the line below. Only the top half
+     is taken back out of the layout now; the bottom half stays in it, and
+     the hit area is the same size either way. */
+  table[data-stack] .score-btn { margin-inline: 0; margin-block: -0.6rem 0; }
+  table[data-stack] .p-link { margin-block: -0.5rem 0; }
+
+  /* One wash on the card rather than one per cell: cell-level fills leave the
+     gaps between them unpainted and the row reads as stripes. */
+  table[data-stack] tr.us {
+    border-left-color: var(--giallo);
+    background: var(--giallo-wash);
+  }
+  table[data-stack] tr.us:hover { background: rgba(242, 197, 17, 0.14); }
+  table[data-stack] tr.us td,
+  table[data-stack] tr.us:hover td { background: none; box-shadow: none; }
+
+  /* Every column name is now on the cell it belongs to, so the head is only
+     worth keeping where it is still a control. Where it is, it reflows into a
+     row of sort chips above the cards. */
+  table[data-stack] thead { display: none; }
+  table[data-stack][data-sortable] thead { display: block; }
+  table[data-stack] thead tr {
+    column-gap: 0.4rem;
+    row-gap: 0.4rem;
+    padding: 0 0.2rem 0.7rem;
+    border-bottom: 0;
+  }
+  table[data-stack] thead tr::before { display: none; }
+  table[data-stack] thead th {
+    position: static;
+    background: none;
+    flex: 0 0 auto;
+  }
+  table[data-stack] thead th:not([data-sort]) { display: none; }
+  /* .th-sort cancels the cell's padding with a negative margin; in card mode
+     there is no cell padding left to cancel. */
+  table[data-stack] thead .th-sort {
+    width: auto;
+    margin: 0;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--ink-line);
+  }
+}
+
 /* --- links --------------------------------------------------------------- */
 
 .link {
