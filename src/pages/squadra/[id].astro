@@ -86,7 +86,7 @@ const title = `${person.surname} ${person.name}`;
           ? <>, giocata</>
           : <>, tutte giocate</>}.
       {' '}<strong>{p.points} punti</strong> in stagione — il {fpct(p.share, 1)} di
-      quanto ha segnato la squadra, {ord(p.rank.points)} dato della rosa.
+      quanto ha segnato la squadra, {ord(p.rank.points)} dato della squadra.
       {p.bestGame && (
         <>
           {' '}Il massimo, <strong>{p.high}</strong>, contro
@@ -277,7 +277,7 @@ const title = `${person.surname} ${person.name}`;
         </ul>
 
         <div class="ranking">
-          <h3 class="rank-title mono">Tutta la rosa, per punti</h3>
+          <h3 class="rank-title mono">Tutta la squadra, per punti</h3>
           <ol class="squadbars">
             {squadScoring.map((row) => (
               <li class:list={{ me: row.id === p.id }}>
