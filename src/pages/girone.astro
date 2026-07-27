@@ -71,7 +71,7 @@ const headToHead = (team) => {
       </div>
 
       <div class="table-scroll">
-        <table>
+        <table data-stack>
           <caption class="visually-hidden">
             Classifica finale del Girone A
           </caption>
@@ -94,8 +94,8 @@ const headToHead = (team) => {
           <tbody>
             {table.map((row) => (
               <tr class:list={{ us: row.team === US }}>
-                <td class="num">{row.pos}</td>
-                <td class="name">
+                <td class="num" data-head>{row.pos}</td>
+                <td class="name" data-head>
                   {teamName(row.team)}
                   {row.noShow > 0 && (
                     <span class="pen mono" title="1 punto di penalizzazione per rinuncia">
@@ -103,16 +103,16 @@ const headToHead = (team) => {
                     </span>
                   )}
                 </td>
-                <td class="num strong">{row.pts}</td>
-                <td class="num">{row.g}</td>
-                <td class="num">{row.v}</td>
-                <td class="num">{row.p}</td>
-                <td class="num">{row.pf}</td>
-                <td class="num">{row.ps}</td>
-                <td class="num dim">{num(row.qp, 3)}</td>
-                <td class="num dim">{num(row.qc, 3)}</td>
-                <td class="num">{num(row.qtot, 3)}</td>
-                <td>
+                <td class="num strong" data-head>{row.pts}</td>
+                <td class="num" data-label="G">{row.g}</td>
+                <td class="num" data-label="V">{row.v}</td>
+                <td class="num" data-label="P">{row.p}</td>
+                <td class="num" data-label="P.F.">{row.pf}</td>
+                <td class="num" data-label="P.S.">{row.ps}</td>
+                <td class="num dim" data-label="Q.P.">{num(row.qp, 3)}</td>
+                <td class="num dim" data-label="Q.C.">{num(row.qc, 3)}</td>
+                <td class="num" data-label="Q.TOT.">{num(row.qtot, 3)}</td>
+                <td data-label="Playoff" data-wide>
                   {qualified.has(row.team) ? (
                     <span class="qual">
                       <Seed n={seedOf(row.team)} us={row.team === US} />
@@ -175,7 +175,7 @@ const headToHead = (team) => {
       </div>
 
       <div class="table-scroll">
-        <table>
+        <table data-stack>
           <thead>
             <tr>
               <th scope="col" class="num">#</th>
@@ -195,12 +195,12 @@ const headToHead = (team) => {
               );
               return (
                 <tr>
-                  <td class="num faint">{game.seq}</td>
-                  <td class="num faint">{official?.matchday ?? '–'}</td>
-                  <td class="mono">{longDate(game.date)}</td>
-                  <td class="name">{teamName(game.opponent)}</td>
-                  <td class="mono dim">{game.ourSide === 'home' ? 'casa' : 'trasferta'}</td>
-                  <td class="num score">
+                  <td class="num faint" data-head>{game.seq}</td>
+                  <td class="num faint" data-label="G.">{official?.matchday ?? '–'}</td>
+                  <td class="mono" data-label="Data">{longDate(game.date)}</td>
+                  <td class="name" data-head>{teamName(game.opponent)}</td>
+                  <td class="mono dim" data-label="Campo">{game.ourSide === 'home' ? 'casa' : 'trasferta'}</td>
+                  <td class="num score" data-head>
                     <button
                       type="button"
                       class="score-btn"
@@ -209,7 +209,7 @@ const headToHead = (team) => {
                     >{game.ourScore}–{game.theirScore}</button>
                     {game.forfeit && <span class="tav mono">a tavolino</span>}
                   </td>
-                  <td class:list={['num', game.won ? 'w' : 'l']}>
+                  <td class:list={['num', game.won ? 'w' : 'l']} data-label="Scarto">
                     {game.margin > 0 ? `+${game.margin}` : game.margin}
                   </td>
                 </tr>

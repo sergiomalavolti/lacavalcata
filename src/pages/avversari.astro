@@ -235,7 +235,7 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
       </div>
 
       <div class="table-scroll">
-        <table>
+        <table data-stack>
           <caption class="visually-hidden">Palestre delle squadre affrontate</caption>
           <thead>
             <tr>
@@ -248,19 +248,19 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
           </thead>
           <tbody>
             <tr class="us">
-              <td class="name">{teamName(US)}</td>
-              <td>{meta.teams[US].venue}</td>
-              <td class="dim">{meta.teams[US].address}</td>
-              <td class="mono dim">{meta.teams[US].slot?.toLowerCase()}</td>
-              <td class="num mono">{meta.teams[US].threePointLine} m</td>
+              <td class="name" data-head>{teamName(US)}</td>
+              <td data-label="Palestra" data-wide>{meta.teams[US].venue}</td>
+              <td class="dim" data-label="Indirizzo" data-wide>{meta.teams[US].address}</td>
+              <td class="mono dim" data-label="Giorno e ora">{meta.teams[US].slot?.toLowerCase()}</td>
+              <td class="num mono" data-label="Tiro da 3">{meta.teams[US].threePointLine} m</td>
             </tr>
             {opponents.map((o) => (
               <tr>
-                <td class="name">{teamName(o.id)}</td>
-                <td>{o.info.venue || '–'}</td>
-                <td class="dim">{o.info.address || '–'}</td>
-                <td class="mono dim">{o.info.slot ? o.info.slot.toLowerCase() : '–'}</td>
-                <td class="num mono">{o.info.threePointLine ? `${o.info.threePointLine} m` : '–'}</td>
+                <td class="name" data-head>{teamName(o.id)}</td>
+                <td data-label="Palestra" data-wide>{o.info.venue || '–'}</td>
+                <td class="dim" data-label="Indirizzo" data-wide>{o.info.address || '–'}</td>
+                <td class="mono dim" data-label="Giorno e ora">{o.info.slot ? o.info.slot.toLowerCase() : '–'}</td>
+                <td class="num mono" data-label="Tiro da 3">{o.info.threePointLine ? `${o.info.threePointLine} m` : '–'}</td>
               </tr>
             ))}
           </tbody>

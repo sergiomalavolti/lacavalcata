@@ -182,6 +182,20 @@ const opponentFirst = isOpponentFirst(game);
   }
   .sheet tfoot .num { color: var(--chalk); font-size: var(--step--1); }
 
+  /* Three or four narrow columns: this stays a table on a phone rather than
+     becoming a card, but only once the fixed geometry gives way. The 6.5rem
+     centre columns and the 12ch floor under a name are what make the sheet
+     wider than a 320px screen — not the content, which is a number, an X and
+     a name that is perfectly happy to wrap. */
+  @media (max-width: 799px) {
+    .sheet th, .sheet td { padding-inline: 0.25rem; white-space: normal; }
+    .sheet .mid { width: 2.2rem; }
+    /* `anywhere` earns its place in the grids of club names elsewhere, but a
+       column this narrow would use it to cut MALAVOLTI in half. These are two
+       short words with a space between them: wrapping there is enough. */
+    .sheet :global(td.name) { min-width: 0; overflow-wrap: normal; }
+  }
+
   .referto-quarters { margin-top: 0.2rem; }
   .qnote {
     font-size: 0.6rem;
