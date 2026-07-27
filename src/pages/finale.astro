@@ -319,7 +319,11 @@ const theirRun = season.playoff.bracket
   /* --- hero -------------------------------------------------------------- */
   .hero {
     position: relative;
-    min-height: min(88dvh, 780px);
+    /* svh, not dvh: dvh recomputes as the phone's address bar hides on scroll,
+       and an object-fit: cover crop is height-sensitive, so the framing would
+       visibly re-zoom mid-scroll. This photo is centre-weighted enough to
+       survive the crop, so it keeps the full-bleed treatment. */
+    min-height: min(88svh, 780px);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

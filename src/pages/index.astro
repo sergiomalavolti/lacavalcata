@@ -251,7 +251,10 @@ const steps = [
   /* --- hero -------------------------------------------------------------- */
   .hero {
     position: relative;
-    min-height: min(92dvh, 860px);
+    /* svh, not dvh: dvh recomputes as the phone's address bar hides on scroll,
+       and because the photo is object-fit: cover its crop is height-sensitive,
+       so the framing would visibly re-zoom mid-scroll. svh holds still. */
+    min-height: min(92svh, 860px);
     display: grid;
     align-items: end;
     overflow: hidden;
@@ -277,6 +280,45 @@ const steps = [
     position: relative;
     padding-block: 3rem clamp(3rem, 8vw, 5.5rem);
   }
+
+  /* On a phone the hero box is about 1:2 while the photograph is 3:2, and
+     object-fit: cover settles that by throwing away two thirds of the width —
+     the squad photo ends up showing four players out of twelve, the outermost
+     two sliced down the middle. So below the nav breakpoint the photo stops
+     being a backdrop and becomes its own band at its own shape, with the words
+     underneath it. Nothing is cropped, so the whole squad is there. */
+  @media (max-width: 799px) {
+    .hero {
+      min-height: 0;
+      grid-template-columns: minmax(0, 1fr);
+      align-items: stretch;
+    }
+    .hero :global(.hero-img) {
+      position: static;
+      grid-area: 1 / 1;
+      height: auto;
+      /* Full width is the part that must not be cropped — that is where the
+         squad is. The height is trimmed to 16/9 from the top, which takes only
+         ceiling and back wall, and the position keeps the frame low so both
+         rows of players and the Loiano centre circle stay in. */
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      object-position: 50% 88%;
+      /* The text no longer sits on top of it, so it no longer needs dimming. */
+      filter: saturate(0.72) contrast(1.04);
+    }
+    .hero-shade {
+      position: static;
+      grid-area: 1 / 1;
+      /* Its only job here is to melt the photo's bottom edge into the page. */
+      background: linear-gradient(to top, var(--ink) 1%, rgba(10, 10, 11, 0) 58%);
+    }
+    .hero-body {
+      grid-area: 2 / 1;
+      padding-block: 0.5rem clamp(2.5rem, 9vw, 3.5rem);
+    }
+  }
+
   .hero-body h1 { font-size: var(--step-5); }
   .hero-body h1 span { display: block; }
   .h-seed { color: var(--giallo); }
