@@ -53,8 +53,8 @@ const headToHead = (team) => {
   >
     <p>
       Quattordici giornate per stabilire chi andava ai playoff e, soprattutto,
-      con che numero. La Caffè Matic chiude <strong>secondo a 33 punti</strong>,
-      appaiata al Ghironda e staccata di quattro dalla Birreria Amadeus. Il
+      con quale testa di serie. La Birreria Amadeus vince il girone, mentre La Caffè Matic chiude <strong>seconda a 33 punti</strong>,
+      a pari merito col Ghironda, ma con lo scontro diretto a favore. Il
       secondo posto arriva solo all'ultima giornata.
     </p>
   </PageHead>
@@ -64,7 +64,7 @@ const headToHead = (team) => {
       <div class="section-head">
         <h2 class="section-title">Classifica</h2>
         <p class="section-note">
-          Vittoria 3 punti, vittoria dopo un supplementare 2, sconfitta dopo un
+          La Vittoria vale 3 punti, la vittoria dopo un supplementare 2, la sconfitta dopo un
           supplementare 1. Chi non si presenta perde 30–0 e viene penalizzato di
           1 punto: è successo una volta sola, al Casalecchio il 23 febbraio.
         </p>
@@ -131,25 +131,24 @@ const headToHead = (team) => {
       <div class="coefficient panel">
         <h2>Il coefficiente che ha deciso tutto</h2>
         <p class="prose dim">
-          La Super-League prendeva le prime due di ogni girone più le quattro
-          migliori terze, per un totale di ventidue squadre per sedici posti, e servivano criteri.
-          Il CSI ordinava le qualificate con un coefficiente:{' '}
+          Accedevano ai Playoff Super-League le prime due di ogni girone più le quattro
+          migliori terze.
+          Tutte le qualificate venivano ordinate con un coefficiente:{' '}
           <strong>Q.P.</strong>{' '}sono i punti divisi per le partite,{' '}
           <strong>Q.C.</strong> è il rapporto
           fra punti fatti e subiti, e <strong>Q.TOT.</strong> è la loro somma.
-          Le sei prime classificate si spartivano le teste di serie da 1 a 6, le
+          Le prime sei classificate si spartivano le teste di serie da 1 a 6, le
           sei seconde quelle da 7 a 12, le quattro terze le ultime quattro.
         </p>
         <p class="prose dim">
           La Caffè Matic si è posizionata seconda nel girone con un Q.TOT. di
           {' '}<strong>{num(ourSeed.qtot, 3)}</strong>: il più alto fra le seconde
-          è stato quello dell'Ozzano con {num(seeds.find((s) => s.seed === 7).qtot, 3)}, e questo
-          ha determinato la posizione.
+          è stato quello dell'Ozzano con {num(seeds.find((s) => s.seed === 7).qtot, 3)}.
         </p>
         <p class="seed-callout">
           <Seed n={8} us size="lg" label />
           <span>
-            Ottava di sedici. Che significava incrociare la prima al secondo turno.
+            Ottava di sedici. Che avrebbe significato incrociare la prima testa di serie in un eventuale secondo turno.
           </span>
         </p>
       </div>
@@ -165,7 +164,7 @@ const headToHead = (team) => {
   <section class="section">
     <div class="wrap">
       <div class="section-head">
-        <h2 class="section-title">Le nostre quattordici</h2>
+        <h2 class="section-title">Le nostre partite nel girone</h2>
         <p class="section-note">
           In ordine di data. Il numero di giornata del calendario ufficiale è
           diverso dall'ordine in cui abbiamo giocato, per via dei recuperi:
@@ -292,7 +291,7 @@ const headToHead = (team) => {
 
   <section class="section">
     <div class="wrap">
-      <h2 class="section-title">Contro chi, e come è andata</h2>
+      <h2 class="section-title">Testa a testa</h2>
       <ul class="h2h">
         {table.filter((r) => r.team !== US).map((row) => {
           const rec = headToHead(row.team);
@@ -307,8 +306,8 @@ const headToHead = (team) => {
         })}
       </ul>
       <p class="section-note dim">
-        Due sconfitte su due contro il Birreria Amadeus nel girone. La terza
-        volta si sono incontrati il 9 giugno a Loiano.{' '}
+        Due sconfitte su due contro la Birreria Amadeus nel girone. Il terzo confronto
+        è avvenuto in finale playoff, il 9 giugno in campo neutro a Loiano.{' '}
         <a class="link" href={u('/finale/')}>Com'è finita →</a>
       </p>
     </div>
