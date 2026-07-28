@@ -103,10 +103,23 @@ export const groupGames = games.filter((g) => g.phase === 'girone');
  * need a denominator it has not got — "never played" and "scored nothing" are
  * different statements and a table has to be able to tell them apart.
  *
+ * `inLine` narrows further, to the games a player started or the games he came
+ * on in — a second, independent cut of the same slice. Three things follow from
+ * it. A game he dressed for and never entered is in neither, so it drops out of
+ * both denominators and out of `games` as well; the rows are filtered on
+ * appearances rather than on call-ups, so a man with no starts is not a row of
+ * dashes in the quintetto cut but no row at all; and `share` deliberately does
+ * *not* follow it — the denominator stays what the whole team scored, so a
+ * player's two cuts add back to his season quota instead of each reading
+ * against a different total.
+ *
+ * `linePoints` is what that group scored across the slice, `teamPoints` what
+ * the team scored. With no `inLine` they are the same number.
+ *
  * The sort is stable, so the whole-season slice comes back in exactly the order
  * `playerStats` is stored in, ties and all.
  */
-export function playerTotals(inSlice = () => true) {
+export function playerTotals(inSlice = () => true, inLine = null) {
   const played = games.filter((g) => !g.forfeit && inSlice(g));
   const seqs = new Set(played.map((g) => g.seq));
   const teamPoints = played.reduce((sum, g) => sum + g.ourScore, 0);
@@ -116,7 +129,7 @@ export function playerTotals(inSlice = () => true) {
       // A log entry per game he was on the sheet for; `played` says whether he
       // came in. Every figure below is one or the other, never both.
       const dressed = p.log.filter((l) => seqs.has(l.seq));
-      const on = dressed.filter((l) => l.played);
+      const on = dressed.filter((l) => l.played && (!inLine || inLine(l)));
       const points = on.reduce((sum, l) => sum + l.points, 0);
       return {
         player: p.player,
@@ -130,14 +143,20 @@ export function playerTotals(inSlice = () => true) {
         share: on.length && teamPoints ? points / teamPoints : null,
       };
     })
-    .filter((r) => r.games > 0)
+    .filter((r) => (inLine ? r.played > 0 : r.games > 0))
     .sort((a, b) => b.points - a.points);
+
+  const linePoints = inLine
+    ? rows.reduce((sum, r) => sum + r.points, 0)
+    : teamPoints;
 
   return {
     rows,
     games: played.length,
     teamPoints,
+    linePoints,
     avgFor: played.length ? teamPoints / played.length : 0,
+    avgLine: played.length ? linePoints / played.length : 0,
     topScorer: rows.length ? rows[0].points : 0,
   };
 }
