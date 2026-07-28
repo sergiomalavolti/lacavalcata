@@ -427,6 +427,13 @@ const windows = [
       min-height: 2rem;
     }
     .one-off { padding-block: 0.5rem 0.35rem; }
+
+    /* The taller tap targets above push a 3-game card past the 9.5rem slot
+       every tie is given (see the comment on .col), and nothing here clips —
+       the overflow used to be painted over by the next card in the column.
+       A best-of-3 measures ~11.7rem tall at this row height; 12.5rem clears
+       it with room to spare, for every round, not just the tight one. */
+    .draw { --slot: 12.5rem; }
   }
 
   /* Hangs below the final rather than sitting inside it, so the card stays
