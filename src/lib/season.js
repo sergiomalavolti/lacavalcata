@@ -92,6 +92,57 @@ export const playoffGames = games.filter((g) => g.phase !== 'girone');
 export const groupGames = games.filter((g) => g.phase === 'girone');
 
 /**
+ * Per-player totals over a slice of the season — the whole thing by default,
+ * the girone or the playoff when given a test.
+ *
+ * The forfeit is out of every slice by construction: it has no boxscore, so
+ * nobody dressed for it and no per-game denominator may count it.
+ *
+ * A player who never went to referto in the slice is not in the result at all.
+ * One who dressed and never entered is, carrying nulls where a figure would
+ * need a denominator it has not got — "never played" and "scored nothing" are
+ * different statements and a table has to be able to tell them apart.
+ *
+ * The sort is stable, so the whole-season slice comes back in exactly the order
+ * `playerStats` is stored in, ties and all.
+ */
+export function playerTotals(inSlice = () => true) {
+  const played = games.filter((g) => !g.forfeit && inSlice(g));
+  const seqs = new Set(played.map((g) => g.seq));
+  const teamPoints = played.reduce((sum, g) => sum + g.ourScore, 0);
+
+  const rows = season.playerStats
+    .map((p) => {
+      // A log entry per game he was on the sheet for; `played` says whether he
+      // came in. Every figure below is one or the other, never both.
+      const dressed = p.log.filter((l) => seqs.has(l.seq));
+      const on = dressed.filter((l) => l.played);
+      const points = on.reduce((sum, l) => sum + l.points, 0);
+      return {
+        player: p.player,
+        points,
+        games: dressed.length,
+        played: on.length,
+        starts: on.filter((l) => l.starter).length,
+        doubleFigures: on.filter((l) => l.points >= 10).length,
+        average: on.length ? points / on.length : null,
+        high: on.length ? Math.max(...on.map((l) => l.points)) : null,
+        share: on.length && teamPoints ? points / teamPoints : null,
+      };
+    })
+    .filter((r) => r.games > 0)
+    .sort((a, b) => b.points - a.points);
+
+  return {
+    rows,
+    games: played.length,
+    teamPoints,
+    avgFor: played.length ? teamPoints / played.length : 0,
+    topScorer: rows.length ? rows[0].points : 0,
+  };
+}
+
+/**
  * True when the record names the opponent before us — every game they hosted,
  * plus the final, played on neutral ground with Birreria Amadeus still listed
  * as nominal home. Score and quarters read opponent-first wherever this is
