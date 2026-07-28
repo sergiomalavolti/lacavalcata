@@ -152,9 +152,9 @@ const theirRun = season.playoff.bracket
     <div class="wrap prose-block">
       <h2>Terza volta</h2>
       <p>
-        Nel girone La Birreria Amadeus aveva vinto tutte e due le partite: 58–60
+        Nel girone La Birreria Amadeus aveva vinto entrambi gli scontri diretti: 58–60
         a Porretta alla prima giornata, 54–42 a Bologna al ritorno. Aveva chiuso
-        il girone al primo posto con 37 punti, quattro in più del Caffè Matic, ed era arrivata alla
+        il girone al primo posto con 37 punti, quattro in più della Caffè Matic, ed era arrivata alla
         finale da testa di serie numero {seedOf(opponent)}.
       </p>
       <ul class="h2h-list mono">
@@ -222,7 +222,7 @@ const theirRun = season.playoff.bracket
       <div class="boxgrid">
         <Referto game={game} />
         <div class="topscorers">
-          <h3>I marcatori</h3>
+          <h3>I migliori marcatori</h3>
           <ol>
             {topScorers.map((l) => (
               <li>
@@ -237,9 +237,9 @@ const theirRun = season.playoff.bracket
             ))}
           </ol>
           <p class="dim topnote">
-            Dodici a referto, undici a punti. Nessuno in doppia cifra: la finale
-            è stata vinta da tutti insieme, con il massimo di
-            {' '}{topScorers[0].points} punti.
+            Tutti i dodici a referto hanno segnato, tre dei quali in doppia cifra: la finale
+            è stata vinta da tutti insieme. L'high di
+            {' '}{topScorers[0].points} punti è stato registrato da Roberto Maranelli.
           </p>
         </div>
       </div>
@@ -288,7 +288,7 @@ const theirRun = season.playoff.bracket
     <div class="wrap">
       <h2 class="section-title">Anche loro venivano da lontano</h2>
       <p class="section-note dim">
-        Il cammino del {teamName(opponent)}, l'avversario della finale, fino a
+        Il cammino ai playoff della {teamName(opponent)}, l'avversario della finale, fino a
         Loiano.
       </p>
       <ul class="theirrun">

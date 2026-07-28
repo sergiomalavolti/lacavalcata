@@ -241,7 +241,7 @@ const headToHead = (team) => {
           const list = fixtures.filter((f) => f.matchday === md);
           const ours = list.find((f) => f.home === US || f.away === US);
           return (
-            <details class="md" open={md === 14}>
+            <details class="md">
               <summary>
                 <span class="md-n mono">{String(md).padStart(2, '0')}</span>
                 <span class="md-label">
@@ -252,6 +252,7 @@ const headToHead = (team) => {
                       : 'riposo'}
                   </span>
                 </span>
+                <span class="md-chevron" aria-hidden="true">›</span>
               </summary>
               <ul class="fixtures">
                 {list.map((f) => {
@@ -396,7 +397,14 @@ const headToHead = (team) => {
     letter-spacing: 0.06em;
     text-transform: none;
   }
+  .md-chevron {
+    margin-left: auto;
+    color: var(--chalk-faint);
+    font-size: var(--step-1);
+    transition: transform 0.15s ease;
+  }
   .md[open] summary { border-bottom: 1px solid var(--ink-line-soft); }
+  .md[open] .md-chevron { transform: rotate(90deg); }
 
   .fixtures { list-style: none; margin: 0; padding: 0.5rem 0 1rem; }
   .fixtures li {

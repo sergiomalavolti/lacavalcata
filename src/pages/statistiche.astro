@@ -56,7 +56,7 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
       parecchio. Dei {record.scored} punti di squadra,
       {' '}<strong>{onCourt.scored}</strong> sono stati segnati sul campo: gli
       altri {record.scored - onCourt.scored} sono quelli assegnati per la
-      partita vinta a tavolino, e non appartengono a nessuno.
+      partita vinta a tavolino.
     </p>
   </PageHead>
 
@@ -178,7 +178,7 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
         {bestGames.map((b) => (
           <li>
             <span class="b-pts mono">{b.points}</span>
-            <span class="b-name">{playerName(b.player)}</span>
+            <a class="b-name p-link" href={playerHref(b.player)}>{playerName(b.player)}</a>
             <span class="b-ctx mono dim">
               {PHASES[b.game.phase]} · {scoreLine(b.game)}
             </span>
@@ -193,10 +193,9 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
     <div class="wrap">
       <h2 class="section-title">Tutti i tabellini</h2>
       <p class="section-note dim">
-        Ventitré partite in ordine di data, come sul referto: il quintetto
+        Ventitré partite, ventidue giocate sul campo: il quintetto è
         segnato con la <span class="mono giallo">X</span>, chi non è entrato
-        con{' '}<span class="mono giallo">NE</span>. Dove esistono, i parziali
-        per quarto vengono dal database.
+        con{' '}<span class="mono giallo">NE</span>.
       </p>
 
       {phases.map((phase) => {
