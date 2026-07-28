@@ -4,7 +4,8 @@ import PageHead from '../components/PageHead.astro';
 import Referto from '../components/Referto.astro';
 import TableSort from '../components/TableSort.astro';
 import {
-  season, playerName, playerHref, teamName, shortDate, num, PHASES, scoreLine,
+  season, playerName, playerHref, teamName, teamShort, shortDate, num, pct, signed,
+  PHASES, scoreLine, scoreSides,
 } from '../lib/season.js';
 
 const { playerStats, roster, games, advanced } = season;
@@ -24,12 +25,14 @@ const roleOf = (id) => roster.find((r) => r.id === id)?.role ?? '';
 // reads as a hierarchy at a glance and not as nineteen loose numbers.
 const topScorer = Math.max(...playerStats.map((p) => p.points));
 
-// Single-game highs across the season.
+// Single-game highs across the season. `starter` comes off the boxscore line
+// itself; the share is against what the team scored that night, which is what
+// separates a 29 in a 67-point game from a 23 in an 87-point one.
 const bestGames = games
   .flatMap((g) =>
     g.boxscore
       .filter((l) => l.played)
-      .map((l) => ({ ...l, game: g })),
+      .map((l) => ({ ...l, game: g, sides: scoreSides(g), share: l.points / g.ourScore })),
   )
   .sort((a, b) => b.points - a.points)
   .slice(0, 8);
@@ -176,14 +179,35 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
   <section class="section">
     <div class="wrap">
       <h2 class="section-title">Le migliori partite</h2>
+      <p class="section-note dim">
+        Le otto serate migliori: chi partiva in quintetto e chi è entrato dalla
+        panchina, com'è finita la partita e la quota dei punti di squadra
+        segnata quella sera. Il nostro punteggio è quello in evidenza.
+      </p>
       <ol class="bests">
         {bestGames.map((b) => (
           <li>
             <span class="b-pts mono">{b.points}</span>
-            <a class="b-name p-link" href={playerHref(b.player)}>{playerName(b.player)}</a>
-            <span class="b-ctx mono dim">
-              {PHASES[b.game.phase]} · {scoreLine(b.game)}
+            <span class="b-who">
+              <a class="b-name p-link" href={playerHref(b.player)}>{playerName(b.player)}</a>
+              <span class:list={['b-role', 'mono', b.starter ? 'start' : 'bench']}>
+                {b.starter ? 'quintetto' : 'panchina'}
+              </span>
             </span>
+            <span class="b-ctx mono dim">
+              {teamShort(b.game.opponent)} · {PHASES[b.game.phase]}
+            </span>
+            {/* Home team first, so ours is not always the number on the left —
+                which is exactly why it is the one that carries the colour. */}
+            <span class:list={['b-res', 'mono', b.game.won ? 'won' : 'lost']}>
+              <span class={b.sides.oursFirst ? 'ours' : 'theirs'}>{b.sides.first}</span>
+              <span class="sep">–</span>
+              <span class={b.sides.oursFirst ? 'theirs' : 'ours'}>{b.sides.second}</span>
+              <span class:list={['b-margin', b.game.won ? 'w' : 'l']}>
+                {signed(b.game.margin, 0)}
+              </span>
+            </span>
+            <span class="b-quota mono dim">{pct(b.share, 0)}</span>
             <a class="b-link mono" href={`#g${b.game.seq}`}>tabellino</a>
           </li>
         ))}
@@ -396,18 +420,31 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
   .bests li {
     background: var(--ink-raised);
     display: grid;
-    grid-template-columns: 4rem minmax(0, 1fr) minmax(0, 1.1fr) auto;
+    /* The name track takes exactly what the longest name and tag need, so the
+       opponent sits next to the player instead of across a gap, and the slack
+       collects in one place — in front of the numbers, which read as a block
+       against the right edge. */
+    grid-template-columns: 3.6rem minmax(0, max-content) minmax(0, 1fr) auto auto auto;
     gap: 1rem;
     align-items: baseline;
     padding: 0.7rem 1rem;
   }
   .b-pts { font-size: var(--step-2); color: var(--giallo); font-weight: 700; }
+  /* The tag rides with the name rather than taking a column of its own: it is
+     two words long at most and the pair reads as one thing. It wraps under the
+     name on a narrow phone instead of squeezing the column. */
+  .b-who {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.45rem;
+  }
   /* Both links carry the underline the rest of the site puts under a player's
-     name, but here it has to be drawn on the text and not as a border on the
-     box: these are grid items, so the box runs the full width of its track and
-     is as tall as the row, and a border would land well past the end of the
-     name — and, once the list stacks, a line below it. The same substitution
-     global.css makes for .p-link inside a stacked table. */
+     name, drawn on the text and not as a border on the box: .b-link is a grid
+     item, so its box runs the full width of its track and is as tall as the
+     row, and a border would land well past the end of the word. The same
+     substitution global.css makes for .p-link inside a stacked table; .b-name
+     keeps it so the two match. */
   .b-name {
     font-size: var(--step-0);
     border-bottom: 0;
@@ -415,7 +452,38 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
     text-decoration-color: var(--ink-line);
     text-underline-offset: 3px;
   }
+  /* Quintetto keeps the yellow the tabellini already use to mark it. */
+  .b-role {
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 0.15rem 0.4rem;
+    border: 1px solid var(--ink-line);
+    border-radius: 2px;
+    color: var(--chalk-dim);
+  }
+  .b-role.start {
+    color: var(--giallo-deep);
+    border-color: var(--giallo-deep);
+    background: var(--giallo-wash);
+  }
   .b-ctx { font-size: 0.68rem; }
+  .b-res {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    white-space: nowrap;
+    font-size: var(--step--1);
+    color: var(--chalk-dim);
+  }
+  .b-res .ours { color: var(--chalk); font-weight: 700; }
+  .b-res.won .ours { color: var(--giallo); }
+  .b-res .sep { opacity: 0.55; }
+  /* No colour here: .w and .l carry it from global.css, and a rule of the same
+     name in a scoped style would outrank them on specificity alone. */
+  .b-margin { font-size: 0.68rem; min-width: 2.1rem; }
+  .b-quota { font-size: 0.68rem; min-width: 2.4rem; text-align: right; }
   .b-link {
     font-size: 0.6rem;
     letter-spacing: 0.14em;
@@ -504,12 +572,34 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
      the transition on .rf lets it fade rather than blink out. */
   .rf.hit { background: var(--giallo-wash); box-shadow: inset 3px 0 0 var(--giallo); }
 
+  /* Stacked: the numeral holds the left edge for all three rows, the player and
+     the link share the top one, and the result and the quota sit on the last —
+     each number against the edge it is read from. */
   @media (max-width: 700px) {
     .bests li {
-      grid-template-columns: 3.5rem minmax(0, 1fr);
-      row-gap: 0.2rem;
+      grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+      column-gap: 0.8rem;
+      row-gap: 0.3rem;
     }
-    .b-ctx, .b-link { grid-column: 2; }
+    /* Tighter tag: at this width it is the difference between sitting beside
+       the name and dropping to a line of its own. */
+    .b-role { font-size: 0.5rem; letter-spacing: 0.08em; padding: 0.12rem 0.3rem; }
+    .b-pts { grid-column: 1; grid-row: 1 / span 3; }
+    .b-who { grid-column: 2; grid-row: 1; }
+    .b-link { grid-column: 3; grid-row: 1; justify-self: end; }
+    .b-ctx { grid-column: 2 / -1; grid-row: 2; }
+    .b-res { grid-column: 2; grid-row: 3; }
+    .b-quota { grid-column: 3; grid-row: 3; justify-self: end; }
+  }
+
+  /* Measured, like the nav breakpoint: down to 340px the longest name still
+     fits beside the jump link, and at 336px — 21rem — it starts breaking in
+     two. Below that the player takes the whole first row and the link goes to
+     the bottom, where it sits under the result. */
+  @media (max-width: 21rem) {
+    .b-pts { grid-row: 1 / span 4; }
+    .b-who { grid-column: 2 / -1; }
+    .b-link { grid-column: 2 / -1; grid-row: 4; justify-self: start; }
   }
 
   /* Narrow enough that the club name, the date and the result stop sharing a
