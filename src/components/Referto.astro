@@ -9,14 +9,20 @@ import QuarterStrip from './QuarterStrip.astro';
  * three columns, the same "X" for the starting five, the same "NE" for a
  * player who was on the bench and never came in. Rows stay in the order the
  * original sheet listed them — starters first, as the scorer wrote them down.
+ *
+ * `bare` drops the frame and the header line, for the one caller that folds
+ * the sheet into a <details> whose summary already names the game. The
+ * anchor goes with it: the fold owns the id there, so it is the thing the
+ * "tabellino" links jump to.
  */
-const { game } = Astro.props;
+const { game, bare = false } = Astro.props;
 const total = game.boxscore.reduce((sum, l) => sum + (l.points ?? 0), 0);
 const hasNumbers = game.boxscore.some((l) => l.number !== undefined);
 const opponentFirst = isOpponentFirst(game);
 ---
 
-<article class="referto" id={`g${game.seq}`}>
+<article class:list={['referto', { bare }]} id={bare ? undefined : `g${game.seq}`}>
+  {!bare && (
   <header class="referto-head">
     <div class="referto-meta mono">
       <span class="seq">{String(game.seq).padStart(2, '0')}</span>
@@ -48,6 +54,7 @@ const opponentFirst = isOpponentFirst(game);
       <span class="verdict">{game.won ? 'vittoria' : 'sconfitta'}</span>
     </p>
   </header>
+  )}
 
   {game.forfeit ? (
     <p class="tavolino mono">Vinta a tavolino. Nessun tabellino.</p>
@@ -121,13 +128,12 @@ const opponentFirst = isOpponentFirst(game);
     gap: 0.9rem;
   }
 
-  /* Landing here from a "tabellino" link elsewhere on the page — :target is
-     native to the anchor jump, no script needed, and it clears itself the
-     moment the reader follows another link. */
-  .referto:target {
-    background: var(--giallo-wash);
-    border-color: var(--giallo-deep);
-    box-shadow: inset 3px 0 0 var(--giallo);
+  /* Inside a fold the surrounding <details> is already the panel, and its
+     summary already carries the heading line. */
+  .referto.bare {
+    background: transparent;
+    border: 0;
+    padding: 0.2rem 0.3rem 1.1rem;
   }
 
   .referto-meta {

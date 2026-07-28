@@ -3,7 +3,9 @@ import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import Referto from '../components/Referto.astro';
 import TableSort from '../components/TableSort.astro';
-import { season, playerName, playerHref, num, PHASES, scoreLine } from '../lib/season.js';
+import {
+  season, playerName, playerHref, teamName, shortDate, num, PHASES, scoreLine,
+} from '../lib/season.js';
 
 const { playerStats, roster, games, advanced } = season;
 const record = advanced.record;
@@ -209,7 +211,26 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
               </span>
             </h3>
             <div class="referti">
-              {list.map((g) => <Referto game={g} />)}
+              {list.map((g) => (
+                <details class="rf" id={`g${g.seq}`}>
+                  <summary>
+                    <span class="rf-seq mono">{String(g.seq).padStart(2, '0')}</span>
+                    <span class="rf-label">
+                      {teamName(g.opponent)}
+                      <span class="rf-meta mono dim">
+                        {shortDate(g.date)} · {g.neutral
+                          ? 'campo neutro'
+                          : g.ourSide === 'home' ? 'in casa' : 'in trasferta'}
+                      </span>
+                    </span>
+                    <span class:list={['rf-score', 'mono', g.won ? 'won' : 'lost']}>
+                      {scoreLine(g)}
+                    </span>
+                    <span class="rf-chevron" aria-hidden="true">›</span>
+                  </summary>
+                  <Referto game={g} bare />
+                </details>
+              ))}
             </div>
           </div>
         );
@@ -219,6 +240,21 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
 
   <TableSort />
 </Base>
+
+<script>
+  /* A "tabellino" link points at a fold that ships closed, so the jump alone
+     would land on the summary with the sheet still shut. Opening it here keeps
+     the anchor honest; with no JavaScript the link still scrolls to the right
+     game and the reader opens it themselves. */
+  const openTarget = () => {
+    if (!location.hash) return;
+    const el = document.querySelector(location.hash);
+    if (el instanceof HTMLDetailsElement) el.open = true;
+  };
+
+  openTarget();
+  addEventListener('hashchange', openTarget);
+</script>
 
 <style>
 
@@ -370,11 +406,57 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
     text-transform: uppercase;
   }
 
+  /* Twenty-three sheets stacked open made a wall of tables, so each one folds
+     behind its result — the same treatment the matchdays get on girone/. */
   .referti {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr));
-    gap: 1rem;
+    gap: 1px;
+    background: var(--ink-line-soft);
+    border-block: 1px solid var(--ink-line);
   }
+
+  .rf { background: var(--ink); }
+  .rf summary {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.75rem 0.3rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .rf summary::-webkit-details-marker { display: none; }
+  .rf summary:hover { background: var(--ink-raised); }
+  .rf-seq { color: var(--giallo-deep); font-size: var(--step--1); }
+  .rf-label {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: var(--step-1);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 1rem;
+  }
+  .rf-meta {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: none;
+  }
+  /* A result is one token: never let the pair break across two lines. */
+  .rf-score { margin-left: auto; font-size: var(--step-0); white-space: nowrap; }
+  .rf-score.won { color: var(--giallo); }
+  .rf-score.lost { color: var(--chalk-dim); }
+  .rf-chevron {
+    color: var(--chalk-faint);
+    font-size: var(--step-1);
+    transition: transform 0.15s ease;
+  }
+  .rf[open] summary { border-bottom: 1px solid var(--ink-line-soft); }
+  .rf[open] .rf-chevron { transform: rotate(90deg); }
+
+  /* Arriving from a "tabellino" link above: :target marks which one, and
+     clears itself as soon as the reader follows another link. */
+  .rf:target { background: var(--giallo-wash); box-shadow: inset 3px 0 0 var(--giallo); }
 
   @media (max-width: 700px) {
     .bests li {
@@ -382,5 +464,14 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
       row-gap: 0.2rem;
     }
     .b-ctx, .b-link { grid-column: 2; }
+  }
+
+  /* Narrow enough that the club name, the date and the result stop sharing a
+     row comfortably: pull the type down and tighten the gaps so the score
+     keeps its own column instead of being crushed against the chevron. */
+  @media (max-width: 26rem) {
+    .rf summary { gap: 0.55rem; padding-inline: 0.15rem; }
+    .rf-label { font-size: var(--step-0); }
+    .rf-score { font-size: var(--step--1); }
   }
 </style>
