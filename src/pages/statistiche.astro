@@ -243,17 +243,41 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
 
 <script>
   /* A "tabellino" link points at a fold that ships closed, so the jump alone
-     would land on the summary with the sheet still shut. Opening it here keeps
-     the anchor honest; with no JavaScript the link still scrolls to the right
-     game and the reader opens it themselves. */
+     would land on the summary with the sheet still shut. Opening it and marking
+     it keeps the anchor honest; with no JavaScript the link still scrolls to
+     the right game and the reader opens it themselves. */
+  let marked = null;
+
+  const clear = () => {
+    marked?.classList.remove('hit');
+    marked = null;
+  };
+
   const openTarget = () => {
+    clear();
     if (!location.hash) return;
     const el = document.querySelector(location.hash);
-    if (el instanceof HTMLDetailsElement) el.open = true;
+    if (!(el instanceof HTMLDetailsElement)) return;
+    el.open = true;
+    el.classList.add('hit');
+    marked = el;
   };
 
   openTarget();
   addEventListener('hashchange', openTarget);
+
+  /* The mark only has a job until the reader has found the sheet, so the next
+     thing they do takes it off — collapsing it, opening another, following a
+     link. The jump links themselves are the exception: clicking the same
+     "tabellino" twice fires no hashchange, and clearing here would leave
+     nothing lit. */
+  addEventListener('click', (e) => {
+    if (!marked) return;
+    const el = e.target instanceof Element ? e.target : null;
+    if (el?.closest('a[href^="#g"]')) return;
+    clear();
+  });
+  addEventListener('keydown', clear);
 </script>
 
 <style>
@@ -378,17 +402,33 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
     padding: 0.7rem 1rem;
   }
   .b-pts { font-size: var(--step-2); color: var(--giallo); font-weight: 700; }
-  .b-name { font-size: var(--step-0); }
+  /* Both links carry the underline the rest of the site puts under a player's
+     name, but here it has to be drawn on the text and not as a border on the
+     box: these are grid items, so the box runs the full width of its track and
+     is as tall as the row, and a border would land well past the end of the
+     name — and, once the list stacks, a line below it. The same substitution
+     global.css makes for .p-link inside a stacked table. */
+  .b-name {
+    font-size: var(--step-0);
+    border-bottom: 0;
+    text-decoration: underline;
+    text-decoration-color: var(--ink-line);
+    text-underline-offset: 3px;
+  }
   .b-ctx { font-size: 0.68rem; }
   .b-link {
     font-size: 0.6rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--chalk-dim);
-    text-decoration: none;
-    border-bottom: 1px solid var(--ink-line);
+    text-decoration: underline;
+    text-decoration-color: var(--ink-line);
+    text-underline-offset: 3px;
   }
-  .b-link:hover { color: var(--giallo); border-bottom-color: var(--giallo-deep); }
+  .b-name:hover,
+  .b-name:focus-visible,
+  .b-link:hover,
+  .b-link:focus-visible { color: var(--giallo); text-decoration-color: var(--giallo-deep); }
 
   .phase-block + .phase-block { margin-top: 3rem; }
   .phase-title {
@@ -415,7 +455,10 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
     border-block: 1px solid var(--ink-line);
   }
 
-  .rf { background: var(--ink); }
+  .rf {
+    background: var(--ink);
+    transition: background-color 0.35s ease, box-shadow 0.35s ease;
+  }
   .rf summary {
     display: flex;
     align-items: baseline;
@@ -454,9 +497,12 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
   .rf[open] summary { border-bottom: 1px solid var(--ink-line-soft); }
   .rf[open] .rf-chevron { transform: rotate(90deg); }
 
-  /* Arriving from a "tabellino" link above: :target marks which one, and
-     clears itself as soon as the reader follows another link. */
-  .rf:target { background: var(--giallo-wash); box-shadow: inset 3px 0 0 var(--giallo); }
+  /* Arriving from a "tabellino" link above: the mark says which of the
+     twenty-three this is. It is a class and not :target because :target holds
+     until the next anchor is followed — the sheet would stay lit for the rest
+     of the visit. The script below takes it off at the reader's next move, and
+     the transition on .rf lets it fade rather than blink out. */
+  .rf.hit { background: var(--giallo-wash); box-shadow: inset 3px 0 0 var(--giallo); }
 
   @media (max-width: 700px) {
     .bests li {
