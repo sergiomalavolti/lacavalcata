@@ -121,6 +121,15 @@ const opponentFirst = isOpponentFirst(game);
     gap: 0.9rem;
   }
 
+  /* Landing here from a "tabellino" link elsewhere on the page — :target is
+     native to the anchor jump, no script needed, and it clears itself the
+     moment the reader follows another link. */
+  .referto:target {
+    background: var(--giallo-wash);
+    border-color: var(--giallo-deep);
+    box-shadow: inset 3px 0 0 var(--giallo);
+  }
+
   .referto-meta {
     display: flex;
     flex-wrap: wrap;

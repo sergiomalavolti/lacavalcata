@@ -116,7 +116,9 @@
     "venue": "Palazzetto",
     "threePointLine": "6.75",
     "address": "Via Roma, 32 – Granarolo",
-    "slot": "VENERDI - 21,45"
+    "slot": "VENERDI - 21,45",
+    "kit1": "BIANCA",
+    "kit2": "BLU"
    },
    "vis_trebbo": {
     "name": "Bortolotti Impianti – Vis Trebbo",
@@ -156,7 +158,9 @@
     "venue": "Scuole ITIS Belluzzi",
     "threePointLine": "6.75",
     "address": "Via Cassini, 3 – Bologna",
-    "slot": "MARTEDI - 21,45"
+    "slot": "MARTEDI - 21,45",
+    "kit1": "NERA",
+    "kit2": "GIALLA"
    },
    "towers": {
     "name": "Towers Basket Bologna",
@@ -178,7 +182,9 @@
     "venue": "Palestra Deserti",
     "threePointLine": "6.75",
     "address": "Via dell'Abbazzia - Zola Predosa",
-    "slot": "MERCOLEDI - 22,00"
+    "slot": "MERCOLEDI - 22,00",
+    "kit1": "NERA",
+    "kit2": "BIANCA"
    },
    "budrio": {
     "name": "Pub Vecchie Mura Budrio",

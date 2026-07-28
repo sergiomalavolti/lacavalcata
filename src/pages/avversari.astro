@@ -82,7 +82,7 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
         <h2 class="section-title">Nel girone</h2>
         <p class="section-note">
           Le {groupOpponents.length} squadre del Girone A, incontrate due volte
-          ciascuna — tre volte il {team(groupRematch.id).short}, che ritrovammo
+          ciascuna, tre volte la Birreria {team(groupRematch.id).short}, che ritrovammo poi
           in finale. <strong>Clicca un risultato</strong> per aprire il
           tabellino.
         </p>
@@ -102,16 +102,19 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
                 )}
                 {o.seed && <span class="tag tag-seed">testa di serie {o.seed}</span>}
                 {o.info.slot && <span class="tag faint">{o.info.slot.toLowerCase()}</span>}
+                {o.info.threePointLine && (
+                  <span class="tag faint">tiro da 3: {o.info.threePointLine.replace('.', ',')} m</span>
+                )}
               </p>
-            </div>
 
-            <div class="opp-kit">
-              {[o.info.kit1, o.info.kit2].filter(Boolean).map((k) => (
-                <span class="kit">
-                  <i class={`swatch ${kitClass(k)}`} aria-hidden="true"></i>
-                  <span class="mono">{k.toLowerCase()}</span>
-                </span>
-              ))}
+              <div class="opp-kit">
+                {[o.info.kit1, o.info.kit2].filter(Boolean).map((k) => (
+                  <span class="kit">
+                    <i class={`swatch ${kitClass(k)}`} aria-hidden="true"></i>
+                    <span class="mono">{k.toLowerCase()}</span>
+                  </span>
+                ))}
+              </div>
             </div>
 
             <div class="opp-record">
@@ -151,9 +154,7 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
       <div class="section-head">
         <h2 class="section-title">Ai playoff</h2>
         <p class="section-note">
-          Quattro squadre da quattro gironi diversi, mai incontrate prima di
-          marzo. Nessuna di loro era arrivata più in basso del secondo posto nel
-          proprio girone.
+          Quattro squadre da Quattro gironi diversi, due di loro avevano vinto il proprio girone.
         </p>
       </div>
 
@@ -173,16 +174,19 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
                   {o.info.groupPos}º del girone {o.info.group}
                 </span>
                 <span class="tag faint">{PHASES[o.games[0].phase]}</span>
+                {o.info.threePointLine && (
+                  <span class="tag faint">tiro da 3: {o.info.threePointLine.replace('.', ',')} m</span>
+                )}
               </p>
-            </div>
 
-            <div class="opp-kit">
-              {[o.info.kit1, o.info.kit2].filter(Boolean).map((k) => (
-                <span class="kit">
-                  <i class={`swatch ${kitClass(k)}`} aria-hidden="true"></i>
-                  <span class="mono">{k.toLowerCase()}</span>
-                </span>
-              ))}
+              <div class="opp-kit">
+                {[o.info.kit1, o.info.kit2].filter(Boolean).map((k) => (
+                  <span class="kit">
+                    <i class={`swatch ${kitClass(k)}`} aria-hidden="true"></i>
+                    <span class="mono">{k.toLowerCase()}</span>
+                  </span>
+                ))}
+              </div>
             </div>
 
             <div class="opp-record">
@@ -213,12 +217,61 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
             </div>
           </li>
         ))}
+
+        <li class="opp">
+          <div class="opp-id">
+            <h3>
+              <Seed n={seedOf('amadeus')} size="md" />
+              <span>{teamName('amadeus')}</span>
+            </h3>
+            <p class="opp-place mono dim">
+              {season.final.venueName} · {season.final.address}
+            </p>
+            <p class="opp-tags mono">
+              <span class="tag">
+                {team('amadeus').groupPos}º del girone {team('amadeus').group}
+              </span>
+              <span class="tag faint">campo neutro</span>
+              <span class="tag faint">{PHASES.finale}</span>
+              <span class="tag faint">tiro da 3: {team('amadeus').threePointLine.replace('.', ',')} m</span>
+            </p>
+
+            <div class="opp-kit">
+              {[team('amadeus').kit1, team('amadeus').kit2].filter(Boolean).map((k) => (
+                <span class="kit">
+                  <i class={`swatch ${kitClass(k)}`} aria-hidden="true"></i>
+                  <span class="mono">{k.toLowerCase()}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div class="opp-record">
+            <p class="rec w">1–0</p>
+            <ul class="opp-games mono">
+              <li>
+                <span class="og-date faint">
+                  {shortDate(season.final.game.date)}
+                  <em class="og-phase">{PHASES.finale}</em>
+                </span>
+                <button
+                  type="button"
+                  class="score-btn"
+                  data-game={season.final.game.seq}
+                  aria-label={`Tabellino di ${teamName('amadeus')}, ${longDate(season.final.game.date)}`}
+                >{scoreLine(season.final.game)}</button>
+                <span class="og-margin w">
+                  {signed(season.final.game.margin, 0)}
+                </span>
+              </li>
+            </ul>
+          </div>
+        </li>
       </ul>
 
       <p class="section-note">
-        Il quarto turno non compare in questa lista: la finale del 9 giugno
-        era la rivincita contro l'Amadeus, già affrontato due volte nel
-        girone, giocata in campo neutro al Palasport di Loiano.
+        La finale del 9 giugno era l'ennesima rivincita contro la Birreria Amadeus, già
+        affrontata due volte nel girone e ritrovata in campo neutro al Palasport di Loiano.
       </p>
     </div>
   </section>
@@ -226,7 +279,7 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
   <section class="section">
     <div class="wrap">
       <div class="section-head">
-        <h2 class="section-title">Dove si giocava</h2>
+        <h2 class="section-title">Il campo di casa</h2>
         <p class="section-note">
           Il campo di casa era il Polo Scolastico-ITIS di Porretta Terme, il
           sabato alle 18. Quasi tutti gli altri giocavano in palestre
@@ -234,37 +287,17 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
         </p>
       </div>
 
-      <div class="table-scroll">
-        <table data-stack>
-          <caption class="visually-hidden">Palestre delle squadre affrontate</caption>
-          <thead>
-            <tr>
-              <th scope="col">Squadra</th>
-              <th scope="col">Palestra</th>
-              <th scope="col">Indirizzo</th>
-              <th scope="col">Giorno e ora</th>
-              <th scope="col" class="num">Tiro da 3</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="us">
-              <td class="name" data-head>{teamName(US)}</td>
-              <td data-label="Palestra" data-wide>{meta.teams[US].venue}</td>
-              <td class="dim" data-label="Indirizzo" data-wide>{meta.teams[US].address}</td>
-              <td class="mono dim" data-label="Giorno e ora">{meta.teams[US].slot?.toLowerCase()}</td>
-              <td class="num mono" data-label="Tiro da 3">{meta.teams[US].threePointLine} m</td>
-            </tr>
-            {opponents.map((o) => (
-              <tr>
-                <td class="name" data-head>{teamName(o.id)}</td>
-                <td data-label="Palestra" data-wide>{o.info.venue || '–'}</td>
-                <td class="dim" data-label="Indirizzo" data-wide>{o.info.address || '–'}</td>
-                <td class="mono dim" data-label="Giorno e ora">{o.info.slot ? o.info.slot.toLowerCase() : '–'}</td>
-                <td class="num mono" data-label="Tiro da 3">{o.info.threePointLine ? `${o.info.threePointLine} m` : '–'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div class="home-court">
+        <h3>{teamName(US)}</h3>
+        <p class="opp-place mono dim">
+          {meta.teams[US].venue} · {meta.teams[US].address}
+        </p>
+        <p class="opp-tags mono">
+          <span class="tag faint">{meta.teams[US].slot?.toLowerCase()}</span>
+          <span class="tag faint">
+            tiro da 3: {meta.teams[US].threePointLine.replace('.', ',')} m
+          </span>
+        </p>
       </div>
 
       <p class="section-note">
@@ -292,12 +325,22 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
   .opp {
     background: var(--ink-raised);
     display: grid;
-    grid-template-columns: minmax(0, 1.5fr) auto minmax(0, 1fr);
+    /* Two columns: who they were on the left, how it went on the right. The
+       kit colours sit inside the left column under the tags, so there is no
+       third track left half empty. */
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     gap: 1rem 1.8rem;
-    align-items: center;
+    align-items: start;
     padding: 1.15rem 1.1rem;
   }
   .opp:hover { background: var(--ink-panel); }
+
+  .home-court {
+    background: var(--ink-raised);
+    border: 1px solid var(--ink-line);
+    padding: 1.15rem 1.1rem;
+  }
+  .home-court h3 { font-size: var(--step-2); margin-bottom: 0.45rem; }
 
   .opp-id h3 {
     font-size: var(--step-2);
@@ -328,7 +371,12 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
   .tag-seed { color: var(--giallo); border-color: var(--giallo-deep); }
   .tag.faint { color: var(--chalk-faint); }
 
-  .opp-kit { display: grid; gap: 0.4rem; }
+  .opp-kit {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.1rem;
+    margin-top: 0.5rem;
+  }
   .kit {
     display: flex;
     align-items: center;
@@ -393,13 +441,11 @@ const groupRematch = groupOpponents.find((o) => o.games.length > 2);
   .og-margin { min-width: 2.6rem; text-align: right; }
 
   @media (max-width: 820px) {
-    .opp { grid-template-columns: minmax(0, 1fr) auto; }
-    .opp-record { grid-column: 1 / -1; text-align: left; }
+    /* Below three-column width the record stacks under the team it belongs
+       to; the kit row travels with the team details, so nothing else moves. */
+    .opp { grid-template-columns: minmax(0, 1fr); }
+    .opp-record { text-align: left; }
     .opp-games li { justify-items: start; grid-template-columns: 5rem auto auto; }
     .og-margin { text-align: left; }
-  }
-  @media (max-width: 520px) {
-    .opp { grid-template-columns: 1fr; }
-    .opp-kit { grid-auto-flow: column; justify-content: start; gap: 1rem; }
   }
 </style>
