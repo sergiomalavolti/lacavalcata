@@ -5,7 +5,7 @@ import Referto from '../components/Referto.astro';
 import TableSort from '../components/TableSort.astro';
 import {
   season, playerName, playerHref, teamName, teamShort, shortDate, num, pct, signed,
-  PHASES, scoreLine, scoreSides,
+  PHASES, scoreLine, scoreSides, playerTotals,
 } from '../lib/season.js';
 
 const { playerStats, roster, games, advanced } = season;
@@ -15,15 +15,50 @@ const record = advanced.record;
 const onCourt = record.onCourt;
 
 const scorers = playerStats.filter((p) => p.played > 0);
-// Quota is a share of the points the players actually scored, so it divides by
-// the boxscore total. The 30 awarded for the forfeit belong to no one.
-const totalPoints = onCourt.scored;
 
 const roleOf = (id) => roster.find((r) => r.id === id)?.role ?? '';
 
-// Every scoring line is drawn against the season's top scorer, so the column
-// reads as a hierarchy at a glance and not as nineteen loose numbers.
-const topScorer = Math.max(...playerStats.map((p) => p.points));
+/**
+ * The individual table reads three ways: over the whole season, over the girone
+ * alone, over the playoff alone. The girone ran from November to April and the
+ * playoff through May and June, and they were not the same team — Marconi went
+ * from 135 points in fourteen weeks to 147 in nine games.
+ *
+ * Each slice recomputes every column rather than hiding rows: a girone average
+ * divides by girone games, and Quota is a share of what the team scored inside
+ * the slice. `playerTotals` drops anyone who never went to referto in it.
+ */
+const gironeFixtures = games.filter((g) => g.phase === 'girone').length;
+
+const SCOPES = [
+  {
+    key: 'all',
+    label: 'Tutte',
+    test: () => true,
+    note: (d) =>
+      `Tutte le ${d.games} partite giocate sul campo. Il 30–0 vinto a tavolino
+       non ha tabellino, quindi non entra in nessuna riga.`,
+  },
+  {
+    key: 'girone',
+    label: 'Girone',
+    test: (g) => g.phase === 'girone',
+    note: (d) =>
+      `Le ${d.games} partite del girone giocate sul campo, su ${gironeFixtures}
+       in calendario: quella che manca è il 30–0 a tavolino, senza tabellino.`,
+  },
+  {
+    key: 'playoff',
+    label: 'Playoff',
+    test: (g) => g.phase !== 'girone',
+    note: (d) =>
+      `Le ${d.games} partite dei playoff, dagli ottavi alla finale. In tabella
+       restano ${d.rows.length} giocatori: gli altri non sono mai andati a
+       referto in questa fase.`,
+  },
+];
+
+const scopes = SCOPES.map((s) => ({ ...s, data: playerTotals(s.test) }));
 
 // Single-game highs across the season. `starter` comes off the boxscore line
 // itself; the share is against what the team scored that night, which is what
@@ -106,73 +141,98 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
           <strong>Presenze</strong> è quante volte un giocatore è andato a
           referto, <strong>Entrato</strong> quante volte è effettivamente
           entrato: la differenza sono le <span class="mono giallo">NE</span>.{' '}
-          <strong>Quota</strong> è la percentuale dei punti di squadra.
-          Ordinata per punti: <strong>clicca un'intestazione</strong> per
-          cambiare criterio, <strong>clicca un nome</strong> per la stagione
-          completa di quel giocatore.
+          <strong>Quota</strong> è la percentuale dei punti segnati dalla
+          squadra nelle partite del filtro attivo — che sceglie l'arco della
+          stagione e ricalcola ogni colonna. Ordinata per punti:{' '}
+          <strong>clicca un'intestazione</strong> per cambiare criterio,
+          <strong>clicca un nome</strong> per la stagione completa di quel
+          giocatore.
         </p>
       </div>
 
-      <div class="table-scroll">
-        <table class="individuale" data-sortable data-stack data-dense>
-          <thead>
-            <tr>
-              <th scope="col" class="num rank">#</th>
-              <th scope="col" class="name" data-sort="text">Giocatore</th>
-              <th scope="col" data-sort="text">Ruolo</th>
-              <th scope="col" class="num" data-sort="num" aria-sort="descending">Punti</th>
-              <th scope="col" class="num" data-sort="num">Media</th>
-              <th scope="col" class="num" data-sort="num">Presenze</th>
-              <th scope="col" class="num" data-sort="num">Entrato</th>
-              <th scope="col" class="num" data-sort="num">Quintetto</th>
-              <th scope="col" class="num" data-sort="num">High</th>
-              <th scope="col" class="num" data-sort="num">10+</th>
-              <th scope="col" class="num" data-sort="num">Quota</th>
-            </tr>
-          </thead>
-          <tbody>
-            {playerStats.map((p, i) => (
-              <tr>
-                <td class="num rank faint" data-head><span data-rank>{i + 1}</span></td>
-                <td class="name" data-head>
-                  <a class="p-link" href={playerHref(p.player)}>{playerName(p.player)}</a>
-                </td>
-                <td data-label="Ruolo"><span class="role mono">{roleOf(p.player)}</span></td>
-                <td class="num pts" data-v={p.points} data-head>
-                  <span class="pts-v">{p.points}</span>
-                  <span class="pts-track" aria-hidden="true">
-                    <span class="pts-bar" style={`--w:${(p.points / topScorer) * 100}%`}></span>
-                  </span>
-                </td>
-                <td class="num" data-label="Media">{num(p.average, 1)}</td>
-                <td class="num dim" data-label="Presenze">{p.games}</td>
-                <td class="num" data-v={p.played} data-label="Entrato">
-                  {p.played}
-                  {p.games > p.played && (
-                    <span class="ne mono">{p.games - p.played} NE</span>
-                  )}
-                </td>
-                <td class="num" data-label="Quintetto">{p.starts}</td>
-                <td class="num" data-label="High">{p.high}</td>
-                <td class="num" data-label="10+">{p.doubleFigures}</td>
-                <td class="num dim" data-v={p.points} data-label="Quota">
-                  {num((p.points / totalPoints) * 100, 1)}%
-                </td>
-              </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td></td>
-              <td data-head>Squadra</td>
-              <td></td>
-              <td class="num strong" data-head>{totalPoints}</td>
-              <td class="num" data-label="Media">{num(onCourt.avgFor, 1)}</td>
-              <td class="num" colspan="6"></td>
-            </tr>
-          </tfoot>
-        </table>
+      {/* The control ships hidden and the script below reveals it, so a page
+          whose JavaScript never arrives keeps the whole-season table it has
+          always had instead of three buttons that do nothing. */}
+      <div class="scopes" role="group" aria-label="Filtra per fase" hidden>
+        {scopes.map((s, i) => (
+          <button type="button" data-scope={s.key} aria-pressed={i === 0}>
+            {s.label}
+          </button>
+        ))}
       </div>
+
+      {scopes.map((s, i) => (
+        <div class="scope-pane" data-scope={s.key} hidden={i > 0}>
+          <p class="section-note dim scope-note">{s.note(s.data)}</p>
+          <div class="table-scroll">
+            <table class="individuale" data-sortable data-stack data-dense>
+              <thead>
+                <tr>
+                  <th scope="col" class="num rank">#</th>
+                  <th scope="col" class="name" data-sort="text">Giocatore</th>
+                  <th scope="col" data-sort="text">Ruolo</th>
+                  <th scope="col" class="num" data-sort="num" aria-sort="descending">Punti</th>
+                  <th scope="col" class="num" data-sort="num">Media</th>
+                  <th scope="col" class="num" data-sort="num">Presenze</th>
+                  <th scope="col" class="num entrato" data-sort="num">Entrato</th>
+                  <th scope="col" class="num" data-sort="num">Quintetto</th>
+                  <th scope="col" class="num" data-sort="num">High</th>
+                  <th scope="col" class="num" data-sort="num">10+</th>
+                  <th scope="col" class="num" data-sort="num">Quota</th>
+                </tr>
+              </thead>
+              <tbody>
+                {s.data.rows.map((p, i) => (
+                  <tr>
+                    <td class="num rank faint" data-head><span data-rank>{i + 1}</span></td>
+                    <td class="name" data-head>
+                      <a class="p-link" href={playerHref(p.player)}>{playerName(p.player)}</a>
+                    </td>
+                    <td data-label="Ruolo"><span class="role mono">{roleOf(p.player)}</span></td>
+                    <td class="num pts" data-v={p.points} data-head>
+                      <span class="pts-v">{p.points}</span>
+                      <span class="pts-track" aria-hidden="true">
+                        <span class="pts-bar" style={`--w:${(p.points / s.data.topScorer) * 100}%`}></span>
+                      </span>
+                    </td>
+                    {/* A player who dressed and never entered has no average,
+                        no high and no share — only a denominator of zero. The
+                        dash says so, and −1 sorts it below a genuine nought. */}
+                    <td class="num" data-v={p.average ?? -1} data-label="Media">
+                      {p.average === null ? '—' : num(p.average, 1)}
+                    </td>
+                    <td class="num dim" data-label="Presenze">{p.games}</td>
+                    <td class="num entrato" data-v={p.played} data-label="Entrato">
+                      {p.played}
+                      {p.games > p.played && (
+                        <span class="ne mono">{p.games - p.played} NE</span>
+                      )}
+                    </td>
+                    <td class="num" data-label="Quintetto">{p.starts}</td>
+                    <td class="num" data-v={p.high ?? -1} data-label="High">
+                      {p.high === null ? '—' : p.high}
+                    </td>
+                    <td class="num" data-label="10+">{p.doubleFigures}</td>
+                    <td class="num dim" data-v={p.share === null ? -1 : p.points} data-label="Quota">
+                      {p.share === null ? '—' : pct(p.share, 1)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td></td>
+                  <td data-head>Squadra</td>
+                  <td></td>
+                  <td class="num strong" data-head>{s.data.teamPoints}</td>
+                  <td class="num" data-label="Media">{num(s.data.avgFor, 1)}</td>
+                  <td class="num" colspan="6"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      ))}
     </div>
   </section>
 
@@ -266,6 +326,34 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
 </Base>
 
 <script>
+  /* The three views of the individual table are all in the page; the filter
+     only says which one is on screen. Without this script the control stays
+     hidden and the whole-season pane is the page, exactly as before. */
+  const scopeGroup = document.querySelector('.scopes');
+  const scopePanes = [...document.querySelectorAll('.scope-pane')];
+
+  if (scopeGroup && scopePanes.length) {
+    scopeGroup.hidden = false;
+
+    scopeGroup.addEventListener('click', (e) => {
+      const el = e.target instanceof Element ? e.target : null;
+      const button = el?.closest('button[data-scope]');
+      if (!(button instanceof HTMLButtonElement)) return;
+
+      for (const b of scopeGroup.querySelectorAll('button[data-scope]')) {
+        b.setAttribute('aria-pressed', String(b === button));
+      }
+      for (const pane of scopePanes) {
+        pane.hidden = pane.dataset.scope !== button.dataset.scope;
+      }
+
+      /* Base.astro sizes the "scorri in orizzontale" hints on load and on
+         resize. A pane that was hidden measured nothing, so the one just
+         revealed would never get its hint: ask for a fresh pass. */
+      dispatchEvent(new Event('resize'));
+    });
+  }
+
   /* A "tabellino" link points at a fold that ships closed, so the jump alone
      would land on the summary with the sheet still shut. Opening it and marking
      it keeps the anchor honest; with no JavaScript the link still scrolls to
@@ -333,6 +421,52 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
 
   td.strong { color: var(--chalk); font-weight: 700; }
 
+  /* --- the girone / playoff filter ----------------------------------------- */
+
+  /* One hairline-joined row, the same frame the totals strip above is built
+     from. It wraps rather than widening the page — nothing here may put the
+     body into a sideways scroll. */
+  .scopes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px;
+    width: max-content;
+    max-width: 100%;
+    margin: 1.2rem 0 0;
+    background: var(--ink-line-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .scopes button {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    background: var(--ink-raised);
+    border: 0;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+  .scopes button:hover { color: var(--giallo); }
+  .scopes button[aria-pressed='true'] {
+    color: var(--giallo);
+    background: var(--giallo-wash);
+    box-shadow: inset 0 -2px 0 var(--giallo);
+  }
+
+  /* A standalone control, so it takes the whole tap target. */
+  @media (max-width: 799px), (hover: none) {
+    .scopes button { min-height: var(--tap); padding-inline: 0.9rem; }
+  }
+
+  /* Stated rather than left to the user agent: below 800px global.css makes
+     `table[data-stack]` a block, which would beat the UA's [hidden] rule and
+     put all three tables on screen at once. The attribute is on the pane for
+     the same reason, never on the table. */
+  .scope-pane[hidden] { display: none; }
+  .scope-note { margin: 1rem 0 0; }
+
   /* --- individual season -------------------------------------------------- */
   .individuale td { padding-block: 0.6rem; }
   .individuale th.rank, .individuale td.rank { width: 3rem; }
@@ -379,6 +513,27 @@ const phases = ['girone', 'ottavi', 'quarti', 'semifinale', 'finale'];
     letter-spacing: 0.1em;
     color: var(--giallo-deep);
     margin-left: 0.45rem;
+  }
+
+  /* The column is right-aligned, so a badge printed after the figure pushes
+     that figure left — and only on the rows that carry one, which sets the
+     whole column zigzagging. The cell reserves a gutter for the badge to the
+     right of the figures instead, and the badge cancels its own width with an
+     equal negative margin, the idiom the tap targets already use: it takes no
+     room on the line, so every figure keeps the column's right edge and every
+     badge starts at the same x. The header reserves the same gutter, which
+     leaves its label over the figures rather than over the badges. */
+  @media (min-width: 800px) {
+    .individuale .entrato { --ne-gutter: 2.5rem; }
+    .individuale th.entrato,
+    .individuale td.entrato { padding-right: calc(0.7rem + var(--ne-gutter)); }
+    .individuale td.entrato .ne {
+      display: inline-block;
+      width: var(--ne-gutter);
+      margin: 0 calc(var(--ne-gutter) * -1) 0 0;
+      padding-left: 0.45rem;
+      text-align: left;
+    }
   }
 
   /* Below the width where eleven columns fit, the name stays put while the
