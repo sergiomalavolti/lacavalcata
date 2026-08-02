@@ -41,9 +41,13 @@
   --c-context: #3a3a41;
 
   /* --- type ------------------------------------------------------------- */
-  --font-display: 'League Gothic', 'Arial Narrow', 'Helvetica Neue', sans-serif;
-  --font-body: 'Archivo Variable', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', monospace;
+  /* The stacks themselves live in `fonts` in astro.config.mjs, which is what
+     builds the @font-face rules and the metric-adjusted fallbacks. These three
+     are aliases onto the variables it generates, so every `var(--font-display)`
+     in the stylesheets keeps working and the font list stays named once. */
+  --font-display: var(--font-league-gothic);
+  --font-body: var(--font-archivo);
+  --font-mono: var(--font-jetbrains-mono);
 
   --step--2: clamp(0.69rem, 0.67rem + 0.1vw, 0.75rem);
   --step--1: clamp(0.81rem, 0.78rem + 0.14vw, 0.88rem);
