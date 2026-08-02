@@ -1,7 +1,5 @@
 ---
-import '@fontsource/league-gothic';
-import '@fontsource-variable/archivo';
-import '@fontsource-variable/jetbrains-mono';
+import { Font } from 'astro:assets';
 import '../styles/global.css';
 import { u } from '../lib/url.js';
 
@@ -29,6 +27,18 @@ const nav = [
     <meta name="robots" content="noindex" />
     <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
     <meta name="theme-color" content="#0a0a0b" />
+
+    {/* Emits the @font-face rules and the preload links. Preloading is the
+        other half of the fix in astro.config.mjs: the fonts are referenced only
+        from CSS, so without it the browser cannot even discover them until the
+        stylesheet has downloaded and parsed — a round trip that used to be long
+        enough to see. These are unfiltered because each family now builds to
+        exactly one file (latin, upright), so this preloads those three and
+        nothing else. Keep it that way: if a family ever gains variants, scope
+        the preload rather than shipping every file as a blocking request. */}
+    <Font cssVariable="--font-league-gothic" preload />
+    <Font cssVariable="--font-archivo" preload />
+    <Font cssVariable="--font-jetbrains-mono" preload />
   </head>
   <body>
     <a class="skip" href="#main">Vai al contenuto</a>
