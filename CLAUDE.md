@@ -64,7 +64,9 @@ shells. Call the binary by absolute path:
 ## Publishing
 
 Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds and
-publishes to GitHub Pages at **https://sergiomalavolti.github.io/lacavalcata/**.
+publishes to GitHub Pages. Pages serves it from its own domain,
+**https://lacavalcata.com**, set by `public/CNAME` — which is why `base` in
+`astro.config.mjs` is `/` and not a project sub-path.
 `dist/` stays gitignored — CI builds it from source. The site carries
 `<meta name="robots" content="noindex">` on purpose: reachable by link, absent
 from search results.
@@ -107,7 +109,9 @@ at Loiano, and the referto lists Amadeus first, so it reads 55–66.
 **Chart colours.** `--c-us`, `--c-them`, `--c-loss` in `src/styles/tokens.css`
 are a *separate*, validated palette — deliberately not `--giallo`, which is
 tuned for text on near-black and sits outside the lightness band a fill colour
-needs. Change any of the three and run `npm run palette` before shipping.
+needs. Change any of the three and run `npm run palette` before shipping — it
+needs `PALETTE_VALIDATOR` pointing at the directory holding the validator's
+`scripts/validate_palette.js`, and exits 2 saying so if it is unset.
 
 **Dark only.** The site commits to one dark treatment on purpose; a light
 variant would undo the photographs. Don't add a theme toggle.
@@ -121,12 +125,15 @@ have already been violated once. A `<table>` always goes inside
 `1fr` is `minmax(auto, 1fr)` and inherits its content's min-width — use
 `minmax(0, 1fr)` when a grid holds something wide.
 
-**Internal links go through `u()`.** GitHub Pages serves this site from
-`/lacavalcata/`, not from a root, and Astro does not rewrite hand-written hrefs.
-A literal `href="/finale/"` builds fine and 404s in production. Write
-`href={u('/finale/')}` instead — importing `u` from `src/lib/url.js` — and the
-sub-path stays named in exactly one place, `base` in `astro.config.mjs`.
-Anchors and external URLs pass through `u()` untouched, so it is safe anywhere.
+**Internal links go through `u()`.** The site serves from a domain root today,
+so `base` is `/` and `u()` is a no-op — a hand-written `href="/finale/"` would
+work. That is exactly why the rule is worth stating: the site served from
+`/lacavalcata/` until the custom domain, where such an href built fine and then
+404d, and the only reason that move was a one-line change is that every link
+already went through `u()`. Write `href={u('/finale/')}` — importing `u` from
+`src/lib/url.js` — and the prefix stays named in exactly one place, `base` in
+`astro.config.mjs`. Anchors and external URLs pass through `u()` untouched, so
+it is safe anywhere.
 
 ## Style
 
